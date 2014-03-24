@@ -1,0 +1,198 @@
+package com.stark.asm.service.fun.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import com.stark.asm.common.util.CommonConstant;
+import com.stark.asm.common.util.page.Result;
+import com.stark.asm.domain.fun.Fun;
+import com.stark.asm.domain.fun.query.FunQuery;
+import com.stark.asm.manager.fun.FunManager;
+import com.stark.asm.service.fun.FunService;
+
+/**
+ * Fun information service interface
+ * @author WangYue
+ *
+ */
+public class FunServiceImpl implements FunService {
+    private static final Logger log = LogManager.getLogger(FunServiceImpl.class);
+    /**
+     *  Fun information manager interface
+     */
+	private FunManager funManager;
+	
+	@Override
+	public Result addFun(Fun fun) {
+		if(null!=fun){
+			Result result = new Result();
+			fun.setCreateTime(new Date());
+			fun.setUpdateTime(new Date());
+			fun.setYn(CommonConstant.YN_NO_DELETE);
+			try {
+				boolean resultFlag = funManager.addFun(fun); //call addFun() method
+				result.addDefaultModel("resultFlag", resultFlag);
+				result.setSuccess(resultFlag);
+			} catch (Exception e) {
+				log.error("FunServiceImpl -> addFun() error!!", e);
+			}
+			return result;
+			
+		}else{
+			log.error("FunServiceImpl -> addFun() fun empty!!");
+			throw new RuntimeException("FunServiceImpl -> addFun() fun empty !!");
+		}
+	}
+
+	@Override
+	public Result updateFun(Fun fun) {
+		if(null!=fun){
+			Result result = new Result();
+			fun.setUpdateTime(new Date());
+			try {
+				boolean resultFlag = funManager.updateFun(fun); //call updateFun() method
+				result.addDefaultModel("resultFlag", resultFlag); 
+				result.setSuccess(resultFlag);
+			} catch (Exception e) {
+				log.error("FunServiceImpl -> updateFun() error!!", e);
+			}
+			return result;
+			
+		}else{
+			log.error("FunServiceImpl -> updateFun() fun empty!!");
+			throw new RuntimeException("FunServiceImpl -> updateFun() fun empty !!");
+		}
+	}
+
+	@Override
+	public Result getFunById(Long id) {
+		if(null!=id){
+			Result result = new Result();
+			try {
+				Fun fun = funManager.getFunById(id);
+				result.addDefaultModel("fun", fun);
+				result.setSuccess(true);
+			} catch (Exception e) {
+				log.error("FunServiceImpl -> getFunById() error!!", e);
+			}
+			return result;
+		}else{
+			log.error("FunServiceImpl -> addFun() id empty!!");
+			throw new RuntimeException("FunServiceImpl -> addFun() id empty !!");
+		}
+	}
+
+	@Override
+	public Result getFunByFunCode(String funCode) {
+		if(!StringUtils.isBlank(funCode)){
+			Result result = new Result();
+			try {
+				Fun fun = funManager.getFunByFunCode(funCode);
+				result.addDefaultModel("fun", fun);
+				result.setSuccess(true);
+			} catch (Exception e) {
+				log.error("FunServiceImpl -> getFunByFunCode() error!!", e);
+			}
+			return result;
+			
+		}else{
+			log.error("FunServiceImpl -> getFunByFunCode() funCode empty!!");
+			throw new RuntimeException("FunServiceImpl -> getFunByFunCode() funCode empty !!");
+		}
+	}
+
+	@Override
+	public Result queryFunListByQueryBean(FunQuery funQuery) {
+		if(null!=funQuery){
+			Result result = new Result();
+			try {
+				List<Fun> funList = funManager.queryFunListByQueryBean(funQuery);
+				result.addDefaultModel("funList", funList);
+				result.setSuccess(true);
+			} catch (Exception e) {
+				log.error("FunServiceImpl -> queryFunListByQueryBean() error!!", e);
+			}
+			return result;
+			
+		}else{
+			log.error("FunServiceImpl -> queryFunListByQueryBean() funQuery empty!!");
+			throw new RuntimeException("FunServiceImpl -> queryFunListByQueryBean() funQuery empty !!");
+		}
+	}
+
+	@Override
+	public Result queryFunListPageByQueryBean(FunQuery funQuery,
+			int pageIndex, int pageSize) {
+		if(null!=funQuery){
+			Result result = new Result();
+			funQuery.setYn(CommonConstant.YN_NO_DELETE);     //set  not delete
+			try {
+				List<Fun> funList = funManager.queryFunListPageByQueryBean(funQuery,pageIndex,pageSize);  // call queryFunListPageByQueryBean() method
+				result.addDefaultModel("funList", funList);
+				result.setSuccess(true);
+			} catch (Exception e) {
+				log.error("FunServiceImpl -> queryFunListPageByQueryBean() error!!", e);
+			}
+			return result;
+			
+		}else{
+			log.error("FunServiceImpl -> addFun() funQuery empty!!");
+			throw new RuntimeException("FunServiceImpl -> addFun() funQuery empty !!");
+		}
+	}
+
+	@Override
+	public Result deleteFunById(Long id) {
+		if(null!=id){
+			Result result = new Result();
+			try {
+				boolean resultFlag = funManager.deleteFunById(id);
+				result.addDefaultModel("resultFlag", resultFlag);
+				result.setSuccess(true);
+			} catch (Exception e) {
+				log.error("FunServiceImpl -> deleteFunById() error!!", e);
+			}
+			return result;
+			
+		}else{
+			log.error("FunServiceImpl -> deleteFunById() id empty!!");
+			throw new RuntimeException("FunServiceImpl -> deleteFunById() id empty !!");
+		}
+	}
+	
+	
+	@Override
+	public Result deleteFunByIds(Long ids[]){
+		if(null!=ids){
+			Result result = new Result();
+			try {
+				if(null!=ids&&ids.length>0){
+					boolean resultFlag = funManager.deleteFunByIds(ids);
+					result.addDefaultModel("resultFlag", resultFlag);
+					result.setSuccess(true);
+					
+				}else{
+					log.error("FunServiceImpl -> deleteFunById() ids param null!!");
+				}
+			} catch (Exception e) {
+				log.error("FunServiceImpl -> deleteFunById() error!!", e);
+			}
+			return result;
+			
+		}else{
+			log.error("FunServiceImpl -> deleteFunByIds() ids empty!!");
+			throw new RuntimeException("FunServiceImpl -> deleteFunByIds() ids empty !!");
+		}
+	}
+
+
+	public void setFunManager(FunManager funManager) {
+		this.funManager = funManager;
+	}
+
+
+}

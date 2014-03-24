@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 评价信息 -->
+<mapper namespace="Comment">
+
+	<resultMap id="commentMap" type="com.haos.domain.comment.Comment">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="advantage" property="advantage" jdbcType="VARCHAR" />
+		<result column="usage_experience" property="usageExperience"
+			jdbcType="VARCHAR" />
+		<result column="shortcoming" property="shortcoming" jdbcType="VARCHAR" />
+		<result column="comment_time" property="commentTime" jdbcType="TIMESTAMP" />
+		<result column="commodity_id" property="commodityId" jdbcType="BIGINT" />
+		<result column="commodity_code" property="commodityCode"
+			jdbcType="VARCHAR" />
+		<result column="commodity_name" property="commodityName"
+			jdbcType="VARCHAR" />
+		<result column="user_code" property="userCode" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="yn" property="yn" jdbcType="TINYINT" />
+	</resultMap>
+
+	<!-- 创建评价信息 -->
+	<insert id="insert" parameterType="com.haos.domain.comment.Comment">
+		insert into
+		comment(title,advantage,shortcoming,usage_experience,comment_time,commodity_id,commodity_code,commodity_name,user_code,create_time,update_time,yn)
+		values(#{title,jdbcType=VARCHAR},#{advantage,jdbcType=VARCHAR},#{shortcoming,jdbcType=VARCHAR},#{usageExperience,jdbcType=VARCHAR},#{commentTime,jdbcType=TIMESTAMP},#{commodityId,jdbcType=BIGINT},#{commodityCode,jdbcType=VARCHAR},#{commodityName,jdbcType=VARCHAR},#{userCode,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=TINYINT})
+	</insert>
+
+	<!-- 修改评价信息，根据评价对象 -->
+	<update id="update" parameterType="com.haos.domain.comment.Comment">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update comment 
+				<set>
+				   <if test="title !=null and title !=''">
+					title=#{title,jdbcType=VARCHAR},
+				   </if>
+				   <if test="advantage !=null and advantage !=''">
+					advantage = #{advantage,jdbcType=VARCHAR},
+				   </if>
+				   <if test="shortcoming !=null and shortcoming !=''">
+					shortcoming = #{shortcoming,jdbcType=VARCHAR},
+				   </if>
+				   <if test="usageExperience !=null and usageExperience !=''">
+					usage_experience=#{usageExperience,jdbcType=VARCHAR},
+				   </if>
+				   <if test="commentTime !=null and commentTime !=''">
+					comment_time = #{commentTime,jdbcType=TIMESTAMP},
+				   </if>
+				   <if test="commodityId !=null and commodityId !=''">
+					commodity_Id=#{commodityId,jdbcType=BIGINT},
+				   </if>
+				   <if test="commodityCode !=null and commodityCode !=''">
+					commodity_code=#{commodityCode,jdbcType=VARCHAR},
+				   </if>
+				   <if test="commodityName !=null and commodityName !=''">
+					commodity_name=#{commodityName,jdbcType=VARCHAR},
+				   </if>
+				   <if test="userCode !=null and userCode !=''">
+					user_code=#{userCode,jdbcType=VARCHAR},
+				   </if>
+				   <if test="updateTime !=null and updateTime !=''">
+					update_time=#{updateTime,jdbcType=TIMESTAMP}
+				   </if>
+				</set>
+				where id = #{id}
+            </if>
+		</if>
+	</update>
+
+	<!-- 根据主键获取评价信息 -->
+	<select id="getCommentById" resultMap="commentMap"
+		parameterType="java.lang.Long">
+		<if test="_parameter != null">
+			select
+			id,title,advantage,shortcoming,usage_experience,comment_time,commodity_id,commodity_code,commodity_name,user_code,create_time,update_time
+			from comment
+			where id = #{_parameter} and yn=0
+        </if>
+	</select>
+
+	<!-- 根据查询Bean获取评价信息 -->
+	<select id="getCommentByCommodityIdAndUserCode" resultMap="commentMap"
+		parameterType="com.haos.domain.comment.query.CommentQuery">
+		select
+		id,title,advantage,shortcoming,usage_experience,comment_time,commodity_id,commodity_code,commodity_name,user_code,create_time,update_time
+		from comment
+		where commodity_id=#{commodityId} and user_code=#{userCode} and yn=#{yn}
+	</select>
+	<!-- 根据查询Bean获取评价集合，不带翻页 -->
+	<select id="queryCommentListByQueryBean" resultMap="commentMap"
+		parameterType="com.haos.domain.comment.query.CommentQuery">
+		select
+		id,title,advantage,shortcoming,usage_experience,comment_time,commodity_id,commodity_code,commodity_name,user_code,create_time,update_time
+		from comment where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryCommentListWhere" />
+		</if>
+	</select>
+	<!-- 根据查询Bean获取评价集合，翻页 -->
+	<select id="queryCommentListPageByQueryBean" resultMap="commentMap"
+		parameterType="com.haos.domain.comment.query.CommentQuery">
+		select
+		id,title,advantage,shortcoming,usage_experience,comment_time,commodity_id,commodity_code,commodity_name,user_code,create_time,update_time
+		from comment where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryCommentListWhere" />
+		</if>
+		order by id desc
+		limit #{startRow},#{endRow};
+	</select>
+
+	<!-- 根据查询Bean获取评价总数 -->
+	<select id="queryCommentCountByQueryBean" resultType="java.lang.Integer"
+		parameterType="com.haos.domain.comment.query.CommentQuery">
+		select count(1) from comment where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryCommentListWhere" />
+		</if>
+	</select>
+
+	<!-- 删除评价信息，根据主键 -->
+	<delete id="deleteCommentById" parameterType="java.lang.Long">
+		<if test="_parameter != null and _parameter > 0">
+			update comment set yn=1 where id = #{_parameter}
+        </if>
+	</delete>
+
+	<!-- 常用的查询Where条件 -->
+	<sql id="queryCommentListWhere">
+		<if test="title != null and title != ''">
+			and title = #{title,jdbcType=VARCHAR}
+        </if>
+		<if test="commodityId != null and commodityId != ''">
+			and commodity_id = #{commodityId,jdbcType=VARCHAR}
+        </if>
+		<if test="commodityCode != null and commodityCode != ''">
+			and commodity_code = #{commodityCode,jdbcType=VARCHAR}
+        </if>
+		<if test="commodityName != null and commodityName != ''">
+			and commodity_name = #{commodityName,jdbcType=VARCHAR}
+        </if>
+		<if test="userCode != null and userCode != ''">
+			and user_code = #{userCode,jdbcType=VARCHAR}
+        </if>
+		<if test="startTime != null and startTime != ''">
+			and create_time >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+		<if test="endTime != null and endTime != ''">
+			and #{endTime,jdbcType=TIMESTAMP} >= create_time
+        </if>
+		<if test="yn != null and yn>=0">
+			and yn = #{yn,jdbcType=TINYINT}
+        </if>
+	</sql>
+</mapper>

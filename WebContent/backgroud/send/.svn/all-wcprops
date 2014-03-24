@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/14/trunk/asm/WebContent/backgroud/send
+END
+toAddSend.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/14/trunk/asm/WebContent/backgroud/send/toAddSend.jsp
+END
+sendMain.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/14/trunk/asm/WebContent/backgroud/send/sendMain.jsp
+END
+toUpdateSend.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/14/trunk/asm/WebContent/backgroud/send/toUpdateSend.jsp
+END
+toDeleteSend.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/14/trunk/asm/WebContent/backgroud/send/toDeleteSend.jsp
+END

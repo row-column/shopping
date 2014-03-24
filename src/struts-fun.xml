@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<!-- 功能模块 Action -->
+	<package name="fun" extends="admin-default">
+		<action name="fun_*" method="{1}" class="com.haos.web.action.fun.FunAction">
+			<!-- 功能信息 -->
+			<result name="{1}">/backgroud/fun/{1}.jsp</result>
+		</action>
+	</package>
+
+
+	<!-- 功能模块 Json -->
+	<package name="fun_json" extends="json-protected-default">
+		<!-- 功能信息 Json -->
+		<action name="funJson_*" method="{1}"
+			class="com.haos.web.action.fun.json.FunJsonAction">
+			<result name="out" type="json">
+				<param name="ignoreHierarchy">true</param>
+				<param name="excludeNullProperties">true</param>
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

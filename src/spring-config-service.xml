@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
+	default-autowire="byName">
+
+
+	<!-- 用户信息service -->
+	<bean id="userService" class="com.haos.service.user.impl.UserServiceImpl" />
+	<!-- 员工信息service -->
+	<bean id="employeeService" class="com.haos.service.employee.impl.EmployeeServiceImpl" />
+	<!-- 员工功能信息service -->
+	<bean id="employeeFunService" class="com.haos.service.employee.impl.EmployeeFunServiceImpl" />
+	<!-- 功能信息service -->
+	<bean id="funService" class="com.haos.service.fun.impl.FunServiceImpl" />
+	<bean id="levelService" class="com.haos.service.level.impl.LevelServiceImpl" />
+	<!-- 配送信息 Service 接口 -->
+	<bean id="sendService" class="com.haos.service.send.impl.SendServiceImpl" />
+	<!-- 配送类别信息 Service 接口 -->
+	<bean id="sendTypeService" class="com.haos.service.send.impl.SendTypeServiceImpl" />
+	<!-- 等级信息 Service 接口 -->
+	<bean id="commentService" class="com.haos.service.comment.impl.CommentServiceImpl" />
+	<!-- 等级信息 Service 接口 -->
+	<bean id="commodityService" class="com.haos.service.commodity.impl.CommodityServiceImpl" />
+	<!-- 配送类别信息 Service 接口 -->
+	<bean id="commodityCategoryService"
+		class="com.haos.service.commodity.impl.CommodityCategoryServiceImpl" />
+	<!-- 消费记录信息 Service 接口 -->
+	<bean id="consumerRecordsService"
+		class="com.haos.service.consumer.impl.ConsumerRecordsServiceImpl" />
+	<!-- 订单信息 Service 接口 -->
+	<bean id="orderService" class="com.haos.service.order.impl.OrderServiceImpl" />
+	<!-- 承运商信息 Service 接口 -->
+	<bean id="carrierService" class="com.haos.service.carrier.impl.CarrierServiceImpl" />
+	<!-- 购物车信息 Service 接口 -->
+	<bean id="shoppingCartService"
+		class="com.haos.service.shoppingcart.impl.ShoppingCartServiceImpl" />
+	<!-- 最近浏览信息 Service 接口 -->
+	<bean id="recentlyViewedService"
+		class="com.haos.service.recentlyviewed.impl.RecentlyViewedServiceImpl" />
+	<!-- 我的收藏夹信息 Service 接口 -->
+	<bean id="favoritesService" class="com.haos.service.favorites.impl.FavoritesServiceImpl" />
+	<!-- 员工信息WebService 接口 -->
+	<bean id="employeeInfoWebService"
+		class="com.haos.service.server.employee.impl.EmployeeInfoWebServiceImpl" />
+	<!-- 订单信息信息 WebService 接口 -->
+	<bean id="orderInfoWebService"
+		class="com.haos.service.server.order.impl.OrderInfoWebServiceImpl" />
+	<!-- 配送信息 WebService 接口 -->
+	<bean id="sendInfoWebService"
+		class="com.haos.service.server.send.impl.SendInfoWebServiceImpl" />
+
+
+
+	<!-- 定时器接口 -->
+	<bean id="orderDealTaskService" class="com.haos.service.order.impl.OrderDealTaskServiceImpl" />
+
+</beans>

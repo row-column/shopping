@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd" default-autowire="byName">
+
+
+    <bean id="jdSecurity" class="com.jd.bk.common.web.security.FilePathSecurity">
+        <property name="unProtectedFile">
+            <list>
+                <!--<value>/index.action</value>-->
+                <value>/topFrame.action</value>
+                <value>/leftFrame.action</value>
+                <!--<value>/login.action</value>-->
+                <!--<value>/logout.action</value>-->
+                <!--<value>/task/task_view.action</value>-->
+            </list>
+        </property>
+        <property name="unProtectedPath">
+            <list>
+                <value>/help/</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean name="velocityTools" class="java.util.HashMap">
+        <constructor-arg>
+            <map>
+                <entry key="stringUtils">
+                    <bean class="org.apache.commons.lang.StringUtils"/>
+                </entry>
+                <entry key="stringEscapeUtils">
+                    <bean class="org.apache.commons.lang.StringEscapeUtils"/>
+                </entry>
+                <entry key="dateFormatUtils">
+                    <bean class="com.jd.bk.common.util.date.DateFormatUtils"/>
+                </entry>
+                <entry key="dateUtils">
+                    <bean class="org.apache.commons.lang.time.DateUtils"/>
+                </entry>
+                <entry key="localHost">
+                    <bean class="com.jd.bk.common.util.network.LocalHost"/>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="jdUrlUtils" class="com.jd.bk.common.web.url.JdUrlUtils"/>
+
+    <bean id="velocityUrl" class="java.util.HashMap">
+        <constructor-arg>
+            <map>
+                <!--example本身的 -->
+                <entry key="homeModule">
+                    <bean class="com.jd.bk.common.web.url.JdUrl">
+                        <property name="url" value="http://${wms-example.domain.name}/"/>
+                        <property name="charsetName" value="UTF-8"/>
+                    </bean>
+                </entry>
+                <!--example本身的 -->
+                <entry key="exampleModule">
+                    <bean class="com.jd.bk.common.web.url.JdUrl">
+                        <property name="url" value="http://${wms-example.domain.name}/"/>
+                        <property name="charsetName" value="UTF-8"/>
+                    </bean>
+                </entry>
+                <!--样式、js、图片地址-->
+                <entry key="assetModule">
+                    <bean class="com.jd.bk.common.web.url.JdUrl">
+                        <property name="url" value="http://${wms-example.asset.domain.name}/"/>
+                        <property name="charsetName" value="UTF-8"/>
+                    </bean>
+                </entry>
+                <!-- 登录链接 -->
+                <entry key="loginUrl">
+                    <bean class="com.jd.bk.common.web.url.JdUrl">
+                        <property name="url" value="${wms-example.login.address}"/>
+                    </bean>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="cookieCipherTools" class="com.jd.bk.common.web.cookie.CookieCipherTools">
+        <property name="charsetName" value="UTF-8"/>
+    </bean>
+
+
+    <bean id="cookieUtils" class="com.jd.bk.common.web.cookie.CookieUtils"/>
+
+    <bean class="com.jd.bk.common.web.cookie.JdCookie" abstract="true" id="jdEncryptCookie">
+        <property name="encrypt" value="true"/>
+        <property name="key" value="${wms-example.cookie.key}"/>
+    </bean>
+
+    <bean abstract="true" parent="jdEncryptCookie" id="jdLoginCookie">
+        <property name="path" value="/"/>
+        <!--<property name="domain" value="${pop-admin.cookie.domain}"/>-->
+    </bean>
+    
+    <bean id="jdCookie" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <bean parent="jdLoginCookie">
+                    <property name="name" value="${wms-example.login.cookie.name}"/>
+                </bean>
+                <bean parent="jdLoginCookie">
+                    <property name="name" value="_latn_"/>
+                    <!--最后一次访问时间-->
+                    <!--<property name="expiry"  value="${wms-example.session.timeout}"/>-->
+                    <!--登录cookie生命周期30分钟-->
+                </bean>
+                <bean class="com.jd.bk.common.web.cookie.JdCookie">
+                    <property name="name" value="${wms-example.hrm.auth.cookie.name}"/>
+                    <property name="domain" value="${wms-example.hrm.auth.cookie.domain}"/>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!-- 开始 人事系统权限访问-WebService客户端 start -->
+        <bean id="deptWebService" class="com.jd.bk.common.struts.interceptor.ws.DeptWebServiceSoap"  factory-bean="deptWebServiceFactory" factory-method="create"/>
+
+        <bean id="deptWebServiceFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+            <property name="serviceClass" value="com.jd.bk.common.struts.interceptor.ws.DeptWebServiceSoap"/>
+            <property name="address" value="${wms-example.hrm.auth.address}"/>
+            <!--输入输出日志，可以注释掉-->
+            <!--<property name="inInterceptors">-->
+                <!--<list>-->
+                    <!--<ref bean="logIn"/>-->
+                <!--</list>-->
+            <!--</property>-->
+            <!--<property name="outInterceptors">-->
+                <!--<list>-->
+                    <!--<ref bean="logOut"/>-->
+                    <!--<ref bean="deptWebServiceHeader"/>-->
+                <!--</list>-->
+            <!--</property>-->
+        </bean>
+        <bean id="deptWebServiceAuthHeader" class="com.jd.bk.common.ws.AuthHeader">
+            <property name="key" value="AuthenticationHeader"/>
+            <property name="qName" value="${wms-example.hrm.ws.qName}"/>
+            <property name="content" value="${wms-example.hrm.ws.content}"/>
+            <property name="seed" value="${wms-example.hrm.ws.seed}"/>
+        </bean>
+        <bean id="deptWebServiceHeader" class="com.jd.bk.common.ws.SOAPHeaderIntercepter">
+            <property name="authHeader" ref="deptWebServiceAuthHeader" />
+        </bean>
+
+        <bean id="logIn" class="org.apache.cxf.interceptor.LoggingInInterceptor" />
+        <bean id="logOut" class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
+    <!-- 结束 人事系统权限访问-WebService客户端 end -->
+
+     <bean class="com.jd.bk.common.struts.velocity.VelocityLayoutResult"/>
+
+    <bean class="com.jd.wms.example.web.interceptor.AdminLoginContextInterceptor">
+        <property name="loginCookieKey" value="${wms-example.login.cookie.name}"/>
+        <property name="sessionTimeout" value="${wms-example.session.timeout}"/>
+    </bean>
+
+    <bean id="hrmPrivilegeHelper" class="com.jd.bk.common.struts.interceptor.HrmPrivilegeHelper"/>
+
+    <bean  class="com.jd.bk.common.struts.interceptor.HrmPrivilegeInterceptor"/>
+
+    <bean class="com.jd.wms.example.web.interceptor.AdminDotnetSecurityInterceptor">
+        <property name="loginCookieKey" value="${wms-example.login.cookie.name}"/>
+        <property name="loginErrorResult" value="login_error"/>
+        <property name="loginUrl" value="loginUrl"/>
+        <property name="dotnetAuthCookieName" value="${wms-example.hrm.auth.cookie.name}"/>
+        <property name="dotnetAuthenticationKey" value="${wms-example.hrm.login.auth.key}"/>
+    </bean>
+    <bean  class="com.jd.wms.example.web.action.IndexAction">
+        <property name="logoutCookie">
+            <list>
+                <value>${wms-example.login.cookie.name}</value>
+                <value>${wms-example.hrm.auth.cookie.name}</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 管理系统复写人力资源系统权限拦截器 -->
+    <bean class="com.jd.wms.example.web.interceptor.AdminHrmPrivilegeInterceptor">
+        <!-- 特殊账户，ERP账号，该账号可以不需要做资源码权限验证 -->
+        <property name="specialUsers">
+            <list>
+                <value>QXGF</value>
+            </list>
+        </property>
+	</bean>
+
+</beans>

@@ -1,0 +1,178 @@
+package com.haos.web.action.recentlyviewed.json;
+
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.haos.common.util.action.BaseAction;
+import com.haos.common.util.page.ResultCollection;
+import com.haos.domain.recentlyviewed.RecentlyViewed;
+import com.haos.service.recentlyviewed.RecentlyViewedService;
+import com.opensymphony.xwork2.ActionContext;
+
+
+/**
+ * RecentlyViewed JsonAction
+ * @author WangYue
+ *
+ */
+public class RecentlyViewedJsonAction extends BaseAction {
+   // private final static Log logger = LogFactory.getLog(RecentlyViewedJsonAction.class);
+    
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+     * 
+     */
+    private RecentlyViewedService recentlyViewedService;
+    
+    /**
+     * json result
+     */
+    private String result;
+    
+    /**
+     * result msg
+     */
+    private String resultMsg;
+    
+    /**
+     * recentlyViewed value class
+     */
+    private RecentlyViewed recentlyViewed;
+    
+    /**
+     * commodity id
+     */
+    private Long commodityId;
+    
+    /**
+     * recentlyViewed id
+     */
+    private Long id;
+
+
+
+    /**
+     * add recentlyViewed
+     *
+     * @return
+     */
+    public String addRecentlyViewed() {
+        Map<String, Object> map=ActionContext.getContext().getSession();  //get session
+        String userCode=(String) map.get("userCode");
+        
+        if(!StringUtils.isBlank(userCode)){
+        	
+        	recentlyViewed= new RecentlyViewed();  // new recentlyViewed object
+        	recentlyViewed.setUserCode(userCode); //set user code
+        	if(commodityId!=null&&commodityId>0){
+        		recentlyViewed.setCommodityId(commodityId);  //set commodity id
+        	}
+        	
+        	ResultCollection serviceResult = recentlyViewedService.addRecentlyViewed(recentlyViewed);
+        		
+        	if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+        		result = "true";
+        	} else {
+        		result = "false";
+        	}
+        	
+        }else{
+        	result = "false*notlogin";
+        }
+        return "out";
+    }
+
+
+    /**
+     * 
+     * delete recentlyViewed
+     * @return
+     */
+    public String deleteRecentlyViewed() {
+        Map<String, Object> map = ActionContext.getContext().getSession();  //get session
+        String userCode=(String)map.get("userCode");
+        if(!StringUtils.isBlank(userCode)){
+        	 if (null != id && id > 0) {
+                 ResultCollection serviceResult = recentlyViewedService.deleteRecentlyViewedById(id);
+                 
+                 if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                     result = "true";
+                 } else {
+                     result = "false";
+                 }
+             } else {
+                 result = "false";
+             }
+        	
+        }else{
+        	result = "false*您还没有登陆登录";
+        }
+       
+        return "out";
+    }
+    
+   
+    
+    
+    
+
+    public void setRecentlyViewedService(RecentlyViewedService recentlyViewedService) {
+        this.recentlyViewedService = recentlyViewedService;
+    }
+
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getResultMsg() {
+        return resultMsg;
+    }
+
+    public void setResultMsg(String resultMsg) {
+        this.resultMsg = resultMsg;
+    }
+
+	public RecentlyViewed getRecentlyViewed() {
+		return recentlyViewed;
+	}
+
+	public void setRecentlyViewed(RecentlyViewed recentlyViewed) {
+		this.recentlyViewed = recentlyViewed;
+	}
+
+	public RecentlyViewedService getRecentlyViewedService() {
+		return recentlyViewedService;
+	}
+
+
+	public Long getCommodityId() {
+		return commodityId;
+	}
+
+
+	public void setCommodityId(Long commodityId) {
+		this.commodityId = commodityId;
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+  
+}

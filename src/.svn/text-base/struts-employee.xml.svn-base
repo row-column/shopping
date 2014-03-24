@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <!-- 员工模块 Action -->
+    <package name="employee"  extends="admin-default">
+        <action name="employee_*" method="{1}" class="com.stark.asm.web.action.employee.EmployeeAction">
+            <!-- 员工信息 -->
+            <result name="{1}">/backgroud/employee/{1}.jsp</result>
+        </action>
+    </package>
+
+
+    <!-- 员工模块 Json -->
+    <package name="employee_json" extends="json-protected-default">
+        <!-- 员工信息 Json -->
+        <action name="employeeJson_*" method="{1}" class="com.stark.asm.web.action.employee.json.EmployeeJsonAction">
+            <result name="out" type="json">
+                <param name="ignoreHierarchy">true</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="root">result</param>
+            </result>
+        </action>
+    </package>
+</struts>

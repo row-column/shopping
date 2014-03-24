@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 商品信息 -->
+<mapper namespace="Commodity">
+	<resultMap id="commodityMap" type="com.haos.domain.commodity.Commodity">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="commodity_code" property="commodityCode"
+			jdbcType="VARCHAR" />
+		<result column="commodity_name" property="commodityName"
+			jdbcType="VARCHAR" />
+		<result column="category_code" property="categoryCode"
+			jdbcType="VARCHAR" />
+		<result column="category_name" property="categoryName"
+			jdbcType="VARCHAR" />
+		<result column="qty" property="qty" jdbcType="BIGINT" />
+		<result column="price" property="price" jdbcType="NUMERIC" />
+		<result column="new_price" property="newPrice" jdbcType="NUMERIC" />
+		<result column="sales_count" property="salesCount" jdbcType="BIGINT" />
+		<result column="comment_count" property="commentCount"
+			jdbcType="BIGINT" />
+		<result column="viewed_count" property="viewedCount" jdbcType="BIGINT" />
+		<result column="quick_override" property="quickOverride"
+			jdbcType="LONGVARCHAR" />
+		<result column="description" property="description" jdbcType="LONGVARCHAR" />
+		<result column="specifications" property="specifications"
+			jdbcType="LONGVARCHAR" />
+		<result column="packing_list" property="packingList" jdbcType="LONGVARCHAR" />
+		<result column="commodity_photo" property="commodityPhoto"
+			jdbcType="LONGVARCHAR" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="yn" property="yn" jdbcType="TINYINT" />
+	</resultMap>
+
+	<!-- 创建商品信息 -->
+	<insert id="insert" parameterType="com.haos.domain.commodity.Commodity">
+		insert into
+		commodity(commodity_code,commodity_name,category_code,category_name,qty,price,new_price,quick_override,description,specifications,packing_list,commodity_photo,remark,status,create_time,update_time,yn)
+		values(#{commodityCode,jdbcType=VARCHAR},#{commodityName,jdbcType=VARCHAR},#{categoryCode,jdbcType=VARCHAR},#{categoryName,jdbcType=VARCHAR},#{qty,jdbcType=BIGINT},#{price,jdbcType=NUMERIC},#{newPrice,jdbcType=NUMERIC},#{quickOverride,jdbcType=LONGVARCHAR},#{description,jdbcType=LONGVARCHAR},#{specifications,jdbcType=LONGVARCHAR},#{packingList,jdbcType=LONGVARCHAR},#{commodityPhoto,jdbcType=LONGVARCHAR},#{remark,jdbcType=VARCHAR},#{status,jdbcType=TINYINT},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=TINYINT})
+	</insert>
+
+	<!-- 修改商品信息，根据商品对象 -->
+	<update id="update" parameterType="com.haos.domain.commodity.Commodity">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update commodity 
+				<set>
+				 <if test="commodityCode !=null and commodityCode !='' ">
+					commodity_code=#{commodityCode,jdbcType=VARCHAR},
+				 </if>
+				 <if test="commodityName !=null and commodityName !='' ">
+					commodity_name=#{commodityName,jdbcType=VARCHAR},
+				 </if>
+				 <if test="categoryCode !=null and categoryCode !='' ">
+					category_code=#{categoryCode,jdbcType=VARCHAR},
+				 </if>
+				 <if test="categoryName !=null and categoryName !='' ">
+					category_name=#{categoryName,jdbcType=VARCHAR},
+				 </if>
+				 <if test="qty !=null and qty >0 ">
+					qty=#{qty,jdbcType=BIGINT},
+				 </if>
+				 <if test="price !=null and price !='' ">
+					price=#{price,jdbcType=NUMERIC},
+				 </if>
+				 <if test="newPrice !=null and newPrice !='' ">
+					new_price=#{newPrice,jdbcType=NUMERIC},
+				 </if>
+				 <if test="salesCount !=null and salesCount >0 ">
+					sales_count=#{salesCount,jdbcType=BIGINT},
+				 </if>
+				 <if test="viewedCount !=null and viewedCount >0 ">
+					viewed_count=#{viewedCount,jdbcType=BIGINT},
+				 </if>
+				 <if test="commentCount !=null and commentCount >0 ">
+					comment_count=#{commentCount,jdbcType=BIGINT},
+				 </if>
+				 <if test="quickOverride !=null and quickOverride !='' ">
+					quick_override=#{quickOverride,jdbcType=LONGVARCHAR},
+				 </if>
+				 <if test="description !=null and description !='' ">
+					description=#{description,jdbcType=LONGVARCHAR},
+				 </if>
+				 <if test="specifications !=null and specifications !='' ">
+					specifications=#{specifications,jdbcType=LONGVARCHAR},
+				 </if>
+				 <if test="packingList !=null and packingList !='' ">
+					packing_list=#{packingList,jdbcType=LONGVARCHAR},
+				 </if>
+				    commodity_photo=#{commodityPhoto,jdbcType=LONGVARCHAR},
+				 <if test="remark !=null and remark !='' ">
+					remark=#{remark,jdbcType=VARCHAR},
+				 </if>
+				 <if test="status !=null and status >0 ">
+					status=#{status,jdbcType=TINYINT},
+				 </if>
+				 <if test="updateTime !=null and updateTime !='' ">
+					update_time=#{updateTime}
+				 </if>
+				</set>
+				where id = #{id}
+            </if>
+		</if>
+	</update>
+
+	<!-- 修改商品信息的评价量，根据商品对象 -->
+	<update id="updateCommodityCommentCount" parameterType="com.haos.domain.commodity.Commodity">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update commodity set
+				comment_count=#{commentCount,jdbcType=BIGINT},
+				update_time=#{updateTime}
+				where id = #{id}
+            </if>
+		</if>
+	</update>
+
+	<!-- 修改商品信息的库存量，根据商品对象 -->
+	<update id="updateCommodityQty" parameterType="com.haos.domain.commodity.Commodity">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update commodity set
+				qty=#{qty,jdbcType=BIGINT},
+				update_time=#{updateTime}
+				where id = #{id}
+            </if>
+		</if>
+	</update>
+
+	<!-- 修改商品信息的浏览量，根据商品对象 -->
+	<update id="updateCommodityViewedCount" parameterType="com.haos.domain.commodity.Commodity">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update commodity set
+				viewed_count=#{viewedCount,jdbcType=BIGINT},
+				update_time=#{updateTime}
+				where id = #{id}
+            </if>
+		</if>
+	</update>
+
+
+
+	<!-- 修改商品图片，根据商品对象 -->
+	<update id="uploadCommodityPhoto" parameterType="com.haos.domain.commodity.Commodity">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update commodity set
+				commodity_photo=#{commodityPhoto,jdbcType=LONGVARCHAR},
+				update_time=#{updateTime}
+				where id = #{id}
+            </if>
+		</if>
+	</update>
+
+
+	<!-- 根据主键获取商品信息 -->
+	<select id="getCommodityById" resultMap="commodityMap"
+		parameterType="java.lang.Long">
+		<if test="_parameter != null">
+			select
+			id,commodity_code,commodity_name,category_code,category_name,qty,price,new_price,sales_count,viewed_count,comment_count,quick_override,description,specifications,packing_list,commodity_photo,remark,status,create_time,update_time
+			from commodity
+			where id = #{_parameter}
+        </if>
+	</select>
+
+
+	<!-- 根据商品名字模糊查询，获取商品信息集合 -->
+	<select id="searchCommodity" resultMap="commodityMap"
+		parameterType="java.lang.String">
+		<if test="_parameter != null">
+			select
+			id,commodity_code,commodity_name,category_code,category_name,qty,price,new_price,sales_count,viewed_count,comment_count,quick_override,description,specifications,packing_list,commodity_photo,remark,status,create_time,update_time
+			from commodity
+			where commodity_name like '%${_parameter}%'
+        </if>
+	</select>
+
+
+	<!-- 根据主键获取商品信息 -->
+	<select id="getCommodityByCommodityCode" resultMap="commodityMap"
+		parameterType="java.lang.String">
+		<if test="_parameter != null">
+			select
+			id,commodity_code,commodity_name,category_code,category_name,qty,price,new_price,sales_count,viewed_count,comment_count,quick_override,description,specifications,packing_list,commodity_photo,remark,status,create_time,update_time
+			from commodity
+			where commodity_code = #{_parameter} and yn=0
+        </if>
+	</select>
+
+	<!-- 根据查询最近上架时间获取商品集合，不带翻页 -->
+	<select id="queryCommodityListByLatestTime" resultMap="commodityMap">
+		select
+		id,commodity_code,commodity_name,category_code,category_name,qty,price,new_price,sales_count,viewed_count,comment_count,quick_override,description,specifications,packing_list,commodity_photo,remark,status,create_time,update_time
+		from commodity
+		where yn=0 order by update_time desc
+     </select>
+
+	<!-- 根据查询销售量降序获取商品集合，不带翻页 -->
+	<select id="queryCommodityListBySalesCount" resultMap="commodityMap">
+		select
+		id,commodity_code,commodity_name,category_code,category_name,qty,price,new_price,sales_count,viewed_count,comment_count,quick_override,description,specifications,packing_list,commodity_photo,status,remark,create_time,update_time
+		from commodity
+		where yn=0 order by sales_count desc
+     </select>
+
+	<!-- 根据查询评价量和销售量降序获取商品集合，不带翻页 -->
+	<select id="queryCommodityListByCommentCountAndSalesCount"
+		resultMap="commodityMap">
+		select
+		id,commodity_code,commodity_name,category_code,category_name,qty,price,new_price,sales_count,viewed_count,comment_count,quick_override,description,specifications,packing_list,commodity_photo,status,remark,create_time,update_time
+		from commodity
+		where yn=0 order by comment_count desc ,sales_count desc
+     </select>
+
+
+
+	<!-- 根据查询类别代码升序、评价量和销售量降序获取商品集合，不带翻页 -->
+	<select id="queryCommodityListByCategoryCodeAndCommentCountAndSalesCount"
+		resultMap="commodityMap">
+		select
+		id,commodity_code,commodity_name,category_code,category_name,qty,price,new_price,sales_count,viewed_count,comment_count,quick_override,description,specifications,packing_list,commodity_photo,status,remark,create_time,update_time
+		from commodity
+		where yn=0 order by category_code,comment_count desc ,sales_count desc
+	</select>
+
+
+	<!-- 根据查询Bean获取商品集合，不带翻页 -->
+	<select id="queryCommodityListByQueryBean" resultMap="commodityMap"
+		parameterType="com.haos.domain.commodity.query.CommodityQuery">
+		select id,
+		commodity_code,commodity_name,category_code,category_name,qty,price,new_price,sales_count,viewed_count,comment_count,quick_override,description,specifications,packing_list,commodity_photo,status,remark,create_time,update_time
+		from commodity where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryCommodityListWhere" />
+		</if>
+	</select>
+	<!-- 根据查询Bean获取商品集合，翻页 -->
+	<select id="queryCommodityListPageByQueryBean" resultMap="commodityMap"
+		parameterType="com.haos.domain.commodity.query.CommodityQuery">
+		select
+		id,commodity_code,commodity_name,category_code,category_name,qty,price,new_price,sales_count,viewed_count,comment_count,quick_override,description,specifications,packing_list,commodity_photo,remark,status,create_time,update_time
+		from commodity where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryCommodityListWhere" />
+		</if>
+		order by id desc
+		limit #{startRow},#{endRow};
+	</select>
+
+	<!-- 根据查询Bean获取商品总数 -->
+	<select id="queryCommodityCountByQueryBean" resultType="java.lang.Integer"
+		parameterType="com.haos.domain.commodity.query.CommodityQuery">
+		select count(1) from commodity where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryCommodityListWhere" />
+		</if>
+	</select>
+
+	<!-- 删除商品信息，根据主键 -->
+	<delete id="deleteCommodityById" parameterType="java.lang.Long">
+		<if test="_parameter != null and _parameter > 0">
+			update commodity set yn=1 where id = #{_parameter}
+        </if>
+	</delete>
+
+	<!-- 常用的查询Where条件 -->
+	<sql id="queryCommodityListWhere">
+		<if test="commodityCode != null and commodityCode != ''">
+			and commodity_code = #{commodityCode,jdbcType=VARCHAR}
+        </if>
+		<if test="commodityName != null and commodityName != ''">
+			and commodity_name = #{commodityName,jdbcType=VARCHAR}
+        </if>
+		<if test="categoryCode != null and categoryCode != ''">
+			and category_code = #{categoryCode,jdbcType=VARCHAR}
+        </if>
+		<if test="categoryName != null and categoryName != ''">
+			and category_code = #{categoryName,jdbcType=VARCHAR}
+        </if>
+		<if test="yn != null and yn>=0">
+			and yn = #{yn,jdbcType=TINYINT}
+        </if>
+
+	</sql>
+</mapper>

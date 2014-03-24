@@ -1,0 +1,276 @@
+package com.stark.asm.service.commodity.impl;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import com.stark.asm.common.util.page.Result;
+import com.stark.asm.domain.commodity.Commodity;
+import com.stark.asm.domain.commodity.query.CommodityQuery;
+import com.stark.asm.manager.commodity.CommodityManager;
+import com.stark.asm.service.commodity.CommodityService;
+
+/**
+ * Commodity information service interface
+ * @author WangYue
+ *
+ */
+public class CommodityServiceImpl implements CommodityService {
+    private static final Logger log = LogManager.getLogger(CommodityServiceImpl.class);
+	private CommodityManager commodityManager;
+	@Override
+	public Result addCommodity(Commodity commodity) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = commodityManager.addCommodity(commodity);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(resultFlag);
+	        } catch (Exception e) {
+	            log.error("CommodityServiceImpl -> addCommodity() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result updateCommodity(Commodity commodity) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = commodityManager.updateCommodity(commodity);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(resultFlag);
+	        } catch (Exception e) {
+	            log.error("CommodityServiceImpl -> updateCommodity() error!!", e);
+	        }
+	        return result;
+	}
+	
+
+	@Override
+	public Result updateCommodityQty(Commodity commodity) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = commodityManager.updateCommodityQty(commodity);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(resultFlag);
+	        } catch (Exception e) {
+	            log.error("CommodityServiceImpl -> updateCommodityQty() error!!", e);
+	        }
+	        return result;
+	}
+	
+
+	@Override
+	public Result updateCommodityCommentCount(Commodity commodity) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = commodityManager.updateCommodityCommentCount(commodity);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(resultFlag);
+	        } catch (Exception e) {
+	            log.error("CommodityServiceImpl -> updateCommodityCommentCount() error!!", e);
+	        }
+	        return result;
+	}
+	
+
+	@Override
+	public Result updateCommodityViewedCount(Commodity commodity) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = commodityManager.updateCommodityViewedCount(commodity);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(resultFlag);
+	        } catch (Exception e) {
+	            log.error("CommodityServiceImpl -> updateCommodityViewedCount() error!!", e);
+	        }
+	        return result;
+	}
+	
+
+	@Override
+	public Result uploadCommodityPhoto(Commodity commodity) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = commodityManager.uploadCommodityPhoto(commodity);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(resultFlag);
+	        } catch (Exception e) {
+	            log.error("CommodityServiceImpl -> uploadCommodityPhoto() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result getCommodityById(Long id) {
+		 Result result = new Result();
+	        try {
+	        	
+	            Commodity commodity = commodityManager.getCommodityById(id);
+	            result.addDefaultModel("commodity", commodity);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("CommodityServiceImpl -> getCommodityById() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result getCommodityByCommodityCode(String commodityCode) {
+		 Result result = new Result();
+	        try {
+	            Commodity commodity = commodityManager.getCommodityByCommodityCode(commodityCode);
+	            result.addDefaultModel("commodity", commodity);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("CommodityServiceImpl -> getCommodityByCommodityCode() error!!", e);
+	        }
+	        return result;
+	}
+
+	
+	@Override
+	public Result searchCommodity(String commodityName) {
+		Result result = new Result();
+        try {
+            List<Commodity> searchCommodityList = commodityManager.searchCommodity(commodityName);
+            result.addDefaultModel("searchCommodityList", searchCommodityList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("CommodityServiceImpl -> searchCommodity() error!!", e);
+        }
+        return result;
+	}
+	
+	@Override
+	public Result queryCommodityListByLatestTime() {
+		Result result = new Result();
+        try {
+            List<Commodity> commodityListByLatestTime = commodityManager.queryCommodityListByLatestTime();
+            result.addDefaultModel("commodityListByLatestTime", commodityListByLatestTime);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("CommodityServiceImpl -> queryCommodityListByLatestTime() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result queryCommodityListBySalesCount() {
+		Result result = new Result();
+        try {
+            List<Commodity> commodityListBySalesCount = commodityManager.queryCommodityListBySalesCount();
+            result.addDefaultModel("commodityListBySalesCount", commodityListBySalesCount);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("CommodityServiceImpl -> queryCommodityListBySalesCount() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result queryCommodityListByCommentCountAndSalesCount() {
+		Result result = new Result();
+        try {
+            List<Commodity> commodityListByCommentCountAndSalesCount = commodityManager.queryCommodityListByCommentCountAndSalesCount();
+            result.addDefaultModel("commodityListByCommentCountAndSalesCount", commodityListByCommentCountAndSalesCount);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("CommodityServiceImpl -> queryCommodityListByCommentCountAndSalesCount() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result queryCommodityListByCategoryCodeAndCommentCountAndSalesCount() {
+		Result result = new Result();
+        try {
+            List<Commodity> commodityListByCategoryCodeAndCommentCountAndSalesCount = commodityManager.queryCommodityListByCategoryCodeAndCommentCountAndSalesCount();
+            result.addDefaultModel("commodityListByCategoryCodeAndCommentCountAndSalesCount", commodityListByCategoryCodeAndCommentCountAndSalesCount);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("CommodityServiceImpl -> queryCommodityListByCategoryCodeAndCommentCountAndSalesCount() error!!", e);
+        }
+        return result;
+	}
+	
+	@Override
+	public Result queryCommodityListByQueryBean(CommodityQuery commodityQuery) {
+		Result result = new Result();
+        try {
+            List<Commodity> commodityList = commodityManager.queryCommodityListByQueryBean(commodityQuery);
+            result.addDefaultModel("commodityList", commodityList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("CommodityServiceImpl -> queryCommodityListByQueryBean() error!!", e);
+        }
+        return result;
+	}
+	
+	@Override
+	public Result queryCommodityListPageByCategory(CommodityQuery commodityQuery,
+			int pageIndex, int pageSize) {
+		Result result = new Result();
+        try {
+            List<Commodity> commodityListByCategory = commodityManager.queryCommodityListPageByQueryBean(commodityQuery,pageIndex,pageSize);
+            result.addDefaultModel("commodityListByCategory", commodityListByCategory);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("CommodityServiceImpl -> queryCommodityListPageByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result queryCommodityListPageByQueryBean(CommodityQuery commodityQuery,
+			int pageIndex, int pageSize) {
+		Result result = new Result();
+        try {
+            List<Commodity> commodityList = commodityManager.queryCommodityListPageByQueryBean(commodityQuery,pageIndex,pageSize);
+            result.addDefaultModel("commodityList", commodityList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("CommodityServiceImpl -> queryCommodityListPageByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result deleteCommodityById(Long id) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = commodityManager.deleteCommodityById(id);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("CommodityServiceImpl -> deleteCommodityById() error!!", e);
+	        }
+	        return result;
+	}
+	
+	@Override
+	public Result deleteCommodityByIds(Long ids[]){
+		 Result result = new Result();
+	        try {
+	        	if(null!=ids&&ids.length>0){
+	        		boolean resultFlag = commodityManager.deleteCommodityByIds(ids);
+	        		result.addDefaultModel("resultFlag", resultFlag);
+	        		result.setSuccess(true);
+	        		
+	        	}else{
+	        		 log.error("CommodityServiceImpl -> deleteCommodityById() ids param null!!");
+	        	}
+	        } catch (Exception e) {
+	            log.error("CommodityServiceImpl -> deleteCommodityById() error!!", e);
+	        }
+	    return result;
+	}
+
+
+	public void setCommodityManager(CommodityManager commodityManager) {
+		this.commodityManager = commodityManager;
+	}
+
+}

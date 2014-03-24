@@ -1,0 +1,142 @@
+package com.stark.asm.service.carrier.impl;
+
+import java.util.Date;
+import java.util.List;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import com.stark.asm.common.util.page.Result;
+import com.stark.asm.domain.carrier.Carrier;
+import com.stark.asm.domain.carrier.query.CarrierQuery;
+import com.stark.asm.manager.carrier.CarrierManager;
+import com.stark.asm.service.carrier.CarrierService;
+
+/**
+ * Carrier information service interface
+ * @author WangYue
+ *
+ */
+public class CarrierServiceImpl implements CarrierService {
+	  /**
+     * ��־
+     */
+    private static final Logger log = LogManager.getLogger(CarrierServiceImpl.class);
+	private CarrierManager carrierManager;
+	@Override
+	public Result addCarrier(Carrier carrier) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = carrierManager.addCarrier(carrier);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("CarrierServiceImpl -> addCarrier() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result updateCarrier(Carrier carrier) {
+		 Result result = new Result();
+		 carrier.setUpdateTime(new Date());
+	        try {
+	            boolean resultFlag = carrierManager.updateCarrier(carrier);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("CarrierServiceImpl -> updateCarrier() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result getCarrierById(Long id) {
+		 Result result = new Result();
+	        try {
+	            Carrier carrier = carrierManager.getCarrierById(id);
+	            result.addDefaultModel("carrier", carrier);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("CarrierServiceImpl -> getCarrierById() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result getCarrierByCarrierCode(String carrierCode) {
+		 Result result = new Result();
+	        try {
+	            Carrier carrier = carrierManager.getCarrierByCarrierCode(carrierCode);
+	            result.addDefaultModel("carrier", carrier);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("CarrierServiceImpl -> getCarrierByCarrierCode() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result queryCarrierListByQueryBean(CarrierQuery carrierQuery) {
+		Result result = new Result();
+        try {
+            List<Carrier> carrierList = carrierManager.queryCarrierListByQueryBean(carrierQuery);
+            result.addDefaultModel("carrierList", carrierList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("CarrierServiceImpl -> queryCarrierListByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result queryCarrierListPageByQueryBean(CarrierQuery carrierQuery,
+			int pageIndex, int pageSize) {
+		Result result = new Result();
+        try {
+            List<Carrier> carrierList = carrierManager.queryCarrierListPageByQueryBean(carrierQuery,pageIndex,pageSize);
+            result.addDefaultModel("carrierList", carrierList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("CarrierServiceImpl -> queryCarrierListPageByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result deleteCarrierById(Long id) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = carrierManager.deleteCarrierById(id);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("CarrierServiceImpl -> deleteCarrierById() error!!", e);
+	        }
+	        return result;
+	}
+	
+	
+	@Override
+	public Result deleteCarrierByIds(Long ids[]){
+		 Result result = new Result();
+	        try {
+	        	if(null!=ids&&ids.length>0){
+	        		boolean resultFlag = carrierManager.deleteCarrierByIds(ids);
+	        		result.addDefaultModel("resultFlag", resultFlag);
+	        		result.setSuccess(true);
+	        		
+	        	}else{
+	        		 log.error("CarrierServiceImpl -> deleteCarrierById() ids param null!!");
+	        	}
+	        } catch (Exception e) {
+	            log.error("CarrierServiceImpl -> deleteCarrierById() error!!", e);
+	        }
+	    return result;
+	}
+
+
+	public void setCarrierManager(CarrierManager carrierManager) {
+		this.carrierManager = carrierManager;
+	}
+
+
+}

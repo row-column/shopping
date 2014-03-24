@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- recently viewed信息 -->
+<mapper namespace="RecentlyViewed">
+    <resultMap id="recentlyViewedMap" type="com.stark.asm.domain.recentlyviewed.RecentlyViewed">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_code" property="userCode" jdbcType="VARCHAR"/>
+        <result column="commodity_id" property="commodityId" jdbcType="BIGINT"/>
+        <result column="commodity_code"  property="commodityCode"  jdbcType="VARCHAR"/>
+        <result column="commodity_name"  property="commodityName"  jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="NUMERIC"/>
+        <result column="commodity_photo"  property="commodityPhoto" jdbcType="LONGVARCHAR"/>
+        <result column="viewed_count" property="viewedCount" jdbcType="BIGINT"/>
+        <result column="comment_count" property="commentCount" jdbcType="BIGINT"/>
+        <result column="is_read"  property="isRead"  jdbcType="TINYINT"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="yn" property="yn" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <!-- create recently viewed information -->
+    <insert id="insert" parameterType="com.stark.asm.domain.recentlyviewed.RecentlyViewed">
+        insert into recently_viewed(user_code,commodity_id,commodity_code,commodity_name,price,commodity_photo,viewed_count,comment_count,is_read,status,create_time,update_time,yn)
+        values(#{userCode},#{commodityId},#{commodityCode},#{commodityName},#{price},#{commodityPhoto},#{viewedCount},#{commentCount},#{isRead},#{status},#{createTime},#{updateTime},#{yn})
+    </insert>
+
+	<!-- according to  user code ,query favorites collection -->
+    <select id="queryRecentlyViewedByUserCode" resultMap="recentlyViewedMap"
+            parameterType="java.lang.String">
+       <if test="_parameter != null">
+        select id,user_code,commodity_id,commodity_code,commodity_name,price,commodity_photo,viewed_count,comment_count,is_read,status,create_time,update_time from recently_viewed
+         where user_code=#{_parameter}and yn=0
+       </if> 
+  </select>
+
+    <!-- according to  Bean ,query recently viewed collection -->
+    <select id="queryRecentlyViewedListByQueryBean" resultMap="recentlyViewedMap"
+            parameterType="com.stark.asm.domain.recentlyviewed.query.RecentlyViewedQuery">
+        select id,user_code,commodity_id,commodity_code,commodity_name,price,commodity_photo,viewed_count,comment_count,is_read,status,create_time,update_time from recently_viewed where 1 = 1
+        <if test="_parameter != null">
+            <include refid="queryRecentlyViewedListWhere"/>
+        </if>
+        order by id desc
+       </select>
+
+
+	    <!--  -->
+	    <select id="queryRecentlyViewedListPageByQueryBean" resultMap="recentlyViewedMap"
+	            parameterType="com.stark.asm.domain.recentlyviewed.query.RecentlyViewedQuery">
+	          select id,user_code,commodity_id,commodity_code,commodity_name,price,commodity_photo,viewed_count,comment_count,is_read,status,create_time,update_time from recently_viewed where 1 = 1
+	        <if test="_parameter != null">
+	            <include refid="queryRecentlyViewedListWhere"/>
+	        </if>
+	        order by id desc 
+	        limit #{startRow},#{endRow};
+	    </select>
+	       
+	     <!--  -->
+	    <select id="queryRecentlyViewedCountByQueryBean" resultType="java.lang.Integer"
+	            parameterType="com.stark.asm.domain.recentlyviewed.query.RecentlyViewedQuery">
+	        select count(1) from recently_viewed where 1 = 1
+	        <if test="_parameter != null">
+	            <include refid="queryRecentlyViewedListWhere"/>
+	        </if>
+	    </select>
+	    
+	    
+    <!-- delete recently viewed information，according to id -->
+    <delete id="deleteRecentlyViewedById" parameterType="java.lang.Long">
+        <if test="_parameter != null and _parameter > 0">
+            update recently_viewed set yn=1 where id = #{_parameter}
+        </if>
+    </delete>
+
+    <!-- common query Where condition -->
+    <sql id="queryRecentlyViewedListWhere">
+        <if test="userCode != null and userCode != ''">
+            and user_code = #{userCode,jdbcType=VARCHAR}
+        </if>
+         <if test="commodityId != null and commodityId != ''">
+            and commodity_id = #{commodityId,jdbcType=BIGINT}
+        </if>
+        <if test="commodityCode != null and commodityCode != ''">
+            and commodity_code = #{commodityCode,jdbcType=VARCHAR}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and create_time >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and #{endTime,jdbcType=TIMESTAMP} >= create_time
+        </if>
+        <if test="yn != null">
+            and yn = #{yn,jdbcType=TINYINT}
+        </if>
+    </sql>
+</mapper>

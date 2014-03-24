@@ -1,0 +1,142 @@
+package com.stark.asm.service.commodity.impl;
+
+import java.util.List;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import com.stark.asm.common.util.page.Result;
+import com.stark.asm.domain.commodity.CommodityCategory;
+import com.stark.asm.domain.commodity.query.CommodityCategoryQuery;
+import com.stark.asm.manager.commodity.CommodityCategoryManager;
+import com.stark.asm.service.commodity.CommodityCategoryService;
+
+/**
+ * CommodityCategory information service interface
+ * @author WangYue
+ *
+ */
+public class CommodityCategoryServiceImpl implements CommodityCategoryService {
+	  /**
+     * ÈÕÖ¾
+     */
+    private static final Logger log = LogManager.getLogger(CommodityCategoryServiceImpl.class);
+	private CommodityCategoryManager commodityCategoryManager;
+	@Override
+	public Result addCommodityCategory(CommodityCategory commodityCategory) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = commodityCategoryManager.addCommodityCategory(commodityCategory);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("CommodityCategoryServiceImpl -> addCommodityCategory() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result updateCommodityCategory(CommodityCategory commodityCategory) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = commodityCategoryManager.updateCommodityCategory(commodityCategory);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("CommodityCategoryServiceImpl -> updateCommodityCategory() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result getCommodityCategoryById(Long id) {
+		 Result result = new Result();
+	        try {
+	            CommodityCategory commodityCategory = commodityCategoryManager.getCommodityCategoryById(id);
+	            result.addDefaultModel("commodityCategory", commodityCategory);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("CommodityCategoryServiceImpl -> getCommodityCategoryById() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result getCommodityCategoryByCommodityCategoryCode(String commodityCategoryCode) {
+		 Result result = new Result();
+	        try {
+	            CommodityCategory commodityCategory = commodityCategoryManager.getCommodityCategoryByCommodityCategoryCode(commodityCategoryCode);
+	            result.addDefaultModel("commodityCategory", commodityCategory);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("CommodityCategoryServiceImpl -> getCommodityCategoryByCommodityCategoryCode() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result queryCommodityCategoryListByQueryBean(CommodityCategoryQuery commodityCategoryQuery) {
+		Result result = new Result();
+        try {
+            List<CommodityCategory> commodityCategoryList = commodityCategoryManager.queryCommodityCategoryListByQueryBean(commodityCategoryQuery);
+            result.addDefaultModel("commodityCategoryList", commodityCategoryList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("CommodityCategoryServiceImpl -> queryCommodityCategoryListByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result queryCommodityCategoryListPageByQueryBean(CommodityCategoryQuery commodityCategoryQuery,
+			int pageIndex, int pageSize) {
+		Result result = new Result();
+        try {
+            List<CommodityCategory> commodityCategoryList = commodityCategoryManager.queryCommodityCategoryListPageByQueryBean(commodityCategoryQuery,pageIndex,pageSize);
+            result.addDefaultModel("commodityCategoryList", commodityCategoryList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("CommodityCategoryServiceImpl -> queryCommodityCategoryListPageByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result deleteCommodityCategoryById(Long id) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = commodityCategoryManager.deleteCommodityCategoryById(id);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("CommodityCategoryServiceImpl -> deleteCommodityCategoryById() error!!", e);
+	        }
+	        return result;
+	}
+	
+	@Override
+	public Result deleteCommodityCategoryByIds(Long ids[]){
+		 Result result = new Result();
+	        try {
+	        	if(null!=ids&&ids.length>0){
+	        		boolean resultFlag = commodityCategoryManager.deleteCommodityCategoryByIds(ids);
+	        		result.addDefaultModel("resultFlag", resultFlag);
+	        		result.setSuccess(true);
+	        		
+	        	}else{
+	        		 log.error("CommodityCategoryServiceImpl -> deleteCommodityCategoryById() ids param null!!");
+	        	}
+	        } catch (Exception e) {
+	            log.error("CommodityCategoryServiceImpl -> deleteCommodityCategoryById() error!!", e);
+	        }
+	    return result;
+	}
+
+
+	public void setCommodityCategoryManager(CommodityCategoryManager commodityCategoryManager) {
+		this.commodityCategoryManager = commodityCategoryManager;
+	}
+	
+	
+
+}

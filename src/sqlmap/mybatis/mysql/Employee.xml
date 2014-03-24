@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 员工信息 -->
+<mapper namespace="Employee">
+
+	<resultMap id="employeeMap" type="com.haos.domain.employee.Employee">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="employee_code" property="employeeCode"
+			jdbcType="VARCHAR" />
+		<result column="employee_name" property="employeeName"
+			jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="TINYINT" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="zip_code" property="zipCode" jdbcType="VARCHAR" />
+		<result column="id_card" property="idCard" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="DATE" />
+		<result column="employee_photo" property="employeePhotoFileName"
+			jdbcType="VARCHAR" />
+		<result column="req_date" property="reqDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="yn" property="yn" jdbcType="TINYINT" />
+	</resultMap>
+
+	<!-- 创建员工信息 -->
+	<insert id="insert" parameterType="com.haos.domain.employee.Employee">
+		insert into
+		employee(employee_code,employee_name,password,sex,mobile,email,address,zip_code,id_card,birthday,employee_photo,req_date,status,create_time,update_time,yn)
+		values(#{employeeCode,jdbcType=VARCHAR},#{employeeName,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{sex,jdbcType=TINYINT},#{mobile,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{zipCode,jdbcType=VARCHAR},#{idCard,jdbcType=VARCHAR},#{birthday,jdbcType=DATE},#{employeePhotoFileName,jdbcType=VARCHAR},#{reqDate,jdbcType=TIMESTAMP},#{status,jdbcType=TINYINT},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=TINYINT})
+	</insert>
+
+	<!-- 修改员工信息，根据员工对象 -->
+	<update id="update" parameterType="com.haos.domain.employee.Employee">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update employee
+				<set>
+					<if test="employeeName !=null and employeeName !=''">
+						employee_name=#{employeeName,jdbcType=VARCHAR},
+	                </if>
+					<if test="password !=null and password !=''">
+						password=#{password,jdbcType=VARCHAR},
+	                </if>
+					<if test="sex !=null and sex >=0">
+						sex=#{sex,jdbcType=TINYINT},
+	                </if>
+					<if test="mobile !=null and mobile !=''">
+						mobile = #{mobile,jdbcType=VARCHAR},
+	                </if>
+					<if test="email !=null and email !=''">
+						email = #{email,jdbcType=VARCHAR},
+	                </if>
+					<if test="address !=null and address !=''">
+						address=#{address,jdbcType=VARCHAR},
+	                </if>
+					<if test="zipCode !=null and zipCode !=''">
+						zip_code=#{zipCode,jdbcType=VARCHAR},
+	                </if>
+					<if test="idCard !=null and idCard !=''">
+						id_card=#{idCard,jdbcType=VARCHAR},
+	                </if>
+					<if test="birthday !=null and birthday !=''">
+						birthday=#{birthday,jdbcType=TIMESTAMP},
+	                </if>
+					<if test="employeePhotoFileName !=null and employeePhotoFileName !=''">
+						employee_photo=#{employeePhotoFileName,jdbcType=VARCHAR},
+	                </if>
+					<if test="status !=null and status > 0">
+						status=#{status,jdbcType=TINYINT},
+	                </if>
+					<if test="updateTime !=null and updateTime !=''">
+						update_time =#{updateTime,jdbcType=TIMESTAMP}
+	                </if>
+				</set>
+				where id = #{id}
+			</if>
+		</if>
+	</update>
+
+	<!-- 修改员工状态信息，根据员工对象 -->
+	<update id="updateEmployeeStatus" parameterType="com.haos.domain.employee.Employee">
+		<if test="_parameter != null">
+			<if test="employeeCode != null">
+				update employee set
+				status=#{status,jdbcType=TINYINT},
+				update_time =#{updateTime,jdbcType=TIMESTAMP}
+				where employee_code =
+				#{employeeCode}
+            </if>
+		</if>
+	</update>
+
+	<!-- 根据主键获取员工信息 -->
+	<select id="getEmployeeById" resultMap="employeeMap"
+		parameterType="java.lang.Long">
+		<if test="_parameter != null">
+			select
+			id,employee_code,employee_name,password,sex,mobile,email,address,zip_code,id_card,birthday,employee_photo,req_date,status,create_time,update_time
+			from employee
+			where id = #{_parameter}
+        </if>
+	</select>
+
+	<!-- 根据账号获取员工信息 -->
+	<select id="getEmployeeByEmployeeCode" resultMap="employeeMap"
+		parameterType="java.lang.String">
+		<if test="_parameter != null">
+			select
+			id,employee_code,employee_name,password,sex,mobile,email,address,zip_code,id_card,birthday,employee_photo,req_date,status,create_time,update_time
+			from employee
+			where employee_code = #{_parameter} and yn=0
+        </if>
+	</select>
+
+	<!-- 根据查询Bean获取员工集合，不带翻页 -->
+	<select id="queryEmployeeListByQueryBean" resultMap="employeeMap"
+		parameterType="com.haos.domain.employee.query.EmployeeQuery">
+		select
+		id,employee_code,employee_name,password,sex,mobile,email,address,zip_code,id_card,birthday,employee_photo,req_date,status,create_time,update_time
+		from employee where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryEmployeeListWhere" />
+		</if>
+	</select>
+	<!-- 根据条件获取配送员工集合 -->
+	<select id="queryEmployeeListBySendEmployee" resultMap="employeeMap"
+		parameterType="java.lang.String">
+		<if test="_parameter != null and _parameter != '' ">
+			select
+			id,employee_code,employee_name,password,sex,mobile,email,address,zip_code,id_card,birthday,employee_photo,req_date,status,create_time,update_time
+			from employee where employee_code like '${_parameter}%'
+		</if>
+	</select>
+
+	<!-- 根据查询Bean获取员工集合，翻页 -->
+	<select id="queryEmployeeListPageByQueryBean" resultMap="employeeMap"
+		parameterType="com.haos.domain.employee.query.EmployeeQuery">
+		select
+		id,employee_code,employee_name,password,sex,mobile,email,address,zip_code,id_card,birthday,employee_photo,req_date,status,create_time,update_time
+		from employee where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryEmployeeListWhere" />
+		</if>
+		order by id desc
+		limit #{startRow},#{endRow};
+	</select>
+
+	<!-- 根据查询Bean获取员工总数 -->
+	<select id="queryEmployeeCountByQueryBean" resultType="java.lang.Integer"
+		parameterType="com.haos.domain.employee.query.EmployeeQuery">
+		select count(1) from employee where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryEmployeeListWhere" />
+		</if>
+	</select>
+
+	<!-- 删除员工信息，根据主键 -->
+	<update id="deleteEmployeeById" parameterType="java.lang.Long">
+		<if test="_parameter != null and _parameter > 0">
+			update employee set yn = 1 where id = #{_parameter}
+        </if>
+	</update>
+
+	<!-- 常用的查询Where条件 -->
+	<sql id="queryEmployeeListWhere">
+		<if test="employeeName != null and employeeName != ''">
+			and employee_name = #{employeeName,jdbcType=VARCHAR}
+        </if>
+		<if test="employeeCode != null and employeeCode != ''">
+			and employee_code = #{employeeCode,jdbcType=VARCHAR}
+        </if>
+		<if test="zipCode != null and zipCode != ''">
+			and zip_code = #{zipCode,jdbcType=VARCHAR}
+        </if>
+		<if test="status != null">
+			and status = #{status,jdbcType=TINYINT}
+        </if>
+		<if test="startTime != null and startTime != ''">
+			and create_time >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+		<if test="endTime != null and endTime != ''">
+			and #{endTime,jdbcType=TIMESTAMP} >= create_time
+        </if>
+		<if test="yn != null and yn>=0">
+			and #{yn,jdbcType=TINYINT} = yn
+        </if>
+	</sql>
+
+
+</mapper>

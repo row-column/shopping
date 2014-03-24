@@ -1,0 +1,134 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="/struts-tags" prefix="s"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<jsp:include page="common/head.jsp" />
+
+<script type="text/javascript">
+ 
+ $(document).ready(function() {
+     $("#login").click(function(){
+    	 //check user code
+    	 var userCode=$("#userCode").val();
+         var userCodeInfo=$("#userCodeInfo");
+         if(userCode.length==0||userCode==""){
+        	 userCodeInfo.html("<font color='red'>请输入用户名</font>");
+         }
+         $("#userCode").click(function(){
+        	 userCodeInfo.html("");
+         });
+         
+       //check user code
+    	 var password=$("#password").val();
+         var passwordInfo=$("#passwordInfo");
+         if(password.length==0||password==""){
+        	 passwordInfo.html("<font color='red'>请输入密码</font>");
+         }
+         $("#password").click(function(){
+        	 passwordInfo.html("");
+         });
+         
+         
+         
+         
+         if(userCode.length>0&&userCode!=""&&password.length>0&&password!=""){
+        	//window.self.location="login.action?userCode="+userCode+"&password="+password;
+        	$("#loginForm").submit();
+         }
+ 		});
+        	 
+        	 
+         
+    	 
+     });
+     
+     
+ 
+ 
+ </script>
+<body>
+	<!-- Wrapper -->
+	<div id="wrapper_sec">
+		<!-- Header -->
+		<!--navigation part   -->
+		<jsp:include page="common/navigation.jsp" />
+		<div class="clear"></div>
+		<div id="crumb">
+			<ul>
+				<li><a href="index.action">首页</a>
+				</li>
+				<li class="last"><a href="#" class="colr bold">登录</a>
+				</li>
+			</ul>
+		</div>
+		<div class="clear"></div>
+		<!-- Content Section -->
+		<div id="content_sec">
+			<!-- Column 3 -->
+			<div class="col3">
+				<h4 class="colr bold lognhead upper">
+					<span class="arrow">Costumer Log IN</span>
+				</h4>
+				<div class="login">
+					<div class="innersec">
+						<div class="signin">
+							<p class="under">如果你已经注册账号，请直接登陆</p>
+							<s:if test="hasActionErrors()">
+								<div class="error" id="errorMessages">
+									<s:iterator value="actionErrors">
+										<s:property escape="false" />
+									</s:iterator>
+								</div>
+							</s:if>
+							<form id="loginForm" action="login.action">
+
+								<ul class="forms">
+									<li class="txt bold">用户名 <font color="red"> *</font>
+									</li>
+									<li class="inputfield"><input id="userCode"
+										name="userCode" type="text" class="bar"
+										value="<s:property value="userCode"/>" />
+										<div id="userCodeInfo" /></li>
+								</ul>
+								<ul class="forms">
+									<li class="txt bold">密码<font color="red"> *</font>
+									</li>
+									<li class="inputfield"><input id="password"
+										name="password" type="password" class="bar" />
+										<div id="passwordInfo" /></li>
+								</ul>
+								<p class="right colr under">
+									<font color="red"> *</font>必填项
+								</p>
+								<div class="clear"></div>
+								<ul class="forms">
+									<li class="txt bold">&nbsp;</li>
+									<li class="inputfield"><a href="#"
+										class="forgot left colr under">忘记密码?</a> <a href="#"
+										id="login" class="buttonone">登陆</a></li>
+								</ul>
+
+
+							</form>
+						</div>
+						<div class="clear"></div>
+						<div class="newuser">
+							<h4 class="colr">New Customers</h4>
+							<p>创建帐户与我们的商店，您将能够通过结帐过程更快，移动存储多个送货地址，查看和跟踪您的订单，在您的帐户和更多。</p>
+							<div class="clear"></div>
+							<a href="toRegister.action" class="buttonone right">创建新用户</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+
+		</div>
+		<div class="clear"></div>
+		<!-- Footer -->
+		<jsp:include page="common/bottom.jsp" />
+		<div class="clear"></div>
+	</div>
+</body>
+</html>

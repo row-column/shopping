@@ -1,0 +1,142 @@
+package com.stark.asm.service.send.impl;
+
+import java.util.List;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import com.stark.asm.common.util.page.Result;
+import com.stark.asm.domain.send.SendType;
+import com.stark.asm.domain.send.query.SendTypeQuery;
+import com.stark.asm.manager.send.SendTypeManager;
+import com.stark.asm.service.fun.impl.FunServiceImpl;
+import com.stark.asm.service.send.SendTypeService;
+
+/**
+ * SendType information service interface
+ * @author WangYue
+ *
+ */
+public class SendTypeServiceImpl implements SendTypeService {
+	  /**
+     * ÈÕÖ¾
+     */
+    private static final Logger log = LogManager.getLogger(FunServiceImpl.class);
+	private SendTypeManager sendTypeManager;
+	@Override
+	public Result addSendType(SendType sendType) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = sendTypeManager.addSendType(sendType);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("SendTypeServiceImpl -> addSendType() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result updateSendType(SendType sendType) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = sendTypeManager.updateSendType(sendType);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("SendTypeServiceImpl -> updateSendType() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result getSendTypeById(Long id) {
+		 Result result = new Result();
+	        try {
+	            SendType sendType = sendTypeManager.getSendTypeById(id);
+	            result.addDefaultModel("sendType", sendType);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("SendTypeServiceImpl -> getSendTypeById() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result getSendTypeBySendTypeCode(String sendTypeCode) {
+		 Result result = new Result();
+	        try {
+	            SendType sendType = sendTypeManager.getSendTypeBySendTypeCode(sendTypeCode);
+	            result.addDefaultModel("sendType", sendType);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("SendTypeServiceImpl -> getSendTypeBySendTypeCode() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result querySendTypeListByQueryBean(SendTypeQuery sendTypeQuery) {
+		Result result = new Result();
+        try {
+            List<SendType> sendTypeList = sendTypeManager.querySendTypeListByQueryBean(sendTypeQuery);
+            result.addDefaultModel("sendTypeList", sendTypeList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("SendTypeServiceImpl -> querySendTypeListByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result querySendTypeListPageByQueryBean(SendTypeQuery sendTypeQuery,
+			int pageIndex, int pageSize) {
+		Result result = new Result();
+        try {
+            List<SendType> sendTypeList = sendTypeManager.querySendTypeListPageByQueryBean(sendTypeQuery,pageIndex,pageSize);
+            result.addDefaultModel("sendTypeList", sendTypeList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("SendTypeServiceImpl -> querySendTypeListPageByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result deleteSendTypeById(Long id) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = sendTypeManager.deleteSendTypeById(id);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("SendTypeServiceImpl -> deleteSendTypeById() error!!", e);
+	        }
+	        return result;
+	}
+
+	public void setSendTypeManager(SendTypeManager sendTypeManager) {
+		this.sendTypeManager = sendTypeManager;
+	}
+
+	@Override
+	public Result deleteSendTypeByIds(Long ids[]){
+		 Result result = new Result();
+	        try {
+	        	if(null!=ids&&ids.length>0){
+	        		boolean resultFlag = sendTypeManager.deleteSendTypeByIds(ids);
+	        		result.addDefaultModel("resultFlag", resultFlag);
+	        		result.setSuccess(true);
+	        		
+	        	}else{
+	        		 log.error("SendTypeServiceImpl -> deleteSendTypeById() ids param null!!");
+	        	}
+	        } catch (Exception e) {
+	            log.error("SendTypeServiceImpl -> deleteSendTypeById() error!!", e);
+	        }
+	    return result;
+	}
+
+
+
+}

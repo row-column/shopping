@@ -1,0 +1,173 @@
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/!svn/ver/40/trunk/asm/src
+END
+struts-user.xml
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/30/trunk/asm/src/struts-user.xml
+END
+struts-employee.xml
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/3/trunk/asm/src/struts-employee.xml
+END
+struts-commodity-category.xml
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/10/trunk/asm/src/struts-commodity-category.xml
+END
+xwork-conversion.properties
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/3/trunk/asm/src/xwork-conversion.properties
+END
+struts-carrier.xml
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/13/trunk/asm/src/struts-carrier.xml
+END
+struts-fun.xml
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/3/trunk/asm/src/struts-fun.xml
+END
+velocity.properties
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/3/trunk/asm/src/velocity.properties
+END
+struts-send.xml
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/3/trunk/asm/src/struts-send.xml
+END
+struts-recentlyviewed.xml
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/29/trunk/asm/src/struts-recentlyviewed.xml
+END
+struts-consumer.xml
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/29/trunk/asm/src/struts-consumer.xml
+END
+Test.java
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/3/trunk/asm/src/Test.java
+END
+spring-config-service.xml
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/35/trunk/asm/src/spring-config-service.xml
+END
+struts-shoppingcart.xml
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/27/trunk/asm/src/struts-shoppingcart.xml
+END
+spring-config-datasource-dbcp.xml
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/37/trunk/asm/src/spring-config-datasource-dbcp.xml
+END
+struts-comment.xml
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/32/trunk/asm/src/struts-comment.xml
+END
+struts.xml
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/39/trunk/asm/src/struts.xml
+END
+struts-favorites.xml
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/29/trunk/asm/src/struts-favorites.xml
+END
+spring-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/3/trunk/asm/src/spring-config.xml
+END
+struts-commodity.xml
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/40/trunk/asm/src/struts-commodity.xml
+END
+spring-config-dao.xml
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/40/trunk/asm/src/spring-config-dao.xml
+END
+struts-employee-fun.xml
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/35/trunk/asm/src/struts-employee-fun.xml
+END
+spring-config-struts.xml
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/asm/src/spring-config-struts.xml
+END
+struts-integral.xml
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/29/trunk/asm/src/struts-integral.xml
+END
+struts-level.xml
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/3/trunk/asm/src/struts-level.xml
+END
+struts-send-type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/9/trunk/asm/src/struts-send-type.xml
+END
+spring-config-manager.xml
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/35/trunk/asm/src/spring-config-manager.xml
+END
+struts-order.xml
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/29/trunk/asm/src/struts-order.xml
+END
+log4j.xml
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/3/trunk/asm/src/log4j.xml
+END

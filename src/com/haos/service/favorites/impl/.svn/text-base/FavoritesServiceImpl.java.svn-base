@@ -1,0 +1,283 @@
+package com.stark.asm.service.favorites.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import com.stark.asm.common.util.CommonConstant;
+import com.stark.asm.common.util.page.PaginatedList;
+import com.stark.asm.common.util.page.Result;
+import com.stark.asm.domain.commodity.Commodity;
+import com.stark.asm.domain.favorites.Favorites;
+import com.stark.asm.domain.favorites.query.FavoritesQuery;
+import com.stark.asm.domain.shoppingcart.ShoppingCart;
+import com.stark.asm.manager.commodity.CommodityManager;
+import com.stark.asm.manager.favorites.FavoritesManager;
+import com.stark.asm.manager.shoppingcart.ShoppingCartManager;
+import com.stark.asm.service.favorites.FavoritesService;
+
+/**
+ * Favorites information DAO implementation
+ * @author WangYue
+ *
+ */
+public class FavoritesServiceImpl  implements FavoritesService {
+	 private static final Logger log = LogManager.getLogger(FavoritesServiceImpl.class);
+	
+	/**
+	 * FavoritesManager information Manager interface
+	 */
+	private FavoritesManager favoritesManager;
+	
+	/**
+	 * ShoppingCartManager information Manager interface
+	 */
+	private ShoppingCartManager shoppingCartManager;
+	
+	/**
+	 * Commodity information manager interface
+	 */
+	private CommodityManager commodityManager;
+
+	@Override
+	public Result addFavorites(Favorites favorites) {
+		if(null!=favorites){
+			Result result = new Result();
+			try {
+				if(!StringUtils.isBlank(favorites.getUserCode())){
+					List<Favorites> favoritesList=favoritesManager.queryFavoritesByUserCode(favorites.getUserCode());
+					
+					if(null!=favoritesList&&favoritesList.size()>0){
+						
+						for(Favorites f:favoritesList){
+							
+							if(null!=favorites.getCommodityId()&&favorites.getCommodityId()>0){
+								Commodity commodity= commodityManager.getCommodityById(favorites.getCommodityId()); //  call getCommodityById()method
+								if(null!=commodity&&null!=commodity.getId()){
+									if(commodity.getId().equals(f.getCommodityId())&&commodity.getCommodityCode().equals(f.getCommodityCode())){
+										result.addDefaultModel("resultFlag", "exist");
+										
+									}else{
+										favorites.setCommodityCode(commodity.getCommodityCode());  //set commodity code
+										favorites.setCommodityName(commodity.getCommodityName());  //set commodity name
+										//new price  < old price
+				             			if(null!=commodity.getNewPrice()&&commodity.getNewPrice()>0){
+				             				Double price=commodity.getNewPrice()<commodity.getPrice()?commodity.getNewPrice():commodity.getPrice();
+				             				favorites.setPrice(price); //set price
+				             				
+				             			}else{
+				             				favorites.setPrice(commodity.getPrice()); //set price
+				             			}
+										favorites.setCommodityPhoto(commodity.getCommodityPhoto()); //set commodity photo
+										favorites.setViewedCount(commodity.getViewedCount()); //set commodity viewed count
+										favorites.setCommentCount(commodity.getCommentCount()); //set commodity comment count
+									    favorites.setIsRead(CommonConstant.YN_NO_DELETE); //set  is read =0
+									    favorites.setStatus(commodity.getStatus()); //set commodity status
+									    favorites.setCreateTime(new Date()); //set create time
+									    favorites.setUpdateTime(new Date()); //set update time
+									    favorites.setYn(CommonConstant.YN_NO_DELETE); //set yn=0
+									    boolean resultFlag = favoritesManager.addFavorites(favorites);
+										result.addDefaultModel("resultFlag", resultFlag);
+										result.setSuccess(true);
+									}
+									
+									
+								}else{
+									log.error("FavoritesServiceImpl -> addFavorites() id empty");
+									throw new RuntimeException("FavoritesServiceImpl -> addFavorites() id empty");
+								}
+								
+							}else{
+								List<ShoppingCart> shoppingCartList=shoppingCartManager.queryShoppingCartByUserCode(favorites.getUserCode()); //call queryShoppingCartByUserCode()method
+								
+								if(null!=shoppingCartList&&shoppingCartList.size()>0){
+									
+									
+									for(ShoppingCart shoppingCart:shoppingCartList){
+										if((f.getCommodityId().equals(shoppingCart.getCommodityId()))&&(f.getCommodityCode().equals(shoppingCart.getCommodityCode()))){
+											result.addDefaultModel("resultFlag", "exist");
+										}else{
+											favorites.setCommodityId(shoppingCart.getCommodityId()); //set commodity id
+											favorites.setCommodityCode(shoppingCart.getCommodityCode());  //set commodity code
+											favorites.setCommodityName(shoppingCart.getCommodityName());  //set commodity name
+											favorites.setPrice(shoppingCart.getPrice()); //set commodity price
+											favorites.setCommodityPhoto(shoppingCart.getCommodityPhoto()); //set commodity photo
+											favorites.setViewedCount(shoppingCart.getViewedCount()); //set commodity viewed count
+											favorites.setCommentCount(shoppingCart.getCommentCount()); //set commodity comment count
+											favorites.setIsRead(CommonConstant.YN_NO_DELETE); //set  is read =0
+											favorites.setStatus(shoppingCart.getStatus()); //set commodity status
+											favorites.setCreateTime(new Date()); //set create time
+											favorites.setUpdateTime(new Date()); //set update time
+											favorites.setYn(CommonConstant.YN_NO_DELETE); //set yn=0
+											boolean resultFlag = favoritesManager.addFavorites(favorites);
+											result.addDefaultModel("resultFlag", resultFlag);
+											result.setSuccess(true);
+											
+										}
+									}
+									
+								}else{
+									log.error("FavoritesServiceImpl -> addFavorites() shoppingCartList empty!");
+									throw new RuntimeException("FavoritesServiceImpl -> shoppingCartList empty!");
+								}
+								
+							}
+						}
+					}else{
+						if(null!=favorites.getCommodityId()&&favorites.getCommodityId()>0){
+							Commodity commodity= commodityManager.getCommodityById(favorites.getCommodityId()); //  call getCommodityById()method
+							if(null!=commodity&&null!=commodity.getId()){
+								favorites.setCommodityCode(commodity.getCommodityCode());  //set commodity code
+								favorites.setCommodityName(commodity.getCommodityName());  //set commodity name
+								//new price  < old price
+		             			if(null!=commodity.getNewPrice()&&commodity.getNewPrice()>0){
+		             				Double price=commodity.getNewPrice()<commodity.getPrice()?commodity.getNewPrice():commodity.getPrice();
+		             				favorites.setPrice(price); //set price
+		             				
+		             			}else{
+		             				favorites.setPrice(commodity.getPrice()); //set price
+		             			}
+								favorites.setCommodityPhoto(commodity.getCommodityPhoto()); //set commodity photo
+								favorites.setViewedCount(commodity.getViewedCount()); //set commodity viewed count
+								favorites.setCommentCount(commodity.getCommentCount()); //set commodity comment count
+							    favorites.setIsRead(CommonConstant.YN_NO_DELETE); //set  is read =0
+							    favorites.setStatus(commodity.getStatus()); //set commodity status
+							    favorites.setCreateTime(new Date()); //set create time
+							    favorites.setUpdateTime(new Date()); //set update time
+							    favorites.setYn(CommonConstant.YN_NO_DELETE); //set yn=0
+							    boolean resultFlag = favoritesManager.addFavorites(favorites);
+								result.addDefaultModel("resultFlag", resultFlag);
+								result.setSuccess(true);
+							}else{
+								log.error("FavoritesServiceImpl -> addFavorites() id empty");
+								throw new RuntimeException("FavoritesServiceImpl -> addFavorites() id empty");
+							}
+							
+						}else{
+							List<ShoppingCart> shoppingCartList=shoppingCartManager.queryShoppingCartByUserCode(favorites.getUserCode()); //call queryShoppingCartByUserCode()method
+							
+							if(null!=shoppingCartList&&shoppingCartList.size()>0){
+								for(ShoppingCart shoppingCart:shoppingCartList){
+									favorites.setCommodityId(shoppingCart.getCommodityId()); //set commodity id
+									favorites.setCommodityCode(shoppingCart.getCommodityCode());  //set commodity code
+									favorites.setCommodityName(shoppingCart.getCommodityName());  //set commodity name
+									favorites.setPrice(shoppingCart.getPrice()); //set commodity price
+									favorites.setCommodityPhoto(shoppingCart.getCommodityPhoto()); //set commodity photo
+									favorites.setViewedCount(shoppingCart.getViewedCount()); //set commodity viewed count
+									favorites.setCommentCount(shoppingCart.getCommentCount()); //set commodity comment count
+								    favorites.setIsRead(CommonConstant.YN_NO_DELETE); //set  is read =0
+								    favorites.setStatus(shoppingCart.getStatus()); //set commodity status
+								    favorites.setCreateTime(new Date()); //set create time
+								    favorites.setUpdateTime(new Date()); //set update time
+								    favorites.setYn(CommonConstant.YN_NO_DELETE); //set yn=0
+								    boolean resultFlag = favoritesManager.addFavorites(favorites);
+									result.addDefaultModel("resultFlag", resultFlag);
+									result.setSuccess(true);
+								}
+								
+							}else{
+								log.error("FavoritesServiceImpl -> addFavorites() shoppingCartList empty!");
+								throw new RuntimeException("FavoritesServiceImpl -> shoppingCartList empty!");
+							}
+							
+						}
+					}
+					
+				}else{
+					log.error("FavoritesServiceImpl -> user code empty!");
+					throw new RuntimeException("FavoritesServiceImpl -> user code empty!");
+				}
+				
+			
+				
+			} catch (Exception e) {
+				log.error("FavoritesServiceImpl -> addFavorites() error!!", e);
+				throw new RuntimeException("FavoritesServiceImpl -> addFavorites() error!!");
+			}
+			return result;
+			
+			
+		}else{
+			log.error("FavoritesServiceImpl -> addFavorites() favorites empty");
+			throw new RuntimeException("FavoritesServiceImpl -> addFavorites() favorites empty");
+		}
+	}
+
+
+	@Override
+	public Result queryFavoritesByUserCode(String userCode) {
+		Result result = new Result();
+        try {
+            List<Favorites> favoritesList = favoritesManager.queryFavoritesByUserCode(userCode);
+            result.addDefaultModel("favoritesList", favoritesList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("FavoritesServiceImpl -> queryFavoritesByUserCode() error!!", e);
+        }
+        return result;
+	}
+
+
+	@Override
+	public Result queryFavoritesListByQueryBean(FavoritesQuery favoritesQuery) {
+		 Result result = new Result();
+	        try {
+	            List<Favorites> favoritesList = favoritesManager.queryFavoritesListByQueryBean(favoritesQuery);
+	            result.addDefaultModel("favoritesList", favoritesList);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("FavoritesServiceImpl -> queryFavoritesListByQueryBean() error!!", e);
+	        }
+	        return result;
+	}
+	
+	@Override
+	public Result queryFavoritesListPageByQueryBean(FavoritesQuery favoritesQuery,
+			int pageIndex, int pageSize) {
+		Result result = new Result();
+		if(null==favoritesQuery){
+			favoritesQuery = new FavoritesQuery();
+		}
+        try {
+        	PaginatedList<Favorites> favoritesList = favoritesManager.queryFavoritesListPageByQueryBean(favoritesQuery,pageIndex,pageSize);
+            result.addDefaultModel("favoritesList", favoritesList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("FavoritesServiceImpl -> queryFavoritesListPageByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result deleteFavoritesById(Long id) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = favoritesManager.deleteFavoritesById(id);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("FavoritesServiceImpl -> deleteFavoritesById() error!!", e);
+	        }
+	        return result;
+	}
+
+
+	public void setFavoritesManager(FavoritesManager favoritesManager) {
+		this.favoritesManager = favoritesManager;
+	}
+
+
+	public void setShoppingCartManager(ShoppingCartManager shoppingCartManager) {
+		this.shoppingCartManager = shoppingCartManager;
+	}
+
+
+	public void setCommodityManager(CommodityManager commodityManager) {
+		this.commodityManager = commodityManager;
+	}
+
+	
+}

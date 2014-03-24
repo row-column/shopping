@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<!-- Order Module Action -->
+	<package name="order" extends="admin-default">
+		<action name="order_*" method="{1}"
+			class="com.haos.web.action.order.OrderAction">
+			<!-- order information -->
+			<result name="{1}">/backgroud/order/{1}.jsp</result>
+		</action>
+
+		<action name="orderDetail" method="orderDetail"
+			class="com.haos.web.action.order.OrderAction">
+			<!-- order detail information -->
+			<result>/front/orderDetail.jsp</result>
+			<result name="error" type="redirect">toLogin.action</result>
+		</action>
+
+
+		<action name="orderDetailByOrderCode" method="orderDetailByOrderCode"
+			class="com.haos.web.action.order.OrderAction">
+			<!-- order detail information -->
+			<result>/front/orderDetail.jsp</result>
+			<result name="error" type="redirect">toLogin.action</result>
+		</action>
+	</package>
+
+
+	<!-- Order Module Json -->
+	<package name="order_json" extends="json-protected-default">
+		<!-- order information Json -->
+		<action name="orderJson_*" method="{1}"
+			class="com.haos.web.action.order.json.OrderJsonAction">
+			<result name="out" type="json">
+				<param name="ignoreHierarchy">true</param>
+				<param name="excludeNullProperties">true</param>
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

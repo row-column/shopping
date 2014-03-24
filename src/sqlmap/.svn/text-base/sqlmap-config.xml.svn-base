@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig  PUBLIC "-//iBATIS.com//DTD SQL Map
+Config 2.0/" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+    <settings cacheModelsEnabled="true" enhancementEnabled="true" lazyLoadingEnabled="false" errorTracingEnabled="true"
+              maxRequests="32" maxSessions="10" maxTransactions="5" useStatementNamespaces="true"/>
+
+    <!--<typeHandler javaType="com.jd.common.util.Money" callback="com.jd.pop.dao.util.MoneyTypeHandler"/>-->
+
+
+    <!--*********************************** 接口监控（Webservice） 模型 start *************************************-->
+    <!-- 配送业务操作日志信息 -->
+    <!--<sqlMap resource="sqlmap/mssql/MonitorLog.xml"/>-->
+
+    <!--*********************************** 配送业务数据 模型 end *************************************-->
+
+</sqlMapConfig>

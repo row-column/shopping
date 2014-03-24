@@ -1,0 +1,358 @@
+/*==============================================================*/
+/* DBMS name:      Sybase SQL Anywhere 11                       */
+/* Created on:     2012-2-15 16:08:26                           */
+/*==============================================================*/
+drop database asm;
+create database asm;
+use asm;
+
+
+/*==============================================================*/
+/* Table: comment                                             */
+/*==============================================================*/
+create table comment 
+(
+   id                   bigint                         auto_increment not null,
+   title                varchar(40)                    null,
+   advantage            varchar(40)                    null,
+   shortcoming          varchar(40)                    null,
+   usage_experience     varchar(100)                   null,
+   comment_time         timestamp                      null,
+   commodity_id         bigint                         null,
+   commodity_code       varchar(20)                    null,
+   commodity_name       varchar(40)                    null,
+   user_code            varchar(20)                    null,
+   create_time          timestamp                      null,
+   update_time          timestamp                      null,
+   yn                   tinyint                        null,
+   constraint PK_COMMENT primary key clustered (id)
+);
+
+/*==============================================================*/
+/* Table: commodity                                             */
+/*==============================================================*/
+create table commodity 
+(
+   id                   bigint                         auto_increment not null,
+   commodity_code       varchar(20)                    null,
+   commodity_name       varchar(40)                    null,
+   category_code        varchar(20)                    null,
+   category_name        varchar(40)                    null,
+   qty          		bigint                         null,
+   price                numeric(10,2)                  null,
+   new_price            numeric(10,2)                  null,
+   sales_count          bigint                         null,
+   viewed_count         bigint                         null,
+   comment_count        bigint                         null,
+   quick_override       text                  		   null,
+   description          text                           null,
+   specifications       text                           null,
+   packing_list         text                           null,
+   commodity_photo      text                           null,
+   status               int                            null,
+   remark               varchar(255)                   null,
+   create_time          timestamp                      null,
+   update_time          timestamp                      null,
+   yn                   tinyint                        null,
+   constraint PK_COMMODITY primary key clustered (id)
+);
+
+/*==============================================================*/
+/* Table: commodity_category                                    */
+/*==============================================================*/
+create table commodity_category 
+(
+   id                   bigint                         auto_increment not null,
+   category_code        varchar(20)                    null,
+   category_name        varchar(40)                    null,
+   remark               varchar(100)                   null,
+   create_time             timestamp                   null,
+   update_time          timestamp                      null,
+   yn                   tinyint                        null,
+   constraint PK_COMMODITY_CATEGORY primary key clustered (id)
+);
+
+/*==============================================================*/
+/* Table: consumer_records                                      */
+/*==============================================================*/
+create table consumer_records 
+(
+   id                   bigint                         auto_increment not null,
+   user_code            varchar(20)                    null,
+   order_code           varchar(20)                    null,
+   commodity_id         bigint                         null,
+   commodity_code       varchar(20)                    null,
+   commodity_name       varchar(40)                    null,
+   amount               numeric(10,2)                   null,
+   consumer_time        timestamp                      null,
+   create_time             timestamp                   null,
+   update_time          timestamp                      null,
+   yn                   tinyint                        null,
+   constraint PK_CONSUMER_RECORDS primary key clustered (id)
+);
+
+/*==============================================================*/
+/* Table: level                                                 */
+/*==============================================================*/
+create table level 
+(
+   id                   bigint                         auto_increment not null,
+   level_code           varchar(20)                    null,
+   level_name           varchar(40)                    null,
+   start_point          bigint                         null,
+   end_point            bigint                         null,
+   remark               varchar(100)                   null,
+   create_time             timestamp                   null,
+   update_time          timestamp                      null,
+   yn                   tinyint                        null,
+   constraint PK_LEVEL primary key clustered (id)
+);
+
+/*==============================================================*/
+/* Table: t_order                                               */
+/*==============================================================*/
+create table t_order 
+(
+   id                   bigint                         auto_increment not null,
+   order_code           varchar(20)                    null,
+   commodity_id         bigint                         null,
+   commodity_code       varchar(20)                    null,
+   commodity_name       varchar(40)                    null,
+   commodity_count      bigint                            null,
+   amount               numeric(10,2)                   null,
+   order_time           timestamp                      null,
+   user_code            varchar(20)                    null,
+   user_name            varchar(40)                    null,
+   consignee            varchar(20)                    null,
+   address              varchar(50)                    null,
+   mobile               varchar(20)                    null,
+   email                varchar(20)                    null,
+   zip_code             varchar(10)                    null,
+   payment_method       int                            null,
+   shipping_method      int                            null,
+   status               int                            null,
+   remark               varchar(50)                    null,
+   create_time          timestamp                      null,
+   update_time          timestamp                      null,
+   yn                   tinyint                        null,
+   constraint PK_ORDER primary key clustered (id)
+);
+
+/*==============================================================*/
+/* Table: send                                                  */
+/*==============================================================*/
+create table send 
+(
+   id                   bigint                         auto_increment not null,
+   send_code            varchar(20)                    null,
+   send_name            varchar(40)                    null,
+   order_code           varchar(20)                    null,
+   type_code            varchar(20)                    null,
+   type_name            varchar(40)                    null,
+   carrier_code         varchar(20)                    null,
+   carrier_name         varchar(40)                    null,
+   deal_time            timestamp                      null,
+   deal_information     varchar(100)                   null,
+   operator             varchar(30)                    null,
+   remark               varchar(50)                    null,
+   create_time          timestamp                      null,
+   update_time          timestamp                      null,
+   yn                   tinyint                        null,
+   constraint PK_SEND primary key clustered (id)
+);
+
+/*==============================================================*/
+/* Table: send_type                                             */
+/*==============================================================*/
+create table send_type 
+(
+   id                   bigint                         auto_increment not null,
+   type_code            varchar(20)                    null,
+   type_name            varchar(40)                    null,
+   remark               varchar(50)                    null,
+   create_time             timestamp                   null,
+   update_time          timestamp                      null,
+   yn                   tinyint                        null,
+   constraint PK_SEND_TYPE primary key clustered (id)
+);
+
+
+/*==============================================================*/
+/* Table: carrier                                                */
+/*==============================================================*/
+create table carrier 
+(
+   id                  bigint                         auto_increment not null,
+   carrier_code        varchar(30)                    null,
+   carrier_name        varchar(30)                    null,
+   mobile               varchar(20)                   null,
+   email                varchar(30)                   null,
+   contacter            varchar(30)                   null,
+   address              varchar(50)                   null,
+   remark               varchar(50)                   null,
+   create_time          timestamp                     null,
+   update_time          timestamp                     null,
+   yn                   tinyint                       null,
+   constraint PK_CARRIER primary key clustered (id)
+);
+
+/*==============================================================*/
+/* Table: user                                                */
+/*==============================================================*/
+create table user 
+(
+   id                   bigint                         auto_increment not null,
+   user_code            varchar(30)                    null,
+   user_name            varchar(30)                    null,
+   real_name            varchar(40)                    null,
+   password             varchar(40)                    null,
+   level_code           varchar(20)                    null,
+   level_name           varchar(40)                    null,
+   sex                  int                            null,
+   mobile               varchar(20)                    null,
+   email                varchar(30)                    null,
+   id_card              varchar(20)                    null,
+   birthday             date                           null,
+   hobbies              varchar(255)                   null,
+   address              varchar(50)                    null,
+   user_photo           varchar(50)                    null,
+   comment_count        bigint                            null,
+   integral             bigint                            null,
+   req_date             timestamp                      null,
+   create_time             timestamp                   null,
+   update_time          timestamp                      null,
+   yn                   tinyint                        null,
+   constraint PK_USER primary key clustered (id)
+);
+
+/*==============================================================*/
+/* Table: employee                                                */
+/*==============================================================*/
+create table employee 
+(
+   id                   bigint                         auto_increment not null,
+   employee_code        varchar(30)                    null,
+   employee_name        varchar(30)                    null,
+   password             varchar(40)                    null,
+   sex                  int                            null,
+   mobile               varchar(20)                    null,
+   email                varchar(30)                    null,
+   address              varchar(50)                    null,
+   id_card              varchar(20)                    null,
+   birthday             date                           null,
+   employee_photo       varchar(50)                    null,
+   req_date             timestamp                      null,
+   status               int                            null,
+   create_time          timestamp                      null,
+   update_time          timestamp                      null,
+   yn                   tinyint                            null,
+   constraint PK_EMPLOYEE primary key clustered (id)
+);
+
+
+/*==============================================================*/
+/* Table: fun                                                 */
+/*==============================================================*/
+create table fun 
+(
+   id                   bigint                         auto_increment not null,
+   fun_code             varchar(20)                    null,
+   fun_name             varchar(40)                    null,
+   fun_type     	    tinyint                        null,
+   url_name				varchar(40)                    null,
+   url_param            varchar(30)                    null,
+   url_order            tinyint                        null,
+   is_status            tinyint                        null,
+   parent_code          varchar(20)                    null,
+   fun_system           tinyint                        null,
+   remark               varchar(100)                   null,
+   create_time          timestamp                      null,
+   update_time          timestamp                      null,
+   yn                   tinyint                        null,
+   constraint PK_FUN primary key clustered (id)
+);
+
+
+/*==============================================================*/
+/* Table: employee_fun                                    */
+/*==============================================================*/
+create table employee_fun 
+(
+   id                   bigint                         auto_increment not null,
+   employee_code        varchar(20)                    null,
+   fun_code             varchar(20)                    null,
+   is_read              tinyint                        null,
+   create_time          timestamp                      null,
+   update_time          timestamp                      null,
+   yn                   tinyint                            null,
+   constraint PK_EMPLOYEE_FUN primary key clustered (id)
+);
+
+
+/*==============================================================*/
+/* Table: recently_viewed                                       */
+/*==============================================================*/
+create table recently_viewed 
+(
+   id                   bigint                         auto_increment not null,
+   user_code            varchar(20)                    null,
+   commodity_id         bigint                         null,
+   commodity_code       varchar(20)                    null,
+   commodity_name       varchar(40)                    null,
+   price                numeric(10,2)                  null,
+   commodity_photo      text                           null,
+   viewed_count         bigint                         null,
+   comment_count        bigint                         null,
+   is_read              tinyint                        null,
+   status               int                            null,
+   create_time          timestamp                      null,
+   update_time          timestamp                      null,
+   yn                   tinyint                        null,
+   constraint PK_RECENTLY_VIEWED primary key clustered (id)
+);
+
+/*==============================================================*/
+/* Table: favorites                                       */
+/*==============================================================*/
+create table favorites 
+(
+   id                   bigint                         auto_increment not null,
+   user_code            varchar(20)                    null,
+   commodity_id         bigint                         null,
+   commodity_code       varchar(20)                    null,
+   commodity_name       varchar(40)                    null,
+   price                numeric(10,2)                  null,
+   commodity_photo      text                           null,
+   viewed_count         bigint                         null,
+   comment_count        bigint                         null,
+   is_read              tinyint                        null,
+   status               int                            null,
+   create_time          timestamp                      null,
+   update_time          timestamp                      null,
+   yn                   tinyint                        null,
+   constraint PK_FAVORITES primary key clustered (id)
+);
+
+
+/*==============================================================*/
+/* Table: shopping_cart                                             */
+/*==============================================================*/
+create table shopping_cart 
+(
+   id                   bigint                         auto_increment not null,
+   user_code            varchar(20)                    null,
+   commodity_id         bigint                         null,
+   commodity_code       varchar(20)                    null,
+   commodity_name       varchar(40)                    null,
+   price                numeric(10,2)                  null,
+   commodity_num        int                            null,
+   commodity_photo      text                           null,
+   viewed_count         bigint                         null,
+   comment_count        bigint                         null,
+   status               int                            null,
+   remark               varchar(255)                   null,
+   create_time          timestamp                      null,
+   update_time          timestamp                      null,
+   yn                   tinyint                        null,
+   constraint PK_SHOPPING_CART primary key clustered (id)
+);

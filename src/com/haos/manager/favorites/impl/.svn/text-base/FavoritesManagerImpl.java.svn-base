@@ -1,0 +1,75 @@
+package com.stark.asm.manager.favorites.impl;
+
+import java.util.List;
+
+import com.stark.asm.common.util.manager.BaseManager;
+import com.stark.asm.common.util.page.PaginatedArrayList;
+import com.stark.asm.common.util.page.PaginatedList;
+import com.stark.asm.dao.favorites.FavoritesDao;
+import com.stark.asm.domain.favorites.Favorites;
+import com.stark.asm.domain.favorites.query.FavoritesQuery;
+import com.stark.asm.manager.favorites.FavoritesManager;
+
+/**
+ * Favorites information DAO implementation
+ * @author WangYue
+ *
+ */
+public class FavoritesManagerImpl extends BaseManager implements FavoritesManager {
+	
+	/**
+	 * Favorites Dao interface
+	 */
+	private FavoritesDao favoritesDao;
+
+	@Override
+	public boolean addFavorites(Favorites favorites) {
+		return favoritesDao.addFavorites(favorites);
+	}
+
+
+	@Override
+	public List<Favorites> queryFavoritesByUserCode(String userCode) {
+		return (List<Favorites>)favoritesDao.queryFavoritesByUserCode(userCode);
+	}
+
+
+	@Override
+	public List<Favorites> queryFavoritesListByQueryBean(FavoritesQuery favoritesQuery) {
+		return (List<Favorites>)favoritesDao.queryFavoritesListByQueryBean(favoritesQuery);
+	}
+
+	@Override
+	public PaginatedList<Favorites> queryFavoritesListPageByQueryBean(FavoritesQuery favoritesQuery,int pageIndex, int pageSize) {
+		
+        if (null == favoritesQuery) {
+            favoritesQuery = new FavoritesQuery();
+        }
+        int totalItem = favoritesDao.queryFavoritesCountByQueryBean(favoritesQuery);
+        
+        PaginatedList<Favorites> favoritess = new PaginatedArrayList<Favorites>(pageIndex, pageSize);
+        
+        favoritess.setTotalItem(totalItem);
+        
+        favoritesQuery.setStartRow(favoritess.getStartRow());
+        
+        favoritesQuery.setEndRow(favoritess.getEndRow());
+        
+        List<Favorites> favoritesList = favoritesDao.queryFavoritesListPageByQueryBean(favoritesQuery);
+        
+        favoritess.addAll(favoritesList);
+
+        return favoritess;
+	}
+	@Override
+	public boolean deleteFavoritesById(Long id) {
+		return favoritesDao.deleteFavoritesById(id);
+	}
+
+
+	public void setFavoritesDao(FavoritesDao favoritesDao) {
+		this.favoritesDao = favoritesDao;
+	}
+
+	
+}

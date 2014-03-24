@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/26/trunk/asm/WebContent/WEB-INF
+END
+toolbox.xml
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/3/trunk/asm/WebContent/WEB-INF/toolbox.xml
+END
+velocity.properties
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/3/trunk/asm/WebContent/WEB-INF/velocity.properties
+END
+web.xml
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/26/trunk/asm/WebContent/WEB-INF/web.xml
+END

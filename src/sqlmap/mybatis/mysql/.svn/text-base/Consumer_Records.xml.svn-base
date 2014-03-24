@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 消费记录信息 -->
+<mapper namespace="ConsumerRecords">
+    <resultMap id="consumerRecordsMap" type="com.stark.asm.domain.consumer.ConsumerRecords">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_code" property="userCode" jdbcType="VARCHAR"/>
+        <result column="order_code" property="orderCode" jdbcType="VARCHAR"/>
+         <result column="commodity_code" property="commodityCode" jdbcType="VARCHAR"/>
+        <result column="commodity_id" property="commodityId" jdbcType="BIGINT"/>
+        <result column="commodity_name" property="commodityName" jdbcType="VARCHAR"/>
+        <result column="amount" property="amount" jdbcType="NUMERIC"/>
+        <result column="consumer_time"  property="consumerTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="yn" property="yn" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <!-- 创建消费记录信息 -->
+    <insert id="insert" parameterType="com.stark.asm.domain.consumer.ConsumerRecords">
+        insert into consumer_records (user_code,order_code,commodity_id,commodity_code,commodity_name,amount,consumer_time,create_time,update_time,yn)
+        values(#{userCode},#{orderCode},#{commodityId},#{commodityCode},#{commodityName},#{amount},#{consumerTime},#{createTime},#{updateTime},#{yn})
+    </insert>
+
+    <!-- 修改消费记录信息，根据消费记录对象 -->
+    <update id="update" parameterType="com.stark.asm.domain.consumer.ConsumerRecords">
+        <if test="_parameter != null">
+            <if test="id != null and id > 0">
+                update consumer_records set
+                user_code=#{userCode,jdbcType=VARCHAR},
+                order_code = #{orderCode,jdbcType=VARCHAR},
+                commodity_id = #{commodityId,jdbcType=VARCHAR},
+                commodity_code = #{commodityCode,jdbcType=VARCHAR},
+                commodity_name = #{commodityName,jdbcType=VARCHAR},
+                amount=#{amount,jdbcType=NUMERIC},
+                consumer_time = #{consumerTime,jdbcType=TIMESTAMP},
+                update_time=#{updateTime,jdbcType=TIMESTAMP}
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+
+    <!-- 根据主键获取消费记录信息 -->
+    <select id="getConsumerRecordsById" resultMap="consumerRecordsMap" parameterType="java.lang.Long">
+        <if test="_parameter != null">
+            select id,user_code,order_code,commodity_code,commodity_name,amount,consumer_time,create_time,update_time from consumer_records
+            where id = #{_parameter}
+        </if>
+    </select>
+
+    <!-- 根据查询Bean获取消费记录集合，不带翻页 -->
+    <select id="queryConsumerRecordsListByQueryBean" resultMap="consumerRecordsMap"
+            parameterType="com.stark.asm.domain.consumer.query.ConsumerRecordsQuery">
+       		select id,user_code,order_code,commodity_code,commodity_name,amount,consumer_time,create_time,update_time from consumer_records where 1 = 1
+        <if test="_parameter != null">
+            <include refid="queryConsumerRecordsListWhere"/>
+        </if>
+        order by id desc
+       </select>
+    <!-- 根据查询Bean获取消费记录集合，翻页 -->
+    <select id="queryConsumerRecordsListPageByQueryBean" resultMap="consumerRecordsMap"
+            parameterType="com.stark.asm.domain.consumer.query.ConsumerRecordsQuery">
+         select id,user_code,order_code,commodity_id,commodity_code,commodity_name,amount,consumer_time,create_time,update_time from consumer_records where 1 = 1
+        <if test="_parameter != null">
+            <include refid="queryConsumerRecordsListWhere"/>
+        </if>
+        order by id desc 
+        limit #{startRow},#{endRow};
+    </select>
+
+    <!-- 根据查询Bean获取消费记录总数 -->
+    <select id="queryConsumerRecordsCountByQueryBean" resultType="java.lang.Integer"
+            parameterType="com.stark.asm.domain.consumer.query.ConsumerRecordsQuery">
+        select count(1) from consumer_records where 1 = 1
+        <if test="_parameter != null">
+            <include refid="queryConsumerRecordsListWhere"/>
+        </if>
+    </select>
+
+    <!-- 删除消费记录信息，根据主键 -->
+    <delete id="deleteConsumerRecordsById" parameterType="java.lang.Long">
+        <if test="_parameter != null and _parameter > 0">
+            update  consumer_records set yn=1 where id = #{_parameter}
+        </if>
+    </delete>
+
+    <!-- 常用的查询Where条件 -->
+    <sql id="queryConsumerRecordsListWhere">
+        <if test="userCode != null and userCode != ''">
+            and user_code = #{userCode,jdbcType=VARCHAR}
+        </if>
+        <if test="orderCode != null and orderCode != ''">
+            and order_code = #{orderCode,jdbcType=VARCHAR}
+        </if>
+         <if test="commodityId != null and commodityId != ''">
+            and commodity_id = #{commodityCode,jdbcType=BIGINT}
+        </if>
+        <if test="commodityCode != null and commodityCode != ''">
+            and commodity_code = #{commodityCode,jdbcType=VARCHAR}
+        </if>
+        <if test="commodityName != null and commodityName != ''">
+            and commodity_name = #{commodityName,jdbcType=VARCHAR}
+        </if>
+        
+         <if test="startTime != null and startTime != ''">
+            and create_time >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+        
+        <if test="endTime != null and endTime != ''">
+            and #{endTime,jdbcType=TIMESTAMP} >= create_time
+        </if>
+        
+        <if test="yn != null">
+            and yn = #{yn,jdbcType=TINYINT}
+        </if>
+    </sql>
+</mapper>

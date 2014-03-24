@@ -1,0 +1,451 @@
+package com.stark.asm.service.order.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import com.stark.asm.common.util.CommonConstant;
+import com.stark.asm.common.util.date.DateUtil;
+import com.stark.asm.common.util.page.Result;
+import com.stark.asm.domain.commodity.Commodity;
+import com.stark.asm.domain.consumer.ConsumerRecords;
+import com.stark.asm.domain.level.Level;
+import com.stark.asm.domain.level.query.LevelQuery;
+import com.stark.asm.domain.order.Order;
+import com.stark.asm.domain.order.query.OrderQuery;
+import com.stark.asm.domain.send.Send;
+import com.stark.asm.domain.send.query.SendQuery;
+import com.stark.asm.domain.shoppingcart.ShoppingCart;
+import com.stark.asm.domain.user.User;
+import com.stark.asm.manager.carrier.CarrierManager;
+import com.stark.asm.manager.commodity.CommodityManager;
+import com.stark.asm.manager.consumer.ConsumerRecordsManager;
+import com.stark.asm.manager.level.LevelManager;
+import com.stark.asm.manager.order.OrderManager;
+import com.stark.asm.manager.send.SendManager;
+import com.stark.asm.manager.send.SendTypeManager;
+import com.stark.asm.manager.shoppingcart.ShoppingCartManager;
+import com.stark.asm.manager.user.UserManager;
+import com.stark.asm.service.order.OrderService;
+
+/**
+ * Order information service interface
+ * @author WangYue
+ *
+ */
+public class OrderServiceImpl implements OrderService {
+    private static final Logger log = LogManager.getLogger(OrderServiceImpl.class);
+	private OrderManager orderManager;
+	
+	/**
+	 * shopping cart information manager interface
+	 */
+	private ShoppingCartManager shoppingCartManager;
+	
+	/**
+	 * commodity information manager interface
+	 */
+	private CommodityManager commodityManager;
+	
+	/**
+	 * consumer records information manager interface
+	 */
+	private ConsumerRecordsManager consumerRecordsManager;
+	
+	/**
+	 * user information manager interface
+	 */
+	private UserManager userManager;
+
+	/**
+	 * send information manager interface
+	 */
+	private SendManager sendManager;
+	
+	/**
+	 * send type information manager interface
+	 */
+	private SendTypeManager sendTypeManager;
+	
+	/**
+	 * carrier information manager interface
+	 */
+	private CarrierManager carrierManager;
+	
+	/**
+	 * level information manager interface
+	 */
+	private LevelManager levelManager;
+	
+	@Override
+	public Result addOrder(Order order) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = orderManager.addOrder(order);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("OrderServiceImpl -> addOrder() error!!", e);
+	        }
+	        return result;
+	}
+	
+	@Override
+	public Result addOrder(Order order,Send send) {
+		 Result result = new Result();
+		 boolean resultFlag = false;
+		 
+	        try {
+	        	String userCode=order.getUserCode(); //get user code from order object
+            	if(!StringUtils.isBlank(userCode)){
+            		List<ShoppingCart> shoppingCartList=shoppingCartManager.queryShoppingCartByUserCode(userCode);
+            		if(null!=shoppingCartList&&shoppingCartList.size()>0){
+            			for(ShoppingCart shoppingCart:shoppingCartList){
+            				String orderCode=DateUtil.getSerialNumber(); //random order code
+            				order.setOrderCode(orderCode);  //set order code
+            				order.setCommodityId(shoppingCart.getCommodityId()); //commodity id
+            				order.setCommodityCode(shoppingCart.getCommodityCode());  //set commodity code
+            				order.setCommodityName(shoppingCart.getCommodityName()); //set commodity name
+            				order.setCommodityCount(shoppingCart.getCommodityNum()); //set commodity Number
+            				Double amount=shoppingCart.getCommodityNum()*shoppingCart.getPrice();
+                            order.setAmount(amount);  //set order amount      
+                            order.setCreateTime(new Date()); //set create time 
+                            order.setUpdateTime(new Date()); //set update time
+                            order.setOrderTime(new Date()); //order time
+                            
+                            User user=null;
+                            	if(!StringUtils.isBlank(userCode)){
+                            		user=userManager.getUserByUserCode(userCode);
+                            		if(StringUtils.isBlank(order.getUserName())){
+                                	order.setUserName(user.getUserName()); //set user name
+                                }
+                            }
+                            
+                            order.setStatus(CommonConstant.ORDER_DEALING);  //set order status  dealing with
+                            order.setYn(CommonConstant.YN_NO_DELETE); //set yn=0
+                            resultFlag = orderManager.addOrder(order);  //call add order method
+                            
+                            if(resultFlag){
+                            	Commodity commodity=commodityManager.getCommodityByCommodityCode(shoppingCart.getCommodityCode());
+                            	if(null!=commodity&&!StringUtils.isBlank(commodity.getCommodityCode())){
+                            		commodity.setQty(commodity.getQty()-1); //set qty
+                            		commodity.setUpdateTime(new Date());  //set update time
+                            		commodityManager.updateCommodityQty(commodity);
+                            	}
+                            	
+                            	//user integral and level command
+                            	Long integral =user.getIntegral(); // get integral from user
+                            	if(null==integral){
+                            		integral=0L;
+                            	}
+                            	integral=integral+CommonConstant.INTEGRAL_ORDER; //submit order will plus 2 integral
+                            	
+                            	user.setIntegral(integral); //set user integral 
+                            	List<Level> levelList=levelManager.queryLevelListByQueryBean(new LevelQuery()); //call queryLevelListByQueryBean()method
+                            	if(null!=levelList&&levelList.size()>0){
+                            		for(Level l:levelList){
+                            			if(integral>=l.getStartPoint()&&integral<=l.getEndPoint()){
+                            				user.setLevelCode(l.getLevelCode());  //set level code
+                            				user.setLevelName(l.getLevelName()); //set level name
+                            				break;
+                            			}
+                            		}
+                            		
+                            	}
+                            	
+                            	boolean updateUserIntegralAndLevelFlag=userManager.updateUserIntegralAndLevel(user); //call updateUserIntegralAndLevel() method
+                            	if(!updateUserIntegralAndLevelFlag){
+                            		 log.error("OrderServiceImpl -> addOrder()->>updateUserIntegralAndLevel error!!");
+                        			 throw new RuntimeException("OrderServiceImpl.addOrder->>updateUserIntegralAndLevel error!!");
+                            	}
+                            	
+                            	
+                            	// consumer records command
+                            	ConsumerRecords consumerRecords= new ConsumerRecords(); // new consumer records object name is consumer records
+                            	consumerRecords.setUserCode(userCode); // set user code
+                            	consumerRecords.setOrderCode(orderCode); //set order code
+                            	consumerRecords.setCommodityId(commodity.getId()); //set commodity id
+                            	consumerRecords.setCommodityCode(commodity.getCommodityCode());  //set commodity code
+                            	consumerRecords.setCommodityName(commodity.getCommodityName());  //set commodity name
+                            	consumerRecords.setAmount(amount); //set amount
+                            	consumerRecords.setCreateTime(new Date()); //set create time
+                                consumerRecords.setUpdateTime(new Date()); //set update time
+                                consumerRecords.setConsumerTime(new Date()); //set consumer time
+                                consumerRecords.setYn(CommonConstant.YN_NO_DELETE); //set yn=0
+                                
+                               boolean updateConsumerRecordsFlag= consumerRecordsManager.addConsumerRecords(consumerRecords);  //call addConsumerRecords() method
+                               if(!updateConsumerRecordsFlag){
+                          		 log.error("OrderServiceImpl -> addOrder()->>addConsumerRecords error!!");
+                      			 throw new RuntimeException("OrderServiceImpl.addOrder->>addConsumerRecords error!!");
+                          	}
+                            	
+                            	if(null!=send){
+                            		if(!StringUtils.isBlank(orderCode)){
+                            			send.setSendCode(DateUtil.getSerialNumber());  //random send code
+                                        
+                                        if(!StringUtils.isBlank(send.getTypeCode())){
+                                        	send.setTypeName((sendTypeManager.getSendTypeBySendTypeCode(send.getTypeCode())).getSendTypeName()); //set type name
+                                        }
+                                        
+                                        if(!StringUtils.isBlank(send.getCarrierCode())){
+                                        	send.setCarrierName((carrierManager.getCarrierByCarrierCode(send.getCarrierCode())).getCarrierName()); //set carrier name
+                                        }
+                                        
+                                        send.setDealInformation("您提交了订单，请等待系统确认");  //set deal information
+                                        send.setOperator("客户");  //set operator
+                                        send.setDealTime(new Date());  //set deal time
+                                        send.setOrderCode(orderCode);
+                                        send.setCreateTime(new Date()); //set create time
+                                        send.setUpdateTime(new Date()); //set update time
+                                        send.setYn(CommonConstant.YN_NO_DELETE);  //set yn =0
+                                        
+                                        boolean isSuccess=sendManager.addSend(send);  //call addSend method
+                                        if(!isSuccess){
+                                        	 log.error("OrderServiceImpl -> addOrder()-->>addSend.error!!");
+                                        	 throw new RuntimeException("OrderManagerImpl-> addOrder()-->>addSend.error!!");
+                                        }
+                                        
+                                        shoppingCartManager.deleteShoppingCartById(shoppingCart.getId());  //call deleteShoppingCartById()method
+                            		}
+                            		
+                            	}else{
+                       			 log.error("OrderServiceImpl -> addOrder() error!!");
+                    			 throw new RuntimeException("OrderServiceImpl.addOrder.parameter.empty.");
+                    		 }
+                            	
+                            	
+                            	
+                            }else{
+                                throw new RuntimeException("OrderManagerImpl.addOrder.error.");
+                            }
+
+
+            			}
+            			
+            		}else{
+            			throw new RuntimeException("OrderManagerImpl.shopping cart list is empty.");
+            		}
+            		
+            		
+            		
+            	}else{
+            		throw new RuntimeException("OrderManagerImpl.user code is empty.");
+            	}
+	        	
+	            
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            
+	            
+	            
+	            
+	            
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("OrderServiceImpl -> addOrder() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result updateOrder(Order order) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = orderManager.updateOrder(order);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("OrderServiceImpl -> updateOrder() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result getOrderById(Long id) {
+		 Result result = new Result();
+	        try {
+	            Order order = orderManager.getOrderById(id);
+	            result.addDefaultModel("order", order);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("OrderServiceImpl -> getOrderById() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result getOrderByOrderCode(String orderCode) {
+		 Result result = new Result();
+	        try {
+	            Order order = orderManager.getOrderByOrderCode(orderCode);
+	            result.addDefaultModel("order", order);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("OrderServiceImpl -> getOrderByOrderCode() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result getOrderDetailById(Long id) {
+		if(id!=null&&id>0){
+			Result result = new Result();
+			
+			try {
+				Order order = orderManager.getOrderById(id);
+	
+				if(null!=order){
+					SendQuery sendQuery= new SendQuery(); //new send query object name is sendQuery
+					sendQuery.setOrderCode(order.getOrderCode());  //set order code
+					List<Send> sendList=sendManager.querySendListByQueryBean(sendQuery); // call sendQueryListByQueryBean() method 
+					result.addDefaultModel("sendList", sendList);   // set sendList to map
+					result.addDefaultModel("order", order); //set order object to map
+					result.setSuccess(true);
+				}else{
+					result.addDefaultModel("sendList", null);   // set sendList to map
+					result.addDefaultModel("order", null); //set order object to map
+					result.setSuccess(false);
+				}
+				
+			} catch (Exception e) {
+				log.error("OrderServiceImpl -> getOrderDetailById() error!!", e);
+			}
+			return result;
+			
+		}else{
+			return null;
+		}
+	}
+
+	@Override
+	public Result getOrderDetailByOrderCode(String orderCode) {
+		if(!StringUtils.isBlank(orderCode)){
+			Result result = new Result();
+			
+			try {
+				Order order = orderManager.getOrderByOrderCode(orderCode);
+	
+				if(null!=order){
+					SendQuery sendQuery= new SendQuery(); //new send query object name is sendQuery
+					sendQuery.setOrderCode(orderCode);  //set order code
+					List<Send> sendList=sendManager.querySendListByQueryBean(sendQuery); // call sendQueryListByQueryBean() method 
+					result.addDefaultModel("sendList", sendList);   // set sendList to map
+					result.addDefaultModel("order", order); //set order object to map
+					result.setSuccess(true);
+				}else{
+					result.addDefaultModel("sendList", null);   // set sendList to map
+					result.addDefaultModel("order", null); //set order object to map
+					result.setSuccess(false);
+				}
+				
+			} catch (Exception e) {
+				log.error("OrderServiceImpl -> getOrderDetailById() error!!", e);
+			}
+			return result;
+			
+		}else{
+			return null;
+		}
+	}
+	
+	
+	@Override
+	public Result queryOrderListByQueryBean(OrderQuery orderQuery) {
+		Result result = new Result();
+        try {
+            List<Order> orderList = orderManager.queryOrderListByQueryBean(orderQuery);
+            result.addDefaultModel("orderList", orderList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("OrderServiceImpl -> queryOrderListByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result queryOrderListPageByQueryBean(OrderQuery orderQuery,
+			int pageIndex, int pageSize) {
+		Result result = new Result();
+        try {
+            List<Order> orderList = orderManager.queryOrderListPageByQueryBean(orderQuery,pageIndex,pageSize);
+            result.addDefaultModel("orderList", orderList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("OrderServiceImpl -> queryOrderListPageByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result deleteOrderById(Long id) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = orderManager.deleteOrderById(id);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("OrderServiceImpl -> deleteOrderById() error!!", e);
+	        }
+	        return result;
+	}
+
+	public void setOrderManager(OrderManager orderManager) {
+		this.orderManager = orderManager;
+	}
+	
+	@Override
+	public Result deleteOrderByIds(Long ids[]){
+		 Result result = new Result();
+	        try {
+	        	if(null!=ids&&ids.length>0){
+	        		boolean resultFlag = orderManager.deleteOrderByIds(ids);
+	        		result.addDefaultModel("resultFlag", resultFlag);
+	        		result.setSuccess(true);
+	        		
+	        	}else{
+	        		 log.error("OrderServiceImpl -> deleteOrderById() ids param null!!");
+	        	}
+	        } catch (Exception e) {
+	            log.error("OrderServiceImpl -> deleteOrderById() error!!", e);
+	        }
+	    return result;
+	}
+
+	public void setShoppingCartManager(ShoppingCartManager shoppingCartManager) {
+		this.shoppingCartManager = shoppingCartManager;
+	}
+
+	public void setCommodityManager(CommodityManager commodityManager) {
+		this.commodityManager = commodityManager;
+	}
+
+	public void setUserManager(UserManager userManager) {
+		this.userManager = userManager;
+	}
+
+	public void setSendManager(SendManager sendManager) {
+		this.sendManager = sendManager;
+	}
+
+	public void setSendTypeManager(SendTypeManager sendTypeManager) {
+		this.sendTypeManager = sendTypeManager;
+	}
+
+	public void setCarrierManager(CarrierManager carrierManager) {
+		this.carrierManager = carrierManager;
+	}
+
+	public void setConsumerRecordsManager(
+			ConsumerRecordsManager consumerRecordsManager) {
+		this.consumerRecordsManager = consumerRecordsManager;
+	}
+
+	public void setLevelManager(LevelManager levelManager) {
+		this.levelManager = levelManager;
+	}
+
+	
+	
+}

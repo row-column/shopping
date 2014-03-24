@@ -1,0 +1,224 @@
+package com.stark.asm.common.util.action;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.ServletResponseAware;
+
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.util.ValueStack;
+import com.stark.asm.common.util.page.Result;
+
+/**
+ * User: Administrator
+ * Date: 2010-4-27
+ * Time: 11:42:43
+ */
+public class BaseAction extends ActionSupport implements ServletRequestAware, ServletResponseAware {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
+	private final static Log log = LogFactory.getLog(BaseAction.class);
+
+
+    protected HttpServletResponse response;
+    protected HttpServletRequest request;
+
+    public void setServletRequest(HttpServletRequest request) {
+        this.request = request;
+    }
+
+    public void setServletResponse(HttpServletResponse response) {
+        this.response = response;
+    }
+
+
+
+    /*
+    * 获取真实的IP地址
+    *
+    */
+
+    public String getRemoteIP() {
+        String ip = request.getRemoteAddr();
+        if (request.getHeader("x-forwarded-for") != null
+                && !"unknown".equalsIgnoreCase(request.getHeader("x-forwarded-for"))) {
+            ip = ip + "," + request.getHeader("x-forwarded-for");
+        }
+        return ip;
+    }
+
+    public static final int PAGE_SIZE = 20;
+
+    /**
+     * 来路
+     */
+    protected String refer;
+
+    public String getRefer() {
+        return refer;
+    }
+
+    public void setRefer(String refer) {
+        this.refer = refer;
+    }
+
+    /**
+     * 设置来路
+     * 1、如果refer已经有值，则不变
+     * 2、如果http requeset header中有Referer属性，则拿来过
+     * 3、否则使用参数的传入值
+     */
+    public void initRefer(String refer) {
+        if (StringUtils.isBlank(this.refer)) {
+            this.refer = request.getHeader("Referer");
+            if (StringUtils.isBlank(this.refer)) {
+                this.refer = refer;
+            }
+        }
+    }
+
+    /**
+     * 设置来路
+     * 1、如果refer已经有值，则不变
+     * 2、如果http requeset header中有Referer属性，则拿来过
+     * 3、否则使用默认值”list.action“
+     */
+    public void initRefer() {
+        initRefer("list.action");
+    }
+
+    /**
+     * 判断是不是转发过来。
+     * struts2中result可以设置为chain。这里判断是不是通过chain发过来
+     *
+     * @return true 是通过chain转发过来的 false 不是
+     */
+    @SuppressWarnings({"unchecked"})
+    public boolean isChain() {
+        return !isNotChain();
+    }
+
+    /**
+     * 判断是不是转发过来。
+     * struts2中result可以设置为chain。这里判断是不是通过chain发过来
+     *
+     * @return true 不是通过chain转发过来的 false 是
+     */
+    @SuppressWarnings({"unchecked"})
+    public boolean isNotChain() {
+        List<String> chainHistory = (List<String>) ActionContext.getContext().get("CHAIN_HISTORY");
+        return chainHistory == null || chainHistory.isEmpty();
+    }
+
+    public boolean getChain() {
+        return isChain();
+    }
+
+    /**
+     * 当前页
+     */
+    protected int page=1;
+
+    public void setPage(int page) {
+        if (page <= 0) {
+            page = 1;
+        }
+        this.page = page;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    /**
+     * 将result中的值写入值栈
+     * 会写入result变量，同时会把reuslt里面map的内容写入。
+     * 对于消息。如果result返回成功，则写入message，否则写入error
+     *
+     * @param result 结果
+     */
+    protected void toVm(Result result) {
+        ValueStack context = ActionContext.getContext().getValueStack();
+        context.set("textProvider", this);
+        context.set("datePickerLocale", getDatePickerLocale());
+        if(null != result){
+            context.set("result", result);
+            Set<String> set = result.keySet();
+            for (String key : set) {
+                context.set(key, result.get(key));
+            }
+            String resultCode = result.getResultCode();
+            if (StringUtils.isNotBlank(resultCode)) {
+                String text;
+                String[] params = result.getResultCodeParams();
+                if (params != null && params.length > 0) {
+                    text = getText(resultCode, params);
+                } else {
+                    text = getText(resultCode);
+                }
+                if (result.getSuccess()) {
+                    addActionMessage(text);
+                } else {
+                    addActionError(text);
+                }
+            }
+        }
+    }
+
+    /**
+     * 日历控件My97DatePicker使用 
+     * @return
+     */
+    private String getDatePickerLocale() {
+        String locale = getLocale().toString().toLowerCase();
+        String[] arr = locale.split("_");
+        if (arr[0].equals("en")) {
+            locale = arr[0];
+        } else {
+            locale = arr[0] + "-" + arr[1];
+        }
+        return locale;
+    }
+
+
+
+
+    /**
+     * 由于 struts2 的 result 的 type 为 chain的时候，action链不能传递actionErrors、actionMessages和fieldErrors。所以借值栈来实现
+     * 这是将以上三个从值栈中取出的方法
+     * 本来要称除的
+     */
+    @SuppressWarnings({"unchecked"})
+    protected void fromChain() {
+        ValueStack stack = ActionContext.getContext().getValueStack();
+
+        setActionErrors((Collection<String>) stack.findValue("getActionErrors"));
+        setActionMessages((Collection<String>) stack.findValue("getActionMessages"));
+        setFieldErrors((Map<String, List<String>>) stack.findValue("getFieldErrors"));
+    }
+
+    /**
+     * 由于 struts2 的 result 的 type 为 chain的时候，action链不能传递actionErrors、actionMessages和fieldErrors。所以借值栈来实现
+     * 这是将以上三个放入值栈的方法
+     */
+    protected void toChain() {
+        ValueStack stack = ActionContext.getContext().getValueStack();
+        stack.set("getActionErrors", getActionErrors());
+        stack.set("getActionMessages", getActionMessages());
+        stack.set("getFieldErrors", getFieldErrors());
+    }
+}

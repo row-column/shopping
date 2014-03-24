@@ -1,0 +1,77 @@
+10
+
+dir
+40
+https://asm-web.googlecode.com/svn/trunk/asm/WebContent
+https://asm-web.googlecode.com/svn
+
+
+
+2012-03-20T10:34:40.855817Z
+40
+stark.ibatis
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5cf73895-aab1-0d58-a7ad-2f94b8291eb9
+
+META-INF
+dir
+
+backgroud
+dir
+
+doc
+dir
+
+WEB-INF
+dir
+
+VM_global_library.vm
+file
+
+
+
+delete
+2012-03-14T12:59:30.515625Z
+b0eb6726a6cbe33aa370c4725f49a68e
+2012-02-21T16:29:27.453121Z
+3
+stark.ibatis
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+146
+
+front
+dir
+

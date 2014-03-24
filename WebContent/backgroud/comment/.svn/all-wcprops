@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/11/trunk/asm/WebContent/backgroud/comment
+END
+commentMain.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/11/trunk/asm/WebContent/backgroud/comment/commentMain.jsp
+END
+toUpdateComment.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/11/trunk/asm/WebContent/backgroud/comment/toUpdateComment.jsp
+END
+toDeleteComment.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/11/trunk/asm/WebContent/backgroud/comment/toDeleteComment.jsp
+END
+toAddComment.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/11/trunk/asm/WebContent/backgroud/comment/toAddComment.jsp
+END

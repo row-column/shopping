@@ -1,0 +1,21 @@
+package com.stark.asm.common.util.page;
+
+/**
+ * 带分页查询基本组件
+ * @author wangyue
+ *
+ */
+public interface Query {
+
+	/**
+	 * 起始记录号
+	 * @return
+	 */
+	int getStartRow();
+	
+	/**
+	 * 结束记录号
+	 * @return
+	 */
+	int getEndRow();
+}

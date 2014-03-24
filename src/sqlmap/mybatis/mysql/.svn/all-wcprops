@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/40/trunk/asm/src/sqlmap/mybatis/mysql
+END
+Carrier.xml
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/13/trunk/asm/src/sqlmap/mybatis/mysql/Carrier.xml
+END
+Employee_Fun.xml
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/35/trunk/asm/src/sqlmap/mybatis/mysql/Employee_Fun.xml
+END
+Recently_Viewed.xml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/29/trunk/asm/src/sqlmap/mybatis/mysql/Recently_Viewed.xml
+END
+Fun.xml
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/3/trunk/asm/src/sqlmap/mybatis/mysql/Fun.xml
+END
+Send.xml
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/18/trunk/asm/src/sqlmap/mybatis/mysql/Send.xml
+END
+Send_Type.xml
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/10/trunk/asm/src/sqlmap/mybatis/mysql/Send_Type.xml
+END
+Shopping_Cart.xml
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/29/trunk/asm/src/sqlmap/mybatis/mysql/Shopping_Cart.xml
+END
+Commodity_Category.xml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/14/trunk/asm/src/sqlmap/mybatis/mysql/Commodity_Category.xml
+END
+Favorites.xml
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/29/trunk/asm/src/sqlmap/mybatis/mysql/Favorites.xml
+END
+Comment.xml
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/32/trunk/asm/src/sqlmap/mybatis/mysql/Comment.xml
+END
+Commodity.xml
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/40/trunk/asm/src/sqlmap/mybatis/mysql/Commodity.xml
+END
+Level.xml
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/38/trunk/asm/src/sqlmap/mybatis/mysql/Level.xml
+END
+Order.xml
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/29/trunk/asm/src/sqlmap/mybatis/mysql/Order.xml
+END
+Consumer_Records.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/29/trunk/asm/src/sqlmap/mybatis/mysql/Consumer_Records.xml
+END
+User.xml
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/37/trunk/asm/src/sqlmap/mybatis/mysql/User.xml
+END
+Employee.xml
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/38/trunk/asm/src/sqlmap/mybatis/mysql/Employee.xml
+END

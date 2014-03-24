@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+    <constant name="struts.devMode" value="true"/>
+    <constant name="struts.objectFactory" value="spring"/>
+    <constant name="struts.objectFactory.spring.autoWire " value="name"/>
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <constant name="struts.velocity.toolboxlocation" value="/WEB-INF/toolbox.xml" />
+    <constant name="struts.custom.i18n.resources" value="message/message,message/exampleMessage"/>
+     <!-- 上传的全部图片的最大限制-->  
+    <constant name="struts.multipart.maxSize" value="1024102400" />  
+    <!-- 临时存放文件的路径 -->  
+   	<constant name="struts.multipart.saveDir" value="d:/upload" />  
+
+    
+    <package name="admin-default" extends="struts-default">
+     <interceptors>
+          <!--   <interceptor name="loginContext" class="com.stark.asm.web.interceptor.AdminLoginContextInterceptor"/> -->
+            <interceptor-stack name="strutsDefaultStack">
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="servletConfig"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="scopedModelDriven"/>
+                <interceptor-ref name="modelDriven"/>
+                <interceptor-ref name="fileUpload">
+                    <param name="maximumSize">4194304</param>
+                    <!-- 	单个文件最大4M -->
+                    <param name="allowedTypes">
+                        image/x-png,image/png,image/gif,image/jpeg,image/jpg,image/pjpeg,application/x-shockwave-flash
+                    </param>
+                    <param name="allowedExtensions">jpg,jpeg,png,gif,txt,swf</param>
+                </interceptor-ref>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="multiselect"/>
+                <interceptor-ref name="staticParams"/>
+                <interceptor-ref name="actionMappingParams"/>
+                <interceptor-ref name="params">
+                    <param name="excludeParams">dojo\..*,^struts\..*,.*\\u0023.*</param>
+                </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+            </interceptor-stack>
+            <interceptor-stack name="adminInterceptor">
+                <interceptor-ref name="strutsDefaultStack"/>
+               <!--  <interceptor-ref name="loginContext"/> -->
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="adminInterceptor"/> 
+        <!-- <global-results>
+            <result name="exception">/WEB-INF/vm/error.vm</result>
+            <result name="error">/WEB-INF/vm/error.vm</result>
+            <result name="illegal">/WEB-INF/vm/illegal.vm</result>
+            <result name="login" type="redirect">${loginUrl}</result>
+        </global-results> -->
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="exception"/>
+        </global-exception-mappings>
+    </package>
+
+
+    <!-- 处理json方法中需要获取到当前登录cookie中的内容,则用此package,否则用 json-default -->
+    <package name="json-protected-default" extends="admin-default">
+        <result-types>
+            <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+        </result-types>
+        <interceptors>
+            <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+        </interceptors>
+    </package>
+    
+     <!-- 前台整个页面框架模块 -->
+    <package name="frontIndex" extends="struts-default" namespace="/front">
+        <action name="index" class="com.stark.asm.web.action.IndexFrontAction">
+            <result>/front/index.jsp</result>
+        </action>
+        
+         <action name="toRegister" method="toRegister" class="com.stark.asm.web.action.IndexFrontAction">
+            <!-- user to Register  -->
+            <result name="success">/front/register.jsp</result>
+        </action>
+        
+         <action name="toLogin" method="toLogin" class="com.stark.asm.web.action.IndexFrontAction">
+            <!-- user to  login  -->
+            <result name="success">/front/login.jsp</result>
+        </action>
+        <action name="login" method="login" class="com.stark.asm.web.action.IndexFrontAction">
+            <!-- user login  -->
+            <result name="success" type="redirect">index.action</result>
+            <result name="input">/front/login.jsp</result>
+        </action>
+         <action name="logout" method="logout" class="com.stark.asm.web.action.IndexFrontAction">
+            <!-- user logout  -->
+            <result name="success" type="redirect">toLogin.action</result>
+        </action>
+        <action name="headFrame" method="frame" class="com.stark.asm.web.action.IndexFrontAction">
+            <result>/front/head.vm</result>
+        </action>
+        <!-- 尾部菜单 -->
+        <action name="bottomFrame" method="frame" class="com.stark.asm.web.action.IndexFrontAction">
+            <result>/front/bottom.vm</result>
+        </action>
+        
+    </package>
+
+
+    <!-- 整个页面后台框架模块 -->
+    <package name="backgroudIndex" extends="struts-default" namespace="/backgroud">
+        <!-- 首页 -->
+        <action name="index" class="com.stark.asm.web.action.IndexBackgroudAction">
+            <result>/backgroud/index.jsp</result>
+        </action>
+        <!-- 顶部菜单 -->
+        <action name="headFrame" method="frame" class="com.stark.asm.web.action.IndexBackgroudAction">
+            <result>/backgroud/head.jsp</result>
+        </action>
+        <!-- 左侧菜单 -->
+        <action name="leftFrame" method="frame" class="com.stark.asm.web.action.IndexBackgroudAction">
+            <result>/backgroud/left.jsp</result>
+        </action>
+        <!-- 右侧菜单 -->
+        <action name="rightFrame" method="frame" class="com.stark.asm.web.action.IndexBackgroudAction">
+            <result>/backgroud/right.jsp</result>
+        </action>
+        <!-- 登陆 -->
+        <action name="toLogin" method="toLogin" class="com.stark.asm.web.action.IndexBackgroudAction">
+            <result name="success" type="redirect">login.jsp</result>
+        </action>
+         <!-- 登陆 -->
+        <action name="login" method="login" class="com.stark.asm.web.action.IndexBackgroudAction">
+            <result name="success" type="redirect">index.action</result>
+            <result name="input">/backgroud/login.jsp</result>
+        </action>
+        <!-- 退出 -->
+        <action name="logout" method="logout" class="com.stark.asm.web.action.IndexBackgroudAction">
+            <result type="redirectAction">
+                <param name="namespace">/</param>
+                <param name="actionName">index.action</param>
+            </result>
+        </action>
+    </package>
+
+
+    <!-- 任务启动监控程序 -->
+    <include file="struts-employee.xml"/>
+    <include file="struts-fun.xml"/>
+    <include file="struts-employee-fun.xml"/>
+    <include file="struts-user.xml"/>
+    <include file="struts-send.xml"/>
+    <include file="struts-send-type.xml"/>
+    <include file="struts-order.xml"/>
+    <include file="struts-level.xml"/>
+    <include file="struts-consumer.xml"/>
+    <include file="struts-commodity.xml"/>
+    <include file="struts-commodity-category.xml"/>
+    <include file="struts-comment.xml"/>
+    <include file="struts-carrier.xml"/>
+    <include file="struts-shoppingcart.xml"/>
+    <include file="struts-recentlyviewed.xml"/>
+    <include file="struts-favorites.xml"/>
+    <include file="struts-integral.xml"/>
+    <!-- 外部接口监控（WebService、ICE、ICEGrid、HttpClient） -->
+    <!--<include file="struts-monitor.xml" />-->
+    <!-- 异常处理监控 -->
+    <!--<include file="spring-synchtask.xml" />-->
+
+</struts>

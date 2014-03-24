@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<!-- Consummer Records Module Action -->
+	<package name="consumer" extends="admin-default">
+		<action name="consumer_*" method="{1}"
+			class="com.haos.web.action.consumer.ConsumerRecordsAction">
+			<!-- consummer records information -->
+			<result name="{1}">/backgroud/consumer/{1}.jsp</result>
+		</action>
+
+
+		<action name="myAccount" method="myAccount"
+			class="com.haos.web.action.consumer.ConsumerRecordsAction">
+			<!-- to consummer records page -->
+			<result>/front/account.jsp</result>
+			<result name="error" type="redirect">toLogin.action</result>
+		</action>
+
+
+		<action name="myConsumerRecords" method="myConsumerRecords"
+			class="com.haos.web.action.consumer.ConsumerRecordsAction">
+			<!-- to consummer records page -->
+			<result>/front/consumerRecords.jsp</result>
+			<result name="error" type="redirect">toLogin.action</result>
+		</action>
+
+	</package>
+
+
+	<!-- 消费记录模块 Json -->
+	<package name="consumer_json" extends="json-protected-default">
+		<!-- 消费记录信息 Json -->
+		<action name="consumerJson_*" method="{1}"
+			class="com.haos.web.action.consumer.json.ConsumerRecordsJsonAction">
+			<result name="out" type="json">
+				<param name="ignoreHierarchy">true</param>
+				<param name="excludeNullProperties">true</param>
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

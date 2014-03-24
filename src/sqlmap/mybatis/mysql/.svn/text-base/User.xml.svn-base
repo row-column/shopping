@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 用户信息 -->
+<mapper namespace="User">
+
+    <resultMap id="userMap" type="com.stark.asm.domain.user.User">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_code" property="userCode"  jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="level_code" property="levelCode" jdbcType="VARCHAR"/>
+        <result column="level_name" property="levelName" jdbcType="VARCHAR"/>
+        <result column="sex"  property="sex"  jdbcType="TINYINT"/>
+        <result column="mobile"  property="mobile"   jdbcType="VARCHAR"/>
+        <result column="email"  property="email"   jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" jdbcType="DATE"/>
+        <result column="hobbies" property="hobbies" jdbcType="VARCHAR"/>
+        <result column="user_photo" property="userPhoto" jdbcType="VARCHAR"/> 
+        <result column="comment_count" property="commentCount" jdbcType="BIGINT"/>                                      
+        <result column="integral"  property="integral"  jdbcType="BIGINT"/>
+        <result column="req_date" property="reqDate" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="yn" property="yn" jdbcType="TINYINT"/>
+    </resultMap>
+    
+     <!-- 创建用户信息 -->
+    <insert id="insert" parameterType="com.stark.asm.domain.user.User">
+        insert into user(user_code,user_name,password,level_code,sex,mobile,email,address,id_card,birthday,hobbies,user_photo,comment_count,integral,req_date,create_time,update_time,yn)
+        values(#{userCode},#{userName},#{password},#{levelCode},#{sex},#{mobile},#{email},#{address},#{idCard},#{birthday},#{hobbies},#{userPhoto},#{commentCount},#{integral},now(),now(),now(),#{yn})
+    </insert>
+
+    <!-- 修改用户信息，根据用户对象 -->
+    <update id="update" parameterType="com.stark.asm.domain.user.User">
+        <if test="_parameter != null">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+            <if test="id != null and id > 0">
+                update user set
+            	user_code=#{userCode,jdbcType=VARCHAR},
+            	user_name=#{userName,jdbcType=VARCHAR},
+            	password=#{password,jdbcType=VARCHAR},
+            	level_code=#{levelCode,jdbcType=VARCHAR},
+            	level_name=#{levelName,jdbcType=VARCHAR},
+            	sex=#{sex,jdbcType=TINYINT},
+                mobile = #{mobile,jdbcType=VARCHAR},
+                address=#{address,jdbcType=VARCHAR},
+                id_card=#{idCard,jdbcType=VARCHAR},
+                birthday=#{birthday,jdbcType=TIMESTAMP},
+                hobbies=#{hobbies,jdbcType=VARCHAR},
+                user_photo=#{userPhoto,jdbcType=VARCHAR},
+                comment_count=#{commentCount,jdbcType=BIGINT},
+                integral=#{integral,jdbcType=BIGINT},
+                update_time = #{updateTime,jdbcType=TIMESTAMP}
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+    
+    <!-- 修改用户信息，根据用户对象 -->
+    <update id="updateUserInfo" parameterType="com.stark.asm.domain.user.User">
+        <if test="_parameter != null">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+            <if test="id != null and id > 0">
+                update user set
+            	user_name=#{userName,jdbcType=VARCHAR},
+            	sex=#{sex,jdbcType=TINYINT},
+                mobile = #{mobile,jdbcType=VARCHAR},
+                address=#{address,jdbcType=VARCHAR},
+                id_card=#{idCard,jdbcType=VARCHAR},
+                birthday=#{birthday,jdbcType=TIMESTAMP},
+                hobbies=#{hobbies,jdbcType=VARCHAR},
+                update_time = #{updateTime,jdbcType=TIMESTAMP}
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+     <!-- 修改用户信息，根据用户对象 -->
+    <update id="updateUserPassword" parameterType="com.stark.asm.domain.user.User">
+        <if test="_parameter != null">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+            <if test="userCode != null">
+                update user set
+            	password=#{password,jdbcType=VARCHAR},
+                update_time = #{updateTime,jdbcType=TIMESTAMP}
+                where user_code = #{userCode}
+            </if>
+        </if>
+    </update>
+    
+     <!-- 修改用户评价数信息，根据用户对象 -->
+    <update id="updateUserCommentCount" parameterType="com.stark.asm.domain.user.User">
+        <if test="_parameter != null">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+            <if test="userCode != null">
+                update user set
+            	comment_count=#{commentCount,jdbcType=BIGINT},
+            	update_time = #{updateTime,jdbcType=TIMESTAMP}
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+
+	  <!-- 修改用户积分和等级信息，根据用户对象 -->
+    <update id="updateUserIntegralAndLevel" parameterType="com.stark.asm.domain.user.User">
+        <if test="_parameter != null">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+            <if test="userCode != null">
+                update user set
+            	integral=#{integral,jdbcType=BIGINT},
+               	level_code=#{levelCode,jdbcType=VARCHAR},
+            	level_name=#{levelName,jdbcType=VARCHAR},
+            	update_time = #{updateTime,jdbcType=TIMESTAMP}
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+    
+    <!-- 根据主键获取用户信息 -->
+    <select id="getUserById" resultMap="userMap" parameterType="java.lang.Long">
+        <if test="_parameter != null">
+            select id,user_code,user_name,password,level_code,sex,mobile,email,address,id_card,birthday,hobbies,user_photo,comment_count,integral,req_date,create_time,update_time from user
+            where id = #{_parameter}
+        </if>
+    </select>
+    
+    <!-- 根据账号获取用户信息 -->
+    <select id="getUserByUserCode" resultMap="userMap" parameterType="java.lang.String">
+        <if test="_parameter != null">
+            select id,user_code,user_name,password,level_code,sex,mobile,email,address,id_card,birthday,hobbies,user_photo,comment_count,integral,req_date,create_time,update_time from user
+            where user_code = #{_parameter}
+        </if>
+    </select>
+
+    <!-- 根据查询Bean获取用户集合，不带翻页 -->
+    <select id="queryUserListByQueryBean" resultMap="userMap"
+            parameterType="com.stark.asm.domain.user.query.UserQuery">
+        select id,user_code,user_name,password,level_code,sex,mobile,email,address,id_card,birthday,hobbies,user_photo,comment_count,integral,req_date,create_time,update_time from user where 1 = 1
+        <if test="_parameter != null">
+            <include refid="queryUserListWhere"/>
+        </if>
+    </select>
+
+    <!-- 根据查询Bean获取用户集合，翻页 -->
+    <select id="queryUserListPageByQueryBean" resultMap="userMap"
+            parameterType="com.stark.asm.domain.user.query.UserQuery">
+         select id,user_code,user_name,password,level_code,sex,mobile,email,address,id_card,birthday,hobbies,user_photo,comment_count,integral,req_date,create_time,update_time from user where 1 = 1
+        <if test="_parameter != null">
+            <include refid="queryUserListWhere"/>
+        </if>
+        order by create_time desc 
+        limit #{startRow},#{endRow};
+    </select>
+
+    <!-- 根据查询Bean获取用户总数 -->
+    <select id="queryUserCountByQueryBean" resultType="java.lang.Integer"
+            parameterType="com.stark.asm.domain.user.query.UserQuery">
+        select count(1) from user where 1 = 1
+        <if test="_parameter != null">
+            <include refid="queryUserListWhere"/>
+        </if>
+    </select>
+
+    <!-- 删除用户信息，根据主键 -->
+    <update id="deleteUserById" parameterType="java.lang.Long">
+        <if test="_parameter != null and _parameter > 0">
+            update user set yn = 1 where id = #{_parameter}
+        </if>
+    </update>
+
+    <!-- 常用的查询Where条件 -->
+    <sql id="queryUserListWhere">
+        <if test="userName != null and userName != ''">
+            and user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="userCode != null and userCode != ''">
+            and user_code = #{userCode,jdbcType=VARCHAR}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and create_time >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and #{endTime,jdbcType=TIMESTAMP} >= create_time
+        </if>
+        <if test="yn != null">
+            and #{yn,jdbcType=TINYINT} = yn
+        </if>
+    </sql>
+    
+
+   </mapper>

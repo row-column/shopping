@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/40/trunk/asm/src/sqlmap
+END
+sqlmap-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/asm/src/sqlmap/sqlmap-config.xml
+END
+mybatis-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/3/trunk/asm/src/sqlmap/mybatis-config.xml
+END

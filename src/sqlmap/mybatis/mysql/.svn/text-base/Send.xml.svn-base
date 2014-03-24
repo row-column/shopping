@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 配送信息 -->
+<mapper namespace="Send">
+    <resultMap id="sendMap" type="com.stark.asm.domain.send.Send">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="send_code" property="sendCode" jdbcType="VARCHAR"/>
+        <result column="order_code" property="orderCode" jdbcType="VARCHAR"/>
+        <result column="type_code" property="typeCode" jdbcType="VARCHAR"/>
+        <result column="type_name" property="typeName" jdbcType="VARCHAR"/>
+        <result column="carrier_code" property="carrierCode" jdbcType="VARCHAR"/>
+        <result column="carrier_name" property="carrierName" jdbcType="VARCHAR"/>
+        <result column="deal_time" property="dealTime" jdbcType="TIMESTAMP"/>
+        <result column="deal_information" property="dealInformation" jdbcType="VARCHAR"/>
+        <result column="operator" property="operator" jdbcType="VARCHAR"/>
+        <result column="remark"  property="remark"  jdbcType="VARCHAR"/>
+		<result column="create_time"  property="createTime"  jdbcType="TIMESTAMP"/>
+        <result column="update_time"  property="updateTime"  jdbcType="TIMESTAMP"/>
+        <result column="yn"  property="yn"  jdbcType="TINYINT"/>
+    </resultMap>
+
+    <!-- 创建配送信息 -->
+    <insert id="insert" parameterType="com.stark.asm.domain.send.Send">
+        insert into send(send_code,order_code,type_code,type_name,carrier_code,carrier_name,deal_time,deal_information,operator,remark,create_time,update_time,yn)
+        values(#{sendCode},#{orderCode},#{typeCode},#{typeName},#{carrierCode},#{carrierName},#{dealTime},#{dealInformation},#{operator},#{remark},#{createTime},#{updateTime},#{yn})
+    </insert>
+
+    <!-- 修改配送信息，根据配送对象 -->
+    <update id="update" parameterType="com.stark.asm.domain.send.Send">
+        <if test="_parameter != null">
+            <if test="id != null and id > 0">
+                update send set
+                send_code=#{sendCode,jdbcType=VARCHAR},
+                order_code=#{orderCode,jdbcType=VARCHAR},
+                type_code=#{typeCode,jdbcType=VARCHAR},
+                type_name=#{typeName,jdbcType=VARCHAR},
+                carrier_code=#{carrierCode,jdbcType=VARCHAR},
+                carrier_name=#{carrierName,jdbcType=VARCHAR},
+                deal_time=#{dealTime,jdbcType=TIMESTAMP},
+                deal_information=#{dealInformation,jdbcType=VARCHAR},
+                operator=#{operator,jdbcType=VARCHAR},
+                remark=#{remark,jdbcType=VARCHAR},
+                update_time=#{updateTime,jdbcType=TIMESTAMP}
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+
+    <!-- 根据主键获取配送信息 -->
+    <select id="getSendById" resultMap="sendMap" parameterType="java.lang.Long">
+        <if test="_parameter != null">
+            select id,send_code,order_code,type_code,type_name,carrier_code,carrier_name,deal_time,deal_information,operator,remark,create_time,update_time from send
+            where id = #{_parameter}
+        </if>
+    </select>
+
+
+ <!-- 根据配送代码获取配送信息 -->
+    <select id="getSendBySendCode" resultMap="sendMap" parameterType="java.lang.String">
+        <if test="_parameter != null">
+            select id,send_code,order_code,type_code,type_name,carrier_code,carrier_name,deal_time,deal_information,operator,remark,create_time,update_time from send
+            where send_code = #{_parameter} and yn=0
+        </if>
+    </select>
+    <!-- 根据查询Bean获取配送集合，不带翻页 -->
+    <select id="querySendListByQueryBean" resultMap="sendMap"
+            parameterType="com.stark.asm.domain.send.query.SendQuery">
+       select id,send_code,order_code,type_code,type_name,carrier_code,carrier_name,deal_time,deal_information,operator,remark,create_time,update_time from send where 1 = 1
+        <if test="_parameter != null">
+            <include refid="querySendListWhere"/>
+        </if>
+       </select>
+    <!-- 根据查询Bean获取配送集合，翻页 -->
+    <select id="querySendListPageByQueryBean" resultMap="sendMap"
+            parameterType="com.stark.asm.domain.send.query.SendQuery">
+       select id,send_code,order_code,type_code,type_name,carrier_code,carrier_name,deal_time,deal_information,operator,remark,create_time,update_time from send where 1 = 1
+        <if test="_parameter != null">
+            <include refid="querySendListWhere"/>
+        </if>
+        order by id desc 
+        limit #{startRow},#{endRow};
+    </select>
+
+    <!-- 根据查询Bean获取配送总数 -->
+    <select id="querySendCountByQueryBean" resultType="java.lang.Integer"
+            parameterType="com.stark.asm.domain.send.query.SendQuery">
+        select count(1) from send where 1 = 1
+        <if test="_parameter != null">
+            <include refid="querySendListWhere"/>
+        </if>
+    </select>
+
+    <!-- 删除配送信息，根据主键 -->
+    <delete id="deleteSendById" parameterType="java.lang.Long">
+        <if test="_parameter != null and _parameter > 0">
+            update  send  set yn=1 where id = #{_parameter}
+        </if>
+    </delete>
+
+    <!-- 常用的查询Where条件 -->
+    <sql id="querySendListWhere">
+        <if test="sendCode != null and sendCode != ''">
+            and send_code = #{sendCode,jdbcType=VARCHAR}
+        </if>
+        <if test="orderCode != null and orderCode != ''">
+            and order_code = #{orderCode,jdbcType=VARCHAR}
+        </if>
+        <if test="typeCode != null and typeCode != ''">
+            and type_code = #{typeCode,jdbcType=VARCHAR}
+        </if>
+        
+        <if test="carrierCode != null and carrierCode != ''">
+            and carrier_code = #{carrierCode,jdbcType=VARCHAR}
+        </if>
+        
+        <if test="startTime != null and startTime != ''">
+            and create_time >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and #{endTime,jdbcType=TIMESTAMP} >= create_time
+        </if>
+        
+        <if test="yn != null">
+            and yn = #{yn,jdbcType=TINYINT}
+        </if>
+
+    </sql>
+</mapper>

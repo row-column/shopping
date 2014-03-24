@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<!-- 配送模块 Action -->
+	<package name="send" extends="admin-default">
+		<action name="send_*" method="{1}"
+			class="com.haos.web.action.send.SendAction">
+			<!-- 配送信息 -->
+			<result name="{1}">/backgroud/send/{1}.jsp</result>
+		</action>
+	</package>
+
+
+	<!-- 配送模块 Json -->
+	<package name="send_json" extends="json-protected-default">
+		<!-- 配送信息 Json -->
+		<action name="sendJson_*" method="{1}"
+			class="com.haos.web.action.send.json.SendJsonAction">
+			<result name="out" type="json">
+				<param name="ignoreHierarchy">true</param>
+				<param name="excludeNullProperties">true</param>
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

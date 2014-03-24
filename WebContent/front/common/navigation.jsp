@@ -1,0 +1,151 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="/struts-tags" prefix="s"%>
+<div id="masthead">
+	<!-- Logo -->
+	<div class="logo">
+		<a href="index.action"><img src="images/logo.png" alt="" />
+		</a>
+	</div>
+	<!-- Right Head Section -->
+	<div class="righthead">
+		<div class="search">
+			<ul>
+				<li><input type="text" value="在这里可以搜索商品" id="commodityName"
+					name="commodityName" value="<s:property value="commodityName" />"
+					onblur="if(this.value == '') { this.value = '在这里可以搜索商品'; }"
+					onfocus="if(this.value == '在这里可以搜索商品') { this.value = ''; }"
+					class="bar" /></li>
+				<li><a href="#" id="searchCommodity" name="searchCommodity"
+					class="go">&nbsp;</a></li>
+			</ul>
+		</div>
+		<!-- Welcome Message -->
+		<div class="welcommsg black clear">
+			<s:if test="#session.userCode!=null">
+				<p align="left">
+					您好，
+					<s:property value="#session.userCode" />
+					! 欢迎登陆
+				</p>
+			</s:if>
+			<s:else>
+				<p>
+					亲，您还木有登陆呐;赶紧去<a href="toLogin.action">登陆</a>吧
+				</p>
+			</s:else>
+		</div>
+		<!-- Top Navigation -->
+		<div class="topnav clear">
+			<ul>
+				<li><a href="myAccount.action">我的账户</a>
+				</li>
+				<li><a href="myShoppingCart.action">我的购物车</a>
+				</li>
+				<s:if test="#session.userCode!=null">
+					<li><a href="logout.action">注销</a>
+					</li>
+				</s:if>
+				<s:else>
+					<li class="last"><a href="toLogin.action">登陆</a>
+					</li>
+					<li class="last"><a href="toRegister.action">注册</a>
+					</li>
+				</s:else>
+
+
+
+			</ul>
+		</div>
+	</div>
+	<!-- Navigation -->
+	<div class="navigation">
+		<div id="smoothmenu1" class="ddsmoothmenu">
+			<ul>
+				<li><a href="index.action">主页</a>
+				</li>
+				<li><a href="#">商品类别</a>
+					<ul>
+						<!--<li><a href="listing.html">TV-LCDs</a></li>
+                            <li><a href="#" class="down greylink">BRANDS</a>
+                                <ul>
+                                    <li><a href="listing.html">SONY</a></li>
+                                    <li><a href="listing.html" class="greylink">PANASONIC</a></li>
+                                    <li><a href="listing.html">SAMSUNG</a></li>
+                                    <li><a href="listing.html" class="greylink">SHARP</a></li>
+                                    <li><a href="listing.html">LG</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="listing.html">Microvawe Oven</a></li>
+                            <li><a href="listing.html" class="greylink">Washing Machines</a></li>
+                        -->
+						<s:if test="commodityCategoryList.size>0">
+							<s:iterator value="commodityCategoryList">
+								<li><a
+									href="listingByCategory.action?commodityQuery.categoryCode=<s:property value="commodityCategoryCode"/>"
+									class="down greylink"><s:property
+											value="commodityCategoryName" />
+								</a></li>
+							</s:iterator>
+						</s:if>
+
+
+					</ul></li>
+				<li><a href="listingBySalesCount.action">热销品</a>
+				</li>
+				<li><a href="listingByLatestTime.action">最近上架</a>
+				</li>
+				<li><a href="#">音乐</a>
+				</li>
+				<li><a href="#">快速导航</a>
+					<ul>
+						<li><a href="index.action">主页</a>
+						</li>
+						<li><a href="listing.action" class="greylink">所有商品列表</a>
+						</li>
+						<li><a href="myCart.action" class="greylink">购物车</a>
+						</li>
+						<li><a href="myAccount.action" class="greylink">我的账户</a>
+						</li>
+					</ul></li>
+				<!--<li><a href="#">Themes</a>
+                        <ul>
+                            <li><a href="../grey/index.html">Grey</a></li>
+                            <li><a href="../blue/index.html" class="greylink">Blue</a></li>
+                            <li><a href="../green/index.html">Green</a></li>
+                            <li><a href="../pink/index.html" class="greylink">Pink</a></li>
+                            <li><a href="../red/index.html">Red</a></li>
+                            <li><a href="../teal/index.html" class="greylink">Teal</a></li>
+                        </ul>
+                    </li>-->
+			</ul>
+			<div class="clear"></div>
+		</div>
+		<div class="lang">
+			<select name="speedC" id="speedC">
+				<option value="Slower" class="whoo">中文</option>
+				<option value="Slow">English</option>
+			</select>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<script>
+ $(document).ready(function() {
+      
+      $("#searchCommodity").click(function(){
+    	  
+    	  var commodityName=$("#commodityName").val();
+    	  if(commodityName.length>=0&&commodityName!=''){
+    		 window.self.location="searchCommodity.action?commodityName="+commodityName;
+    	  }
+    	  
+      });
+      
+      
+      
+ 
+ });
+ 
+ 
+</script>

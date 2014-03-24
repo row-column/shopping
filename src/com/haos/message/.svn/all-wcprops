@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/3/trunk/asm/src/com/stark/asm/message
+END
+message.properties
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/3/trunk/asm/src/com/stark/asm/message/message.properties
+END
+exampleMessage_en_US.properties
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/3/trunk/asm/src/com/stark/asm/message/exampleMessage_en_US.properties
+END
+exampleMessage_zh_CN.properties
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/3/trunk/asm/src/com/stark/asm/message/exampleMessage_zh_CN.properties
+END

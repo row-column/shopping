@@ -1,0 +1,13 @@
+tools.view.servlet.layout.directory=/WEB-INF/vm/layout/
+tools.view.servlet.error.template=/WEB-INF/vm/error.vm
+tools.view.servlet.layout.default.template=default.vm
+velocimacro.library=/WEB-INF/vm/macro.vm
+velocimacro.library.autoreload=${wms-example.velocity.macro.autoreload}
+input.encoding=UTF-8
+output.encoding=UTF-8
+runtime.log.logsystem.class=org.springframework.ui.velocity.CommonsLoggingLogSystem
+strutsfile.resource.loader.cache=${wms-example.velocity.cache}
+strutsfile.resource.loader.modificationCheckInterval=${wms-example.velocity.cache.time}
+# eventhandler.referenceinsertion.class=org.apache.velocity.app.event.implement.EscapeHtmlReference,org.apache.velocity.app.event.implement.EscapeJavaScriptReference
+# eventhandler.escape.html.match=/.*msg.*/
+# eventhandler.escape.javascript.match=/.*js.*/

@@ -1,0 +1,244 @@
+package com.stark.asm.manager.commodity.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import com.stark.asm.common.util.CommonConstant;
+import com.stark.asm.common.util.manager.BaseManager;
+import com.stark.asm.common.util.page.PaginatedArrayList;
+import com.stark.asm.common.util.page.PaginatedList;
+import com.stark.asm.dao.commodity.CommodityCategoryDao;
+import com.stark.asm.domain.commodity.CommodityCategory;
+import com.stark.asm.domain.commodity.query.CommodityCategoryQuery;
+import com.stark.asm.manager.commodity.CommodityCategoryManager;
+
+/**
+ * Commodity category Manager implementation
+ * @author WangYue
+ *
+ */
+public class CommodityCategoryManagerImpl extends BaseManager implements CommodityCategoryManager {
+	
+
+    /**
+     * 日志
+     */
+    private static final Logger log = LogManager.getLogger(CommodityCategoryManagerImpl.class);
+	
+	private CommodityCategoryDao commodityCategoryDao;
+
+	@Override
+	public boolean addCommodityCategory(final CommodityCategory commodityCategory) {
+		   // 操作结果
+        boolean resultFlag = true;
+        try {
+            // 事务 多个数据处理时，放入事务处理中 （此处作为实例，没有多个数据处理时，无需进行事务处理）
+            TransactionTemplate template = this.getDataSourceTransactionManager();
+            template.execute(new TransactionCallbackWithoutResult() {
+                @Override
+                protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                    try {
+                        boolean insertFlag = false;
+                        if (commodityCategory != null) {
+                            commodityCategory.setCreateTime(new Date());
+                            commodityCategory.setUpdateTime(new Date());
+                            commodityCategory.setYn(CommonConstant.YN_NO_DELETE);
+                            insertFlag = commodityCategoryDao.addCommodityCategory(commodityCategory);
+                            
+                            // 新增失败
+                            if (!insertFlag) {
+                                //添加失败，抛出异常
+                                throw new RuntimeException("CommodityCategoryManagerImpl.addCommodityCategory.error.");
+                            } else {
+                                // 事务中的其他数据处理
+                                // 调用内部方法
+                            }
+
+                        } else {
+                            //对象为null，抛出异常
+                            log.debug("CommodityCategoryManagerImpl.addCommodityCategory.parameter.empty.");
+                            throw new RuntimeException("CommodityCategoryManagerImpl.addCommodityCategory.parameter.empty.");
+                        }
+                    } catch (Exception e) {
+                        // 日志记录
+                        log.error(e);
+                        // 回滚
+                        transactionStatus.setRollbackOnly();
+                        throw new RuntimeException("CommodityCategoryManagerImpl.addCommodityCategory.exception:", e);
+                    }
+                }
+
+                // 添加 事务中的其他数据处理的内部方法
+
+            });
+
+        } catch (Exception e) {
+            resultFlag = false;
+            log.error(e);
+        }
+        return resultFlag;
+	}
+
+	@Override
+	public boolean updateCommodityCategory(CommodityCategory commodityCategory) {
+		// 操作结果
+        boolean resultFlag = true;
+        try {
+            if (null != commodityCategory) {
+                // 设置更新时间
+                commodityCategory.setUpdateTime(new Date());
+                
+                // 更新操作
+                boolean updateRouteFlag = commodityCategoryDao.updateCommodityCategory(commodityCategory);
+                
+                if (!updateRouteFlag) {
+                	
+                    //更新失败，抛出异常
+                    throw new RuntimeException("CommodityCategoryManagerImpl.updateCommodityCategory.fail.");
+                }
+            } else {
+                //功能对象为null，抛出异常
+                log.debug("CommodityCategoryManagerImpl.updateCommodityCategory.parameter.empty.");
+                throw new RuntimeException("CommodityCategoryManagerImpl.updateCommodityCategory.parameter.empty.");
+            }
+        } catch (Exception e) {
+            resultFlag = false;
+            log.error(e);
+            //System.out.println(e);
+        }
+        return resultFlag;
+	}
+
+	@Override
+	public CommodityCategory getCommodityCategoryById(Long id) {
+		return commodityCategoryDao.getCommodityCategoryById(id);
+	}
+
+	@Override
+	public CommodityCategory getCommodityCategoryByCommodityCategoryCode(String commodityCategoryCode) {
+		return commodityCategoryDao.getCommodityCategoryByCommodityCategoryCode(commodityCategoryCode);
+	}
+
+	@Override
+	public List<CommodityCategory> queryCommodityCategoryListByQueryBean(CommodityCategoryQuery commodityCategoryQuery) {
+		return commodityCategoryDao.queryCommodityCategoryListByQueryBean(commodityCategoryQuery);
+	}
+
+	@Override
+	public PaginatedList<CommodityCategory> queryCommodityCategoryListPageByQueryBean(CommodityCategoryQuery commodityCategoryQuery,int pageIndex, int pageSize) {
+		
+		  //必须有这行代码
+        if (null == commodityCategoryQuery) {
+            commodityCategoryQuery = new CommodityCategoryQuery();
+        }
+        //查询总数
+        int totalItem = commodityCategoryDao.queryCommodityCategoryCountByQueryBean(commodityCategoryQuery);
+        
+        //创建翻页集合,根据第几页和每页大小
+        PaginatedList<CommodityCategory> commodityCategorys = new PaginatedArrayList<CommodityCategory>(pageIndex, pageSize);
+        
+        //设置总数,同时将会计算出开始行和结束行
+        commodityCategorys.setTotalItem(totalItem);
+        
+        //设置开始行
+        commodityCategoryQuery.setStartRow(commodityCategorys.getStartRow());
+        
+        //设置最后行
+        commodityCategoryQuery.setEndRow(commodityCategorys.getEndRow());
+        
+        //调用Dao翻页方法
+        List<CommodityCategory> commodityCategoryList = commodityCategoryDao.queryCommodityCategoryListPageByQueryBean(commodityCategoryQuery);
+        
+        //添加到翻页集合中
+        commodityCategorys.addAll(commodityCategoryList);
+
+        return commodityCategorys;
+	}
+
+	@Override
+	public boolean deleteCommodityCategoryById(Long id) {
+		
+		// 操作结果
+        boolean resultFlag = true;
+        try {
+            if (null != id && !("").equals(id)) {
+                // 删除
+                boolean deleteFlag = commodityCategoryDao.deleteCommodityCategoryById(id);
+                if (!deleteFlag) {
+                    //删除失败，抛出异常
+                    throw new RuntimeException("CommodityCategoryManagerImpl.deleteCommodityCategory.fail.");
+                }
+            } else {
+                //记录id 为null，抛出异常
+                log.debug("CommodityCategoryManagerImpl.deleteCommodityCategory.empty.");
+                throw new RuntimeException("");
+            }
+        } catch (Exception e) {
+            resultFlag = false;
+            log.error(e);
+        }
+        return resultFlag;
+	}
+	
+ 
+	@Override
+	public boolean deleteCommodityCategoryByIds(final Long[]ids){
+		
+		// result flag
+        boolean resultFlag = true;
+        try {
+        	//deal with many data of transaction, you should execute this transaction.
+        	TransactionTemplate template =this.getDataSourceTransactionManager();
+        	template.execute(new TransactionCallbackWithoutResult() {
+				
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+					try{
+						boolean deleteFlag=false; //delete result flag
+						//judge on ids whether null or not
+						if(ids!=null&&ids.length>0){
+							//Traverse array ids
+							for(Long id:ids){
+								deleteFlag=commodityCategoryDao.deleteCommodityCategoryById(id);
+							}
+							if(!deleteFlag){
+								throw new RuntimeException("CommodityCategoryManagerImpl.deleteCommodityCategoryByIds(),Fail.");
+							}
+						}else{
+							throw new RuntimeException("CommodityCategoryManagerImpl.deleteCommodityCategoryByIds(), ids param null.");
+						}
+						
+					}catch(Exception e){
+						//record log
+                        log.error(e);
+                        // roll back
+                        transactionStatus.setRollbackOnly();
+                        throw new RuntimeException("CommodityCategoryManagerImpl.deleteCommodityCategoryByIds.exception:", e);
+					}
+				}
+			});
+        }catch(Exception e){
+        	resultFlag = false;
+            log.error(e);
+        }
+        return resultFlag;
+	}
+
+	@Override
+	public int queryCommodityCategoryCountByQueryBean(CommodityCategoryQuery commodityCategoryQuery) {
+		return commodityCategoryDao.queryCommodityCategoryCountByQueryBean(commodityCategoryQuery);
+	}
+
+	public void setCommodityCategoryDao(CommodityCategoryDao commodityCategoryDao) {
+		this.commodityCategoryDao = commodityCategoryDao;
+	}
+	
+	
+
+}
