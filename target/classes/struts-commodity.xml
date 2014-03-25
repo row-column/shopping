@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<!-- Commodity Module Action -->
+	<package name="commodity" extends="admin-default">
+		<action name="commodity_*" method="{1}"
+			class="com.shopping.web.action.commodity.CommodityAction">
+			<!-- Commodity Information -->
+			<result name="{1}">/backgroud/commodity/{1}.jsp</result>
+			<result name="success" type="redirect">/backgroud/commodity/commodity_commodityMain.action
+			</result>
+		</action>
+		<action name="uploadCommodityPhoto" method="uploadCommodityPhoto"
+			class="com.shopping.web.action.commodity.CommodityAction">
+			<!-- Commodity Information -->
+			<!-- 限制图片的格式和图片的大小 -->
+			<interceptor-ref name="fileUpload">
+				<param name="allowedTypes">
+					image/bmp,image/png,image/gif,image/jpeg,image/pjpeg  
+               </param>
+			</interceptor-ref>
+			<!-- 默认的拦截器，必须要写 -->
+			<interceptor-ref name="defaultStack" />
+			<result name="success" type="redirect">/backgroud/commodity/commodity_commodityMain.action
+			</result>
+		</action>
+		<action name="detail" method="detail"
+			class="com.shopping.web.action.commodity.CommodityAction">
+			<!-- to commodity detail page -->
+			<result name="success">/front/detail.jsp</result>
+		</action>
+
+
+
+		<action name="listingByLatestTime" method="listingByLatestTime"
+			class="com.shopping.web.action.commodity.CommodityAction">
+			<!-- to commodity information by category list page -->
+			<result name="success">/front/listingByLatestTime.jsp</result>
+		</action>
+
+		<action name="listingByCategory" method="listingByCategory"
+			class="com.shopping.web.action.commodity.CommodityAction">
+			<!-- to commodity information by category list page -->
+			<result name="success">/front/listingByCategory.jsp</result>
+		</action>
+
+		<action name="listingBySalesCount" method="listingBySalesCount"
+			class="com.shopping.web.action.commodity.CommodityAction">
+			<!-- to commodity information by category list page -->
+			<result name="success">/front/listingBySalesCount.jsp</result>
+		</action>
+
+		<action name="listing" method="listing"
+			class="com.shopping.web.action.commodity.CommodityAction">
+			<!-- to commodity information page -->
+			<result name="success">/front/listing.jsp</result>
+		</action>
+
+		<action name="searchCommodity" method="searchCommodity"
+			class="com.shopping.web.action.commodity.CommodityAction">
+			<!-- to search commodity information page -->
+			<result name="success">/front/searchCommodity.jsp</result>
+		</action>
+
+
+	</package>
+
+
+	<!-- Commodity Module Json -->
+	<package name="commodity_json" extends="json-protected-default">
+		<!-- Commodity Information Json -->
+		<action name="commodityJson_*" method="{1}"
+			class="com.shopping.web.action.commodity.json.CommodityJsonAction">
+			<result name="out" type="json">
+				<param name="ignoreHierarchy">true</param>
+				<param name="excludeNullProperties">true</param>
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+
+</struts>

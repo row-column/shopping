@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <!-- 功能信息 -->
 <mapper namespace="Fun">
-	<resultMap id="funMap" type="com.haos.domain.fun.Fun">
+	<resultMap id="funMap" type="com.shopping.domain.fun.Fun">
 		<id column="id" property="id" jdbcType="BIGINT" />
 		<result column="fun_code" property="funCode" jdbcType="VARCHAR" />
 		<result column="fun_name" property="funName" jdbcType="VARCHAR" />
@@ -20,14 +20,14 @@
 	</resultMap>
 
 	<!-- 创建功能信息 -->
-	<insert id="insert" parameterType="com.haos.domain.fun.Fun">
+	<insert id="insert" parameterType="com.shopping.domain.fun.Fun">
 		insert into
 		fun(fun_code,fun_name,fun_type,url_name,url_param,url_order,is_status,parent_code,fun_system,remark,create_time,update_time,yn)
 		values(#{funCode,jdbcType=VARCHAR},#{funName,jdbcType=VARCHAR},#{funType,jdbcType=TINYINT},#{urlName,jdbcType=VARCHAR},#{urlParam,jdbcType=VARCHAR},#{urlOrder,jdbcType=TINYINT},#{isStatus,jdbcType=TINYINT},#{parentCode,jdbcType=VARCHAR},#{funSystem,jdbcType=TINYINT},#{remark,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=TINYINT})
 	</insert>
 
 	<!-- 修改功能信息，根据功能对象 -->
-	<update id="update" parameterType="com.haos.domain.fun.Fun">
+	<update id="update" parameterType="com.shopping.domain.fun.Fun">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update fun 
@@ -93,7 +93,7 @@
 
 	<!-- 根据查询Bean获取功能集合，不带翻页 -->
 	<select id="queryFunListByQueryBean" resultMap="funMap"
-		parameterType="com.haos.domain.fun.query.FunQuery">
+		parameterType="com.shopping.domain.fun.query.FunQuery">
 		select
 		id,fun_code,fun_name,fun_type,url_name,url_param,url_order,is_status,parent_code,fun_system,remark,create_time,update_time
 		from fun where 1 = 1
@@ -103,7 +103,7 @@
 	</select>
 	<!-- 根据查询Bean获取功能集合，翻页 -->
 	<select id="queryFunListPageByQueryBean" resultMap="funMap"
-		parameterType="com.haos.domain.fun.query.FunQuery">
+		parameterType="com.shopping.domain.fun.query.FunQuery">
 		select
 		id,fun_code,fun_name,fun_type,url_name,url_param,url_order,is_status,parent_code,fun_system,remark,create_time,update_time
 		from fun where 1 = 1
@@ -116,7 +116,7 @@
 
 	<!-- 根据查询Bean获取功能总数 -->
 	<select id="queryFunCountByQueryBean" resultType="java.lang.Integer"
-		parameterType="com.haos.domain.fun.query.FunQuery">
+		parameterType="com.shopping.domain.fun.query.FunQuery">
 		select count(1) from fun where 1 = 1
 		<if test="_parameter != null">
 			<include refid="queryFunListWhere" />

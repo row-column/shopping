@@ -8,7 +8,7 @@
 	<!-- 商品类别模块 Action -->
 	<package name="commodityCategory" extends="admin-default">
 		<action name="commodityCategory_*" method="{1}"
-			class="com.haos.web.action.commodity.CommodityCategoryAction">
+			class="com.shopping.web.action.commodity.CommodityCategoryAction">
 			<!-- 商品类别信息 -->
 			<result name="{1}">/backgroud/commodityCategory/{1}.jsp</result>
 		</action>
@@ -19,7 +19,7 @@
 	<package name="commodityCategory_json" extends="json-protected-default">
 		<!-- 商品类别信息 Json -->
 		<action name="commodityCategoryJson_*" method="{1}"
-			class="com.haos.web.action.commodity.json.CommodityCategoryJsonAction">
+			class="com.shopping.web.action.commodity.json.CommodityCategoryJsonAction">
 			<result name="out" type="json">
 				<param name="ignoreHierarchy">true</param>
 				<param name="excludeNullProperties">true</param>

@@ -4,7 +4,7 @@
 <!-- 用户信息 -->
 <mapper namespace="User">
 
-	<resultMap id="userMap" type="com.haos.domain.user.User">
+	<resultMap id="userMap" type="com.shopping.domain.user.User">
 		<id column="id" property="id" jdbcType="BIGINT" />
 		<result column="user_code" property="userCode" jdbcType="VARCHAR" />
 		<result column="user_name" property="userName" jdbcType="VARCHAR" />
@@ -29,14 +29,14 @@
 	</resultMap>
 
 	<!-- 创建用户信息 -->
-	<insert id="insert" parameterType="com.haos.domain.user.User">
+	<insert id="insert" parameterType="com.shopping.domain.user.User">
 		insert into
 		user(user_code,user_name,password,level_code,level_name,sex,mobile,email,address,id_card,birthday,hobbies,user_photo,comment_count,integral,req_date,create_time,update_time,yn)
 		values(#{userCode,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{levelCode,jdbcType=VARCHAR},#{levelName,jdbcType=VARCHAR},#{sex,jdbcType=TINYINT},#{mobile,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{idCard,jdbcType=VARCHAR},#{birthday,jdbcType=DATE},#{hobbies,jdbcType=VARCHAR},#{userPhoto,jdbcType=VARCHAR},#{commentCount,jdbcType=BIGINT},#{integral,jdbcType=BIGINT},#{reqDate,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=TINYINT})
 	</insert>
 
 	<!-- 修改用户信息，根据用户对象 -->
-	<update id="update" parameterType="com.haos.domain.user.User">
+	<update id="update" parameterType="com.shopping.domain.user.User">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update user
@@ -93,7 +93,7 @@
 	</update>
 
 	<!-- 修改用户信息，根据用户对象 -->
-	<update id="updateUserInfo" parameterType="com.haos.domain.user.User">
+	<update id="updateUserInfo" parameterType="com.shopping.domain.user.User">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update user set
@@ -111,7 +111,7 @@
 		</if>
 	</update>
 	<!-- 修改用户信息，根据用户对象 -->
-	<update id="updateUserPassword" parameterType="com.haos.domain.user.User">
+	<update id="updateUserPassword" parameterType="com.shopping.domain.user.User">
 		<if test="_parameter != null">
 			<if test="userCode != null">
 				update user set
@@ -124,7 +124,7 @@
 	</update>
 
 	<!-- 修改用户评价数信息，根据用户对象 -->
-	<update id="updateUserCommentCount" parameterType="com.haos.domain.user.User">
+	<update id="updateUserCommentCount" parameterType="com.shopping.domain.user.User">
 		<if test="_parameter != null">
 			<if test="userCode != null">
 				update user set
@@ -137,7 +137,7 @@
 	</update>
 
 	<!-- 修改用户积分和等级信息，根据用户对象 -->
-	<update id="updateUserIntegralAndLevel" parameterType="com.haos.domain.user.User">
+	<update id="updateUserIntegralAndLevel" parameterType="com.shopping.domain.user.User">
 		<if test="_parameter != null">
 			<if test="userCode != null">
 				update user set
@@ -174,7 +174,7 @@
 
 	<!-- 根据查询Bean获取用户集合，不带翻页 -->
 	<select id="queryUserListByQueryBean" resultMap="userMap"
-		parameterType="com.haos.domain.user.query.UserQuery">
+		parameterType="com.shopping.domain.user.query.UserQuery">
 		select
 		id,user_code,user_name,password,level_code,sex,mobile,email,address,id_card,birthday,hobbies,user_photo,comment_count,integral,req_date,create_time,update_time
 		from user where 1 = 1
@@ -185,7 +185,7 @@
 
 	<!-- 根据查询Bean获取用户集合，翻页 -->
 	<select id="queryUserListPageByQueryBean" resultMap="userMap"
-		parameterType="com.haos.domain.user.query.UserQuery">
+		parameterType="com.shopping.domain.user.query.UserQuery">
 		select
 		id,user_code,user_name,password,level_code,sex,mobile,email,address,id_card,birthday,hobbies,user_photo,comment_count,integral,req_date,create_time,update_time
 		from user where 1 = 1
@@ -198,7 +198,7 @@
 
 	<!-- 根据查询Bean获取用户总数 -->
 	<select id="queryUserCountByQueryBean" resultType="java.lang.Integer"
-		parameterType="com.haos.domain.user.query.UserQuery">
+		parameterType="com.shopping.domain.user.query.UserQuery">
 		select count(1) from user where 1 = 1
 		<if test="_parameter != null">
 			<include refid="queryUserListWhere" />

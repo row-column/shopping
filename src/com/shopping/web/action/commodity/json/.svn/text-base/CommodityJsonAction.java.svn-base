@@ -1,0 +1,260 @@
+package com.stark.asm.web.action.commodity.json;
+
+import com.stark.asm.common.util.action.BaseAction;
+import com.stark.asm.common.util.page.Result;
+import com.stark.asm.domain.commodity.Commodity;
+import com.stark.asm.service.commodity.CommodityService;
+
+
+/**
+ * Commodity JsonAction
+ * @author WangYue
+ *
+ */
+public class CommodityJsonAction extends BaseAction {
+   // private final static Log logger = LogFactory.getLog(CommodityJsonAction.class);
+    
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+     * commodity category Service interface
+     */
+    private CommodityService commodityService;
+    
+    
+    /**
+     * json return result
+     */
+    private String result;
+    
+    /**
+     * alert information
+     */
+    private String resultMsg;
+    
+    /**
+     * commodity value class
+     */
+    private Commodity commodity;
+    
+    /**
+     * commodity code array
+     */
+    private Long[]ids;
+    
+    
+    /**
+     *  add commodity method
+     *
+     * @return
+     */
+    public String addCommodity() {
+    	
+        if (null != commodity) {
+            Result serviceResult = commodityService.addCommodity(commodity);
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false*" + (String) serviceResult.get("resultMsg");
+            }
+        } else {
+            result = "false";
+        }
+        return "out";
+    }
+
+    /**
+     * update commodity information
+     *
+     * @return
+     */
+    public String updateCommodity() {
+        if (null != commodity) {
+
+            Result serviceResult = commodityService.updateCommodity(commodity);
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false";
+            }
+        } else {
+            result = "false";
+        }
+        return "out";
+    }
+    
+    /**
+     * update commodity information
+     *
+     * @return
+     */
+    public String updateCommodityQty() {
+        if (null != commodity) {
+
+            Result serviceResult = commodityService.updateCommodityQty(commodity);
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false";
+            }
+        } else {
+            result = "false";
+        }
+        return "out";
+    }
+    
+    /**
+     * update commodity information
+     *
+     * @return
+     */
+    public String updateCommodityCommentCount() {
+        if (null != commodity) {
+
+            Result serviceResult = commodityService.updateCommodityCommentCount(commodity);
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false";
+            }
+        } else {
+            result = "false";
+        }
+        return "out";
+    }
+    
+    /**
+     * update commodity information
+     *
+     * @return
+     */
+    public String updateCommodityViewedCount() {
+        if (null != commodity) {
+
+            Result serviceResult = commodityService.updateCommodityViewedCount(commodity);
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false";
+            }
+        } else {
+            result = "false";
+        }
+        return "out";
+    }
+
+    /**
+     * delete commodity information
+     *
+     * @return
+     */
+    public String deleteCommodity() {
+        if (null != commodity.getId() && commodity.getId().intValue() > 0) {
+            Result serviceResult = commodityService.deleteCommodityById(commodity.getId());  // call deleteCommodityById()method
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false";
+            }
+        } else {
+            result = "false";
+        }
+        return "out";
+    }
+    
+    /**
+     * delete more commodities information
+     *
+     * @return
+     */
+    public String deleteCommodities() {
+        if(ids!=null&&ids.length>1){
+            Result serviceResult = commodityService.deleteCommodityByIds(ids); //call deleteCommodityByIds()method
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false";
+            }
+        }else {
+            result = "false";
+        }
+        return "out";
+    }
+    
+    /**
+     * check commodity code
+     *
+     * @return
+     */
+    public String checkCommodityCode() {
+        if (null != commodity) {
+
+            Result serviceResult = commodityService.getCommodityByCommodityCode(commodity.getCommodityCode());
+            
+            if (null != serviceResult && serviceResult.getSuccess()) {
+            	Commodity commodity=(Commodity)serviceResult.get("commodity");
+            	if(commodity!=null&&commodity.getCommodityCode()!=null){
+            		result = "exist";
+            	}else{
+            		result = "ok";
+            	}
+            } else {
+            	result = "ok";
+            }
+        } 
+        return "out";
+    }
+
+    
+    public void setCommodityService(CommodityService commodityService) {
+        this.commodityService = commodityService;
+    }
+
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getResultMsg() {
+        return resultMsg;
+    }
+
+    public void setResultMsg(String resultMsg) {
+        this.resultMsg = resultMsg;
+    }
+
+	public Commodity getCommodity() {
+		return commodity;
+	}
+
+	public void setCommodity(Commodity commodity) {
+		this.commodity = commodity;
+	}
+
+	public CommodityService getCommodityService() {
+		return commodityService;
+	}
+
+	public Long[] getIds() {
+		return ids;
+	}
+
+	public void setIds(Long[] ids) {
+		this.ids = ids;
+	}
+
+}

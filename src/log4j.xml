@@ -11,7 +11,7 @@
 
 	<appender name="FILE-DEBUG" class="org.apache.log4j.FileAppender">
 		<param name="Append" value="false" />
-		<param name="file" value="${wms-example.log.path}/haos-debug.log" />
+		<param name="file" value="${wms-example.log.path}/shopping-debug.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n" />
 		</layout>
@@ -20,7 +20,7 @@
 	<appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="DatePattern" value="'.'yyyy-ww" />
 		<param name="Append" value="true" />
-		<param name="file" value="${wms-example.log.path}/haos.log" />
+		<param name="file" value="${wms-example.log.path}/shopping.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n" />
 		</layout>
@@ -32,7 +32,7 @@
 
 	<appender name="FILE-AOP" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="DatePattern" value="'.'yyyy-ww" />
-		<param name="file" value="${wms-example.log.path}/haos-aop.log" />
+		<param name="file" value="${wms-example.log.path}/shopping-aop.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n" />
 		</layout>
@@ -44,7 +44,7 @@
 
 	<appender name="FILE-SQL" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="DatePattern" value="'.'yyyy-ww" />
-		<param name="file" value="${wms-example.log.path}/haos-sql.log" />
+		<param name="file" value="${wms-example.log.path}/shopping-sql.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n" />
 		</layout>
@@ -52,7 +52,7 @@
 
 	<appender name="FILE-VELOCITY" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="DatePattern" value="'.'yyyy-ww" />
-		<param name="file" value="${wms-example.log.path}/haos-velocity.log" />
+		<param name="file" value="${wms-example.log.path}/shopping-velocity.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n" />
 		</layout>

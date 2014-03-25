@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<!-- 承运商模块 Action -->
+	<package name="carrier" extends="admin-default">
+		<action name="carrier_*" method="{1}"
+			class="com.shopping.web.action.carrier.CarrierAction">
+			<!-- 承运商信息 -->
+			<result name="{1}">/backgroud/carrier/{1}.jsp</result>
+		</action>
+	</package>
+
+
+	<!-- 承运商模块 Json -->
+	<package name="carrier_json" extends="json-protected-default">
+		<!-- 承运商信息 Json -->
+		<action name="carrierJson_*" method="{1}"
+			class="com.shopping.web.action.carrier.json.CarrierJsonAction">
+			<result name="out" type="json">
+				<param name="ignoreHierarchy">true</param>
+				<param name="excludeNullProperties">true</param>
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

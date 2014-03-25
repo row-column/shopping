@@ -1,0 +1,188 @@
+package com.stark.asm.service.send.impl;
+
+import java.util.Date;
+import java.util.List;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import com.stark.asm.common.util.CommonConstant;
+import com.stark.asm.common.util.page.Result;
+import com.stark.asm.domain.send.Send;
+import com.stark.asm.domain.send.query.SendQuery;
+import com.stark.asm.manager.carrier.CarrierManager;
+import com.stark.asm.manager.send.SendManager;
+import com.stark.asm.manager.send.SendTypeManager;
+import com.stark.asm.service.send.SendService;
+
+/**
+ * Send information service interface
+ * @author WangYue
+ *
+ */
+public class SendServiceImpl implements SendService {
+	
+    private static final Logger log = LogManager.getLogger(SendServiceImpl.class);
+	
+    private SendManager sendManager;
+	
+	/**
+	 * send type information manager interface
+	 */
+	private SendTypeManager sendTypeManager;
+	
+	/**
+	 *  carrier information manager interface
+	 */
+	private CarrierManager carrierManager;
+	@Override
+	public Result addSend(Send send) {
+		 Result result = new Result();
+		 if(null!=send){
+			 try {
+		        	send.setCreateTime(new Date()); //set create time
+	                send.setUpdateTime(new Date()); //set update time
+	                send.setDealTime(new Date());  //set deal time
+	                
+	                if(!StringUtils.isBlank(send.getSendCode())){
+	                	send.setTypeName((sendTypeManager.getSendTypeBySendTypeCode(send.getSendCode())).getSendTypeName()); //set type name
+	                }
+	                
+	                if(!StringUtils.isBlank(send.getCarrierCode())){
+	                	send.setCarrierName((carrierManager.getCarrierByCarrierCode(send.getCarrierCode())).getCarrierName()); //set carrier name
+	                }
+	                
+	                send.setYn(CommonConstant.YN_NO_DELETE);  //set yn =0
+		            boolean resultFlag = sendManager.addSend(send);
+		            result.addDefaultModel("resultFlag", resultFlag);
+		            result.setSuccess(true);
+		        } catch (Exception e) {
+		            log.error("SendServiceImpl -> addSend() send object empty!!");
+		        } 
+		 }else{
+			 log.error("SendServiceImpl -> addSend() error!!");
+			 throw new RuntimeException("SendServiceImpl.addSend.parameter.empty.");
+		 }
+	        
+	   return result;
+	}
+
+	@Override
+	public Result updateSend(Send send) {
+		 Result result = new Result();
+		 if(null!=send){
+		 
+	        try {
+	        	send.setUpdateTime(new Date());  // set update time
+                send.setDealTime(new Date());    //set deal time
+                
+                if(!StringUtils.isBlank(send.getSendCode())){
+                	send.setTypeName((sendTypeManager.getSendTypeBySendTypeCode(send.getSendCode())).getSendTypeName()); //set type name
+                }
+                
+                if(!StringUtils.isBlank(send.getCarrierCode())){
+                	send.setCarrierName((carrierManager.getCarrierByCarrierCode(send.getCarrierCode())).getCarrierName()); //set carrier name
+                }
+	            boolean resultFlag = sendManager.updateSend(send);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("SendServiceImpl -> updateSend() error!!", e);
+	        }
+		 }else{
+			 log.error("SendServiceImpl -> updateSend() error!!");
+			 throw new RuntimeException("SendServiceImpl.updateSend.parameter.empty.");
+		 }
+	        return result;
+	}
+
+	@Override
+	public Result getSendById(Long id) {
+		 Result result = new Result();
+	        try {
+	            Send send = sendManager.getSendById(id);
+	            result.addDefaultModel("send", send);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("SendServiceImpl -> getSendById() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result getSendBySendCode(String sendCode) {
+		 Result result = new Result();
+	        try {
+	            Send send = sendManager.getSendBySendCode(sendCode);
+	            result.addDefaultModel("send", send);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("SendServiceImpl -> getSendBySendCode() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result querySendListByQueryBean(SendQuery sendQuery) {
+		Result result = new Result();
+        try {
+            List<Send> sendList = sendManager.querySendListByQueryBean(sendQuery);
+            result.addDefaultModel("sendList", sendList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("SendServiceImpl -> querySendListByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result querySendListPageByQueryBean(SendQuery sendQuery,
+			int pageIndex, int pageSize) {
+		Result result = new Result();
+        try {
+            List<Send> sendList = sendManager.querySendListPageByQueryBean(sendQuery,pageIndex,pageSize);
+            result.addDefaultModel("sendList", sendList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("SendServiceImpl -> querySendListPageByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result deleteSendById(Long id) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = sendManager.deleteSendById(id);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("SendServiceImpl -> deleteSendById() error!!", e);
+	        }
+	        return result;
+	}
+
+	public void setSendManager(SendManager sendManager) {
+		this.sendManager = sendManager;
+	}
+	
+	@Override
+	public Result deleteSendByIds(Long ids[]){
+		 Result result = new Result();
+	        try {
+	        	if(null!=ids&&ids.length>0){
+	        		boolean resultFlag = sendManager.deleteSendByIds(ids);
+	        		result.addDefaultModel("resultFlag", resultFlag);
+	        		result.setSuccess(true);
+	        		
+	        	}else{
+	        		 log.error("SendServiceImpl -> deleteSendById() ids param null!!");
+	        	}
+	        } catch (Exception e) {
+	            log.error("SendServiceImpl -> deleteSendById() error!!", e);
+	        }
+	    return result;
+	}
+
+	
+
+}

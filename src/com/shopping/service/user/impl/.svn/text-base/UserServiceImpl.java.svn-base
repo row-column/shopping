@@ -1,0 +1,175 @@
+package com.stark.asm.service.user.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import com.stark.asm.common.util.CommonConstant;
+import com.stark.asm.common.util.page.Result;
+import com.stark.asm.domain.user.User;
+import com.stark.asm.domain.user.query.UserQuery;
+import com.stark.asm.manager.user.UserManager;
+import com.stark.asm.service.user.UserService;
+
+/**
+ * User information service interface
+ * @author WangYue
+ *
+ */
+public class UserServiceImpl implements UserService {
+	
+    private static final Logger log = LogManager.getLogger(UserServiceImpl.class);
+	private UserManager userManager;
+	@Override
+	public Result addUser(User user) {
+	
+		Result result = new Result();
+	        try {
+	        	user.setReqDate(new Date()); //set register date
+                user.setCreateTime(new Date());    //set create time      
+                user.setUpdateTime(new Date()); //set update time
+                user.setYn(CommonConstant.YN_NO_DELETE); //set yn=0
+	            boolean resultFlag = userManager.addUser(user);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("UserServiceImpl -> addUser() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result updateUser(User user) {
+		 Result result = new Result();
+	        try {
+	        	user.setUpdateTime(new Date()); //set update time
+	            boolean resultFlag = userManager.updateUser(user);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(resultFlag);
+	        } catch (Exception e) {
+	            log.error("UserServiceImpl -> updateUser() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result updateUserInfo(User user) {
+		 Result result = new Result();
+	        try {
+	        	user.setUpdateTime(new Date()); //set update time
+	            boolean resultFlag = userManager.updateUserInfo(user);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(resultFlag);
+	        } catch (Exception e) {
+	            log.error("UserServiceImpl -> updateUserInfo() error!!", e);
+	        }
+	        return result;
+	}
+	@Override
+	public Result updateUserPassword(User user) {
+		 Result result = new Result();
+	        try {
+	        	user.setUpdateTime(new Date()); //set update time
+	            boolean resultFlag = userManager.updateUserPassword(user);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(resultFlag);
+	        } catch (Exception e) {
+	            log.error("UserServiceImpl -> updateUserPassword() error!!", e);
+	        }
+	        return result;
+	}
+	@Override
+	public Result getUserById(Long id) {
+		 Result result = new Result();
+	        try {
+	            User user = userManager.getUserById(id);
+	            result.addDefaultModel("user", user);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("UserServiceImpl -> getUserById() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result getUserByUserCode(String userCode) {
+		 Result result = new Result();
+	        try {
+	            User user = userManager.getUserByUserCode(userCode);
+	            result.addDefaultModel("user", user);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("UserServiceImpl -> getUserByUserCode() error!!", e);
+	        }
+	        return result;
+	}
+
+	@Override
+	public Result queryUserListByQueryBean(UserQuery userQuery) {
+		Result result = new Result();
+        try {
+            List<User> userList = userManager.queryUserListByQueryBean(userQuery);
+            result.addDefaultModel("userList", userList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("UserServiceImpl -> queryUserListByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result queryUserListPageByQueryBean(UserQuery userQuery,
+			int pageIndex, int pageSize) {
+		Result result = new Result();
+        try {
+            List<User> userList = userManager.queryUserListPageByQueryBean(userQuery,pageIndex,pageSize);
+            result.addDefaultModel("userList", userList);
+            result.setSuccess(true);
+        } catch (Exception e) {
+            log.error("UserServiceImpl -> queryUserListPageByQueryBean() error!!", e);
+        }
+        return result;
+	}
+
+	@Override
+	public Result deleteUserById(Long id) {
+		 Result result = new Result();
+	        try {
+	            boolean resultFlag = userManager.deleteUserById(id);
+	            result.addDefaultModel("resultFlag", resultFlag);
+	            result.setSuccess(true);
+	        } catch (Exception e) {
+	            log.error("UserServiceImpl -> deleteUserById() error!!", e);
+	        }
+	        return result;
+	}
+	
+	
+	@Override
+	public Result deleteUserByIds(Long ids[]){
+		 Result result = new Result();
+	        try {
+	        	if(null!=ids&&ids.length>0){
+	        		boolean resultFlag = userManager.deleteUserByIds(ids);
+	        		result.addDefaultModel("resultFlag", resultFlag);
+	        		result.setSuccess(true);
+	        		
+	        	}else{
+	        		 log.error("UserServiceImpl -> deleteUserById() ids param null!!");
+	        	}
+	        } catch (Exception e) {
+	            log.error("UserServiceImpl -> deleteUserById() error!!", e);
+	        }
+	    return result;
+	}
+
+
+	public void setUserManager(UserManager userManager) {
+		this.userManager = userManager;
+	}
+	
+	
+
+}

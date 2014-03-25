@@ -8,14 +8,14 @@
 	<!-- ShoppingCart Module Action -->
 	<package name="shoppingcart" extends="admin-default">
 		<action name="myShoppingCart" method="myShoppingCart"
-			class="com.haos.web.action.shoppingcart.ShoppingCartAction">
+			class="com.shopping.web.action.shoppingcart.ShoppingCartAction">
 			<!-- shopping cart information -->
 			<result>/front/myShoppingCart.jsp</result>
 			<result name="error" type="redirect">toLogin.action</result>
 		</action>
 
 		<action name="toCheckOut" method="toCheckOut"
-			class="com.haos.web.action.shoppingcart.ShoppingCartAction">
+			class="com.shopping.web.action.shoppingcart.ShoppingCartAction">
 			<!-- to check out page -->
 			<result>/front/checkout.jsp</result>
 			<result name="error" type="redirect">login.action</result>
@@ -28,7 +28,7 @@
 	<package name="shoppingcart_json" extends="json-protected-default">
 		<!-- shopping cart information Json -->
 		<action name="shoppingCartJson_*" method="{1}"
-			class="com.haos.web.action.shoppingcart.json.ShoppingCartJsonAction">
+			class="com.shopping.web.action.shoppingcart.json.ShoppingCartJsonAction">
 			<result name="out" type="json">
 				<param name="ignoreHierarchy">true</param>
 				<param name="excludeNullProperties">true</param>

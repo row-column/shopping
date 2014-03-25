@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 功能信息 -->
+<mapper namespace="Fun">
+	<resultMap id="funMap" type="com.shopping.domain.fun.Fun">
+		<id column="id" property="id" jdbcType="NUMBER" />
+		<result column="fun_code" property="funCode" jdbcType="VARCHAR2" />
+		<result column="fun_name" property="funName" jdbcType="VARCHAR2" />
+		<result column="fun_type" property="funType" jdbcType="Integer" />
+		<result column="url_name" property="urlName" jdbcType="VARCHAR2" />
+		<result column="url_param" property="urlParam" jdbcType="VARCHAR2" />
+		<result column="url_order" property="urlOrder" jdbcType="Integer" />
+		<result column="is_status" property="isStatus" jdbcType="Integer" />
+		<result column="parent_code" property="parentCode" jdbcType="VARCHAR2" />
+		<result column="fun_system" property="funSystem" jdbcType="Integer" />
+		<result column="remark" property="remark" jdbcType="VARCHAR2" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="yn" property="yn" jdbcType="Integer" />
+	</resultMap>
+
+	<!-- 创建功能信息 -->
+	<insert id="insert" parameterType="com.shopping.domain.fun.Fun">
+		insert into
+		fun(fun_code,fun_name,fun_type,url_name,url_param,url_order,is_status,parent_code,fun_system,remark,create_time,update_time,yn)
+		values(#{funCode,jdbcType=VARCHAR2},#{funName,jdbcType=VARCHAR2},#{funType,jdbcType=Integer},#{urlName,jdbcType=VARCHAR2},#{urlParam,jdbcType=VARCHAR2},#{urlOrder,jdbcType=Integer},#{isStatus,jdbcType=Integer},#{parentCode,jdbcType=VARCHAR2},#{funSystem,jdbcType=Integer},#{remark,jdbcType=VARCHAR2},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
+	</insert>
+
+	<!-- 修改功能信息，根据功能对象 -->
+	<update id="update" parameterType="com.shopping.domain.fun.Fun">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update fun 
+				<set>
+					<if test="funCode!=null and funCode!=''">
+						fun_code=#{funCode,jdbcType=VARCHAR2},
+					</if>
+					<if test="funName!=null and funName!=''">
+						fun_name = #{funName,jdbcType=VARCHAR2},
+					</if>
+					<if test="funType!=null and funType>=0">
+						fun_type = #{funType,jdbcType=Integer},
+					</if>
+					<if test="urlName!=null and urlName!=''">
+						url_name = #{urlName,jdbcType=VARCHAR2},
+					</if>
+					<if test="urlParam!=null and urlParam!=''">
+						url_param = #{urlParam,jdbcType=VARCHAR2},
+					</if>
+					<if test="urlOrder!=null and urlOrder>=0">
+						url_order = #{urlOrder,jdbcType=Integer},
+					</if>
+					<if test="isStatus!=null and isStatus>=0">
+						is_status = #{isStatus,jdbcType=Integer},
+					</if>
+					<if test="parentCode!=null and parentCode!=''">
+						parent_code = #{parentCode,jdbcType=VARCHAR2},
+					</if>
+					<if test="funSystem!=null and funSystem>=0">
+						fun_system = #{funSystem,jdbcType=Integer},
+					</if>
+					<if test="remark!=null and remark!=''">
+						remark = #{remark,jdbcType=VARCHAR2},
+					</if>
+					<if test="updateTime!=null and updateTime!=''">
+						update_time=#{updateTime,jdbcType=TIMESTAMP}
+					</if>
+				</set>
+				where id = #{id}
+            </if>
+		</if>
+	</update>
+
+	<!-- 根据主键获取功能信息 -->
+	<select id="getFunById" resultMap="funMap" parameterType="java.lang.Long">
+		<if test="_parameter != null">
+			select
+			id,fun_code,fun_name,fun_type,url_name,url_param,url_order,is_status,parent_code,fun_system,remark,create_time,update_time
+			from fun
+			where id = #{_parameter}
+        </if>
+	</select>
+
+	<!-- 根据功能号获取功能信息 -->
+	<select id="getFunByFunCode" resultMap="funMap" parameterType="java.lang.String">
+		<if test="_parameter != null">
+			select
+			id,fun_code,fun_name,fun_type,url_name,url_param,url_order,is_status,parent_code,fun_system,remark,create_time,update_time
+			from fun
+			where fun_code = #{_parameter} and yn=0
+        </if>
+	</select>
+
+	<!-- 根据查询Bean获取功能集合，不带翻页 -->
+	<select id="queryFunListByQueryBean" resultMap="funMap"
+		parameterType="com.shopping.domain.fun.query.FunQuery">
+		select
+		id,fun_code,fun_name,fun_type,url_name,url_param,url_order,is_status,parent_code,fun_system,remark,create_time,update_time
+		from fun where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryFunListWhere" />
+		</if>
+	</select>
+	<!-- 根据查询Bean获取功能集合，翻页 -->
+	<select id="queryFunListPageByQueryBean" resultMap="funMap"
+		parameterType="com.shopping.domain.fun.query.FunQuery">
+		select
+		id,fun_code,fun_name,fun_type,url_name,url_param,url_order,is_status,parent_code,fun_system,remark,create_time,update_time
+		from fun where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryFunListWhere" />
+		</if>
+		order by id desc
+		limit #{startRow},#{endRow};
+	</select>
+
+	<!-- 根据查询Bean获取功能总数 -->
+	<select id="queryFunCountByQueryBean" resultType="java.lang.Integer"
+		parameterType="com.shopping.domain.fun.query.FunQuery">
+		select count(1) from fun where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryFunListWhere" />
+		</if>
+	</select>
+
+	<!-- 删除功能信息，根据主键 -->
+	<delete id="deleteFunById" parameterType="java.lang.Long">
+		<if test="_parameter != null and _parameter > 0">
+			delete from fun where id = #{_parameter}
+        </if>
+	</delete>
+
+	<!-- 常用的查询Where条件 -->
+	<sql id="queryFunListWhere">
+		<if test="funCode != null and funCode != ''">
+			and fun_code = #{funCode,jdbcType=VARCHAR2}
+        </if>
+		<if test="yn != null and yn>=0">
+			and yn = #{yn,jdbcType=Integer}
+        </if>
+	</sql>
+</mapper>

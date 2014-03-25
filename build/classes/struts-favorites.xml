@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<!-- Favorites Module Action -->
+	<package name="favorites" extends="admin-default">
+		<action name="myFavorites" method="myFavorites"
+			class="com.shopping.web.action.favorites.FavoritesAction">
+			<result>/front/favorites.jsp</result>
+			<result name="error" type="redirect">toLogin.action</result>
+		</action>
+
+	</package>
+
+	<!-- Favorites Module Json -->
+	<package name="favorites_json" extends="json-protected-default">
+		<!-- recently viewed information Json -->
+		<action name="favoritesJson_*" method="{1}"
+			class="com.shopping.web.action.favorites.json.FavoritesJsonAction">
+			<result name="out" type="json">
+				<param name="ignoreHierarchy">true</param>
+				<param name="excludeNullProperties">true</param>
+				<param name="root">result</param>
+			</result>
+		</action>
+
+	</package>
+</struts>

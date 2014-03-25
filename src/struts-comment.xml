@@ -8,18 +8,18 @@
 	<!-- 评价模块 Action -->
 	<package name="comment" extends="admin-default">
 		<action name="comment_*" method="{1}"
-			class="com.haos.web.action.comment.CommentAction">
+			class="com.shopping.web.action.comment.CommentAction">
 			<!-- 评价信息 -->
 			<result name="{1}">/backgroud/comment/{1}.jsp</result>
 		</action>
 
 		<action name="commentCommodity" method="commentCommodity"
-			class="com.haos.web.action.comment.CommentAction">
+			class="com.shopping.web.action.comment.CommentAction">
 			<result>/front/commentCommodity.jsp</result>
 			<result name="error" type="redirect">toLogin.action</result>
 		</action>
 		<action name="myComment" method="myComment"
-			class="com.haos.web.action.comment.CommentAction">
+			class="com.shopping.web.action.comment.CommentAction">
 			<result>/front/myComment.jsp</result>
 			<result name="error" type="redirect">toLogin.action</result>
 		</action>
@@ -30,7 +30,7 @@
 	<package name="comment_json" extends="json-protected-default">
 		<!-- 评价信息 Json -->
 		<action name="commentJson_*" method="{1}"
-			class="com.haos.web.action.comment.json.CommentJsonAction">
+			class="com.shopping.web.action.comment.json.CommentJsonAction">
 			<result name="out" type="json">
 				<param name="ignoreHierarchy">true</param>
 				<param name="excludeNullProperties">true</param>

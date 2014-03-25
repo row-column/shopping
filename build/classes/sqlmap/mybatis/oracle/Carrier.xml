@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 承运商信息 -->
+<mapper namespace="Carrier">
+	<resultMap id="carrierMap" type="com.shopping.domain.carrier.Carrier">
+		<id column="id" property="id" jdbcType="NUMBER" />
+		<result column="carrier_code" property="carrierCode" jdbcType="VARCHAR2" />
+		<result column="carrier_name" property="carrierName" jdbcType="VARCHAR2" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR2" />
+		<result column="email" property="email" jdbcType="VARCHAR2" />
+		<result column="contacter" property="contacter" jdbcType="VARCHAR2" />
+		<result column="address" property="address" jdbcType="VARCHAR2" />
+		<result column="remark" property="remark" jdbcType="VARCHAR2" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="yn" property="yn" jdbcType="Integer" />
+	</resultMap>
+
+	<!-- 创建承运商信息 -->
+	<insert id="insert" parameterType="com.shopping.domain.carrier.Carrier">
+		insert into
+		carrier(carrier_code,carrier_name,mobile,email,contacter,address,remark,create_time,update_time,yn)
+		values(#{carrierCode,jdbcType=VARCHAR2},#{carrierName,jdbcType=VARCHAR2},#{mobile,jdbcType=VARCHAR2},#{email,jdbcType=VARCHAR2},#{contacter,jdbcType=VARCHAR2},#{address,jdbcType=VARCHAR2},#{remark,jdbcType=VARCHAR2},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
+	</insert>
+
+	<!-- 修改承运商信息，根据承运商对象 -->
+	<update id="update" parameterType="com.shopping.domain.carrier.Carrier">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update carrier 
+				<set>
+				    <if test="carrierCode !=null and carrierCode !=''">
+						carrier_code=#{carrierCode,jdbcType=VARCHAR2},
+				    </if>
+				     <if test="carrierName !=null and carrierName !=''">
+						 carrier_name = #{carrierName,jdbcType=VARCHAR2},
+				    </if>
+				     <if test="mobile !=null and mobile !=''">
+						 mobile = #{mobile,jdbcType=VARCHAR2},
+				    </if>
+				     <if test="email !=null and email !=''">
+						 email = #{email,jdbcType=VARCHAR2},
+				    </if>
+				     <if test="contacter !=null and contacter !=''">
+						 contacter = #{contacter,jdbcType=VARCHAR2},
+				    </if>
+				     <if test="address !=null and address !=''">
+						 address = #{address,jdbcType=VARCHAR2},
+				    </if>
+				     <if test="remark !=null and remark !=''">
+						 remark = #{remark,jdbcType=VARCHAR2},
+				    </if>
+				     <if test="updateTime !=null and updateTime !=''">
+						update_time=#{updateTime,jdbcType=TIMESTAMP}
+				    </if>
+				</set>
+				where id = #{id}
+            </if>
+		</if>
+	</update>
+
+	<!-- 根据主键获取承运商信息 -->
+	<select id="getCarrierById" resultMap="carrierMap"
+		parameterType="java.lang.Long">
+		<if test="_parameter != null">
+			select
+			id,carrier_code,carrier_name,mobile,email,contacter,address,remark,create_time,update_time
+			from carrier
+			where id = #{_parameter}
+        </if>
+	</select>
+
+	<!-- 根据承运商号获取承运商信息 -->
+	<select id="getCarrierByCarrierCode" resultMap="carrierMap"
+		parameterType="java.lang.String">
+		<if test="_parameter != null">
+			select
+			id,carrier_code,carrier_name,mobile,email,contacter,address,remark,create_time,update_time
+			from carrier
+			where carrier_code = #{_parameter} and yn=0
+        </if>
+	</select>
+
+	<!-- 根据查询Bean获取承运商集合，不带翻页 -->
+	<select id="queryCarrierListByQueryBean" resultMap="carrierMap"
+		parameterType="com.shopping.domain.carrier.query.CarrierQuery">
+		select
+		id,carrier_code,carrier_name,mobile,email,contacter,address,remark,create_time,update_time
+		from carrier where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryCarrierListWhere" />
+		</if>
+	</select>
+	<!-- 根据查询Bean获取承运商集合，翻页 -->
+	<select id="queryCarrierListPageByQueryBean" resultMap="carrierMap"
+		parameterType="com.shopping.domain.carrier.query.CarrierQuery">
+		select
+		id,carrier_code,carrier_name,mobile,email,contacter,address,remark,create_time,update_time
+		from carrier where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryCarrierListWhere" />
+		</if>
+		order by id desc
+		limit #{startRow},#{endRow};
+	</select>
+
+	<!-- 根据查询Bean获取承运商总数 -->
+	<select id="queryCarrierCountByQueryBean" resultType="java.lang.Integer"
+		parameterType="com.shopping.domain.carrier.query.CarrierQuery">
+		select count(1) from carrier where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryCarrierListWhere" />
+		</if>
+	</select>
+
+	<!-- 删除承运商信息，根据主键 -->
+	<delete id="deleteCarrierById" parameterType="java.lang.Long">
+		<if test="_parameter != null and _parameter > 0">
+			update carrier set yn=1 where id = #{_parameter}
+        </if>
+	</delete>
+
+	<!-- 常用的查询Where条件 -->
+	<sql id="queryCarrierListWhere">
+		<if test="carrierCode != null and carrierCode != ''">
+			and carrier_code = #{carrierCode,jdbcType=VARCHAR2}
+          </if>
+		<if test="carrierName != null and carrierName != ''">
+			and carrier_name = #{carrierName,jdbcType=VARCHAR2}
+          </if>
+
+		<if test="contacter != null and contacter != ''">
+			and contacter = #{contacter,jdbcType=VARCHAR2}
+          </if>
+		<if test="yn != null and yn>=0">
+			and yn = #{yn,jdbcType=Integer}
+	        </if>
+	</sql>
+</mapper>

@@ -4,7 +4,7 @@
 <!-- 员工信息 -->
 <mapper namespace="Employee">
 
-	<resultMap id="employeeMap" type="com.haos.domain.employee.Employee">
+	<resultMap id="employeeMap" type="com.shopping.domain.employee.Employee">
 		<id column="id" property="id" jdbcType="BIGINT" />
 		<result column="employee_code" property="employeeCode"
 			jdbcType="VARCHAR" />
@@ -28,14 +28,14 @@
 	</resultMap>
 
 	<!-- 创建员工信息 -->
-	<insert id="insert" parameterType="com.haos.domain.employee.Employee">
+	<insert id="insert" parameterType="com.shopping.domain.employee.Employee">
 		insert into
 		employee(employee_code,employee_name,password,sex,mobile,email,address,zip_code,id_card,birthday,employee_photo,req_date,status,create_time,update_time,yn)
 		values(#{employeeCode,jdbcType=VARCHAR},#{employeeName,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{sex,jdbcType=TINYINT},#{mobile,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{zipCode,jdbcType=VARCHAR},#{idCard,jdbcType=VARCHAR},#{birthday,jdbcType=DATE},#{employeePhotoFileName,jdbcType=VARCHAR},#{reqDate,jdbcType=TIMESTAMP},#{status,jdbcType=TINYINT},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=TINYINT})
 	</insert>
 
 	<!-- 修改员工信息，根据员工对象 -->
-	<update id="update" parameterType="com.haos.domain.employee.Employee">
+	<update id="update" parameterType="com.shopping.domain.employee.Employee">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update employee
@@ -83,7 +83,7 @@
 	</update>
 
 	<!-- 修改员工状态信息，根据员工对象 -->
-	<update id="updateEmployeeStatus" parameterType="com.haos.domain.employee.Employee">
+	<update id="updateEmployeeStatus" parameterType="com.shopping.domain.employee.Employee">
 		<if test="_parameter != null">
 			<if test="employeeCode != null">
 				update employee set
@@ -119,7 +119,7 @@
 
 	<!-- 根据查询Bean获取员工集合，不带翻页 -->
 	<select id="queryEmployeeListByQueryBean" resultMap="employeeMap"
-		parameterType="com.haos.domain.employee.query.EmployeeQuery">
+		parameterType="com.shopping.domain.employee.query.EmployeeQuery">
 		select
 		id,employee_code,employee_name,password,sex,mobile,email,address,zip_code,id_card,birthday,employee_photo,req_date,status,create_time,update_time
 		from employee where 1 = 1
@@ -139,7 +139,7 @@
 
 	<!-- 根据查询Bean获取员工集合，翻页 -->
 	<select id="queryEmployeeListPageByQueryBean" resultMap="employeeMap"
-		parameterType="com.haos.domain.employee.query.EmployeeQuery">
+		parameterType="com.shopping.domain.employee.query.EmployeeQuery">
 		select
 		id,employee_code,employee_name,password,sex,mobile,email,address,zip_code,id_card,birthday,employee_photo,req_date,status,create_time,update_time
 		from employee where 1 = 1
@@ -152,7 +152,7 @@
 
 	<!-- 根据查询Bean获取员工总数 -->
 	<select id="queryEmployeeCountByQueryBean" resultType="java.lang.Integer"
-		parameterType="com.haos.domain.employee.query.EmployeeQuery">
+		parameterType="com.shopping.domain.employee.query.EmployeeQuery">
 		select count(1) from employee where 1 = 1
 		<if test="_parameter != null">
 			<include refid="queryEmployeeListWhere" />

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
+	default-autowire="byName">
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="asmDataSource" />
+	</bean>
+
+	<!-- 用户信息 -->
+	<bean id="userManager" class="com.shopping.manager.user.impl.UserManagerImpl" />
+	<!-- 员工信息 -->
+	<bean id="employeeManager" class="com.shopping.manager.employee.impl.EmployeeManagerImpl" />
+	<!-- 员工功能信息 -->
+	<bean id="employeeFunManager" class="com.shopping.manager.employee.impl.EmployeeFunManagerImpl" />
+	<!-- 功能信息 -->
+	<bean id="funManager" class="com.shopping.manager.fun.impl.FunManagerImpl" />
+	<!-- 等级信息 Manager 接口 -->
+	<bean id="levelManager" class="com.shopping.manager.level.impl.LevelManagerImpl" />
+	<!-- 配送信息 Manager 接口 -->
+	<bean id="sendManager" class="com.shopping.manager.send.impl.SendManagerImpl" />
+	<!-- 配送类别信息 Manager 接口 -->
+	<bean id="sendTypeManager" class="com.shopping.manager.send.impl.SendTypeManagerImpl" />
+	<!-- 等级信息 Manager 接口 -->
+	<bean id="commentManager" class="com.shopping.manager.comment.impl.CommentManagerImpl" />
+	<!-- 等级信息 Manager 接口 -->
+	<bean id="commodityManager" class="com.shopping.manager.commodity.impl.CommodityManagerImpl" />
+	<!-- 配送类别信息 Manager 接口 -->
+	<bean id="commodityCategoryManager"
+		class="com.shopping.manager.commodity.impl.CommodityCategoryManagerImpl" />
+	<!-- 消费记录信息 Manager 接口 -->
+	<bean id="consumerRecordsManager"
+		class="com.shopping.manager.consumer.impl.ConsumerRecordsManagerImpl" />
+	<!-- 订单信息 Manager 接口 -->
+	<bean id="orderManager" class="com.shopping.manager.order.impl.OrderManagerImpl" />
+	<!-- 承运商信息 Manager 接口 -->
+	<bean id="carrierManager" class="com.shopping.manager.carrier.impl.CarrierManagerImpl" />
+	<!-- 购物车信息 Manager 接口 -->
+	<bean id="shoppingCartManager"
+		class="com.shopping.manager.shoppingcart.impl.ShoppingCartManagerImpl" />
+	<!-- 最近浏览信息 Manager 接口 -->
+	<bean id="recentlyViewedManager"
+		class="com.shopping.manager.recentlyviewed.impl.RecentlyViewedManagerImpl" />
+	<!-- 我的收藏夹信息 Manager 接口 -->
+	<bean id="favoritesManager" class="com.shopping.manager.favorites.impl.FavoritesManagerImpl" />
+
+
+</beans>

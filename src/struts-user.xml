@@ -8,17 +8,17 @@
 	<!-- User Module Action -->
 	<package name="user" extends="admin-default">
 		<action name="user_*" method="{1}"
-			class="com.haos.web.action.user.UserAction">
+			class="com.shopping.web.action.user.UserAction">
 			<!-- user information -->
 			<result name="{1}">/backgroud/user/{1}.jsp</result>
 		</action>
 		<action name="myInfo" method="myInfo"
-			class="com.haos.web.action.user.UserAction">
+			class="com.shopping.web.action.user.UserAction">
 			<result>/front/userInfo.jsp</result>
 			<result name="error" type="redirect">toLogin.action</result>
 		</action>
 		<action name="updateUserPassword" method="updateUserPassword"
-			class="com.haos.web.action.user.UserAction">
+			class="com.shopping.web.action.user.UserAction">
 			<result>/front/updateUserPassword.jsp</result>
 			<result name="error" type="redirect">toLogin.action</result>
 		</action>
@@ -30,7 +30,7 @@
 	<package name="user_json" extends="json-protected-default">
 		<!-- user information Json -->
 		<action name="userJson_*" method="{1}"
-			class="com.haos.web.action.user.json.UserJsonAction">
+			class="com.shopping.web.action.user.json.UserJsonAction">
 			<result name="out" type="json">
 				<param name="ignoreHierarchy">true</param>
 				<param name="excludeNullProperties">true</param>
@@ -39,7 +39,7 @@
 		</action>
 
 		<action name="register" method="register"
-			class="com.haos.web.action.user.json.UserJsonAction">
+			class="com.shopping.web.action.user.json.UserJsonAction">
 			<result name="out" type="json">
 				<param name="ignoreHierarchy">true</param>
 				<param name="excludeNullProperties">true</param>

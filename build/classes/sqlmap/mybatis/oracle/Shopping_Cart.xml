@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- shopping cart information -->
+<mapper namespace="ShoppingCart">
+
+	<resultMap id="shoppingcartMap" type="com.shopping.domain.shoppingcart.ShoppingCart">
+		<id column="id" property="id" jdbcType="NUMBER" />
+		<result column="user_code" property="userCode" jdbcType="VARCHAR2" />
+		<result column="commodity_id" property="commodityId" jdbcType="NUMBER" />
+		<result column="commodity_code" property="commodityCode"
+			jdbcType="VARCHAR2" />
+		<result column="commodity_name" property="commodityName"
+			jdbcType="VARCHAR2" />
+		<result column="price" property="price" jdbcType="NUMERIC" />
+		<result column="commodity_num" property="commodityNum"
+			jdbcType="NUMBER" />
+		<result column="commodity_photo" property="commodityPhoto"
+			jdbcType="LONGVARCHAR2" />
+		<result column="viewed_count" property="viewedCount" jdbcType="NUMBER" />
+		<result column="comment_count" property="commentCount"
+			jdbcType="NUMBER" />
+		<result column="status" property="status" jdbcType="Integer" />
+		<result column="remark" property="remark" jdbcType="VARCHAR2" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="yn" property="yn" jdbcType="Integer" />
+	</resultMap>
+
+	<!-- crate shopping cart information -->
+	<insert id="insert" parameterType="com.shopping.domain.shoppingcart.ShoppingCart">
+		insert into
+		shopping_cart(user_code,commodity_id,commodity_code,commodity_name,price,commodity_num,commodity_photo,viewed_count,comment_count,status,create_time,update_time,yn)
+		values(#{userCode,jdbcType=VARCHAR2},#{commodityId,jdbcType=NUMBER},#{commodityCode,jdbcType=VARCHAR2},#{commodityName,jdbcType=VARCHAR2},#{price,jdbcType=NUMERIC},#{commodityNum,jdbcType=NUMBER},#{commodityPhoto,jdbcType=LONGVARCHAR2},#{viewedCount,jdbcType=NUMBER},#{commentCount,jdbcType=NUMBER},#{status,jdbcType=Integer},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
+	</insert>
+
+	<!-- update shopping cart information，according to shoppingcart object -->
+	<update id="update" parameterType="com.shopping.domain.shoppingcart.ShoppingCart">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update shopping_cart
+				<set>
+					<if test="userCode!=null and userCode!=''">
+						user_code=#{userCode,jdbcType=VARCHAR2},
+					</if>
+					<if test="commodityId!=null and commodityId!=''">
+						commodity_id={commodityId,jdbcType=NUMBER},
+					</if>
+					<if test="commodityCode!=null and commodityCode!=''">
+						commodityCode = #{commodityCode,jdbcType=VARCHAR2},
+					</if>
+					<if test="usageExperience!=null and usageExperience!=''">
+						commodityName=#{usageExperience,jdbcType=VARCHAR2},
+					</if>
+					<if test="price!=null and price!=''">
+						price = #{price,jdbcType=NUMERIC},
+					</if>
+					<if test="commodityNum!=null and commodityNum!=''">
+						commodity_num=#{commodityNum,jdbcType=NUMBER},
+					</if>
+					<if test="commodityPhoto!=null and commodityPhoto!=''">
+						commodity_photo=#{commodityPhoto,jdbcType=LONGVARCHAR2},
+					</if>
+					<if test="viewedCount!=null and viewedCount!=''">
+						viewed_count=#{viewedCount,jdbcType=NUMBER},
+					</if>
+					<if test="commentCount!=null and commentCount!=''">
+						comment_count=#{commentCount,jdbcType=NUMBER},
+					</if>
+					<if test="status!=null and status>=0">
+						status=#{status,jdbcType=Integer},
+					</if>
+					<if test="updateTime!=null and updateTime!=''">
+						update_time=#{updateTime,jdbcType=TIMESTAMP}
+					</if>
+				</set>
+				where id = #{id}
+			</if>
+		</if>
+	</update>
+
+	<!-- according to id query shopping cart information -->
+	<select id="getShoppingCartById" resultMap="shoppingcartMap"
+		parameterType="java.lang.Long">
+		<if test="_parameter != null">
+			select
+			id,user_code,commodity_id,commodity_code,commodity_name,price,commodity_num,commodity_photo,viewed_count,comment_count,status,create_time,update_time
+			from shopping_cart
+			where id = #{_parameter} and yn=0
+        </if>
+	</select>
+
+	<!-- according to user code query shopping cart information -->
+	<select id="queryShoppingCartByUserCode" resultMap="shoppingcartMap"
+		parameterType="java.lang.String">
+		<if test="_parameter != null">
+			select
+			id,user_code,commodity_id,commodity_code,commodity_name,price,commodity_num,commodity_photo,viewed_count,comment_count,status,create_time,update_time
+			from shopping_cart
+			where user_code = #{_parameter} and yn=0
+        </if>
+	</select>
+
+
+	<!-- according to commodity code query shopping cart information -->
+	<select id="queryShoppingCartByCommodityCode" resultMap="shoppingcartMap"
+		parameterType="java.lang.String">
+		<if test="_parameter != null">
+			select
+			id,user_code,commodity_id,commodity_code,commodity_name,price,commodity_num,commodity_photo,viewed_count,comment_count,status,create_time,update_time
+			from shopping_cart
+			where commodity_code = #{_parameter} and yn=0
+        </if>
+	</select>
+
+
+	<!-- according to query Bean, query shopping cart collection -->
+	<select id="queryShoppingCartListByQueryBean" resultMap="shoppingcartMap"
+		parameterType="com.shopping.domain.shoppingcart.query.ShoppingCartQuery">
+		select
+		id,user_code,commodity_id,commodity_code,commodity_name,price,commodity_num,commodity_photo,viewed_count,comment_count,status,create_time,update_time
+		from shopping_cart where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryShoppingCartListWhere" />
+		</if>
+	</select>
+
+
+	<!-- delete shopping cart information,according to id -->
+	<delete id="deleteShoppingCartById" parameterType="java.lang.Long">
+		<if test="_parameter != null and _parameter > 0">
+			update shopping_cart set yn=1 where id = #{_parameter}
+		</if>
+	</delete>
+
+
+	<!-- update shopping cart information，according to shoppingcart object -->
+	<update id="updateShoppingCartCommodityNum" parameterType="com.shopping.domain.shoppingcart.ShoppingCart">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update shopping_cart set
+				commodity_num=#{commodityNum,jdbcType=NUMBER},
+				update_time=#{updateTime,jdbcType=TIMESTAMP}
+				where id = #{id}
+            </if>
+		</if>
+	</update>
+
+	<!-- common query Where -->
+	<sql id="queryShoppingCartListWhere">
+		<if test="userCode != null and userCode != ''">
+			and user_code = #{userCode,jdbcType=VARCHAR2}
+        </if>
+		<if test="commodityId != null and commodityId != ''">
+			and commodity_id = #{commodityId,jdbcType=NUMBER}
+        </if>
+		<if test="commodityCode != null and commodityCode != ''">
+			and commodity_code = #{commodityCode,jdbcType=VARCHAR2}
+		</if>
+		<if test="startTime != null and startTime != ''">
+			and create_time >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+		<if test="endTime != null and endTime != ''">
+			and #{endTime,jdbcType=TIMESTAMP} >= create_time
+        </if>
+		<if test="yn != null and yn>=0">
+			and yn = #{yn,jdbcType=Integer}
+        </if>
+	</sql>
+</mapper>

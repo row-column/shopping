@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <!-- 配送信息 -->
 <mapper namespace="Send">
-	<resultMap id="sendMap" type="com.haos.domain.send.Send">
+	<resultMap id="sendMap" type="com.shopping.domain.send.Send">
 		<id column="id" property="id" jdbcType="BIGINT" />
 		<result column="send_code" property="sendCode" jdbcType="VARCHAR" />
 		<result column="order_code" property="orderCode" jdbcType="VARCHAR" />
@@ -23,14 +23,14 @@
 	</resultMap>
 
 	<!-- 创建配送信息 -->
-	<insert id="insert" parameterType="com.haos.domain.send.Send">
+	<insert id="insert" parameterType="com.shopping.domain.send.Send">
 		insert into
 		send(send_code,order_code,commodity_name,type_code,type_name,carrier_code,carrier_name,deal_time,deal_information,operator,remark,create_time,update_time,yn)
 		values(#{sendCode},#{orderCode},#{commodityName},#{typeCode},#{typeName},#{carrierCode},#{carrierName},#{dealTime},#{dealInformation},#{operator},#{remark},#{createTime},#{updateTime},#{yn})
 	</insert>
 
 	<!-- 修改配送信息，根据配送对象 -->
-	<update id="update" parameterType="com.haos.domain.send.Send">
+	<update id="update" parameterType="com.shopping.domain.send.Send">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update send
@@ -101,7 +101,7 @@
 	</select>
 	<!-- 根据查询Bean获取配送集合，不带翻页 -->
 	<select id="querySendListWithUniqueByQueryBean" resultMap="sendMap"
-		parameterType="com.haos.domain.send.query.SendQuery">
+		parameterType="com.shopping.domain.send.query.SendQuery">
 		select
 		id,send_code,order_code,commodity_name,type_code,type_name,carrier_code,carrier_name,deal_time,deal_information,operator
 		,create_time,update_time,remark from send where 1 = 1
@@ -117,7 +117,7 @@
 	</select>
 	<!-- 根据查询Bean获取配送集合，不带翻页 -->
 	<select id="querySendListByQueryBean" resultMap="sendMap"
-		parameterType="com.haos.domain.send.query.SendQuery">
+		parameterType="com.shopping.domain.send.query.SendQuery">
 
 		select
 		id,send_code,order_code,commodity_name,type_code,type_name,carrier_code,carrier_name,deal_time,deal_information,operator,remark,create_time,update_time
@@ -128,7 +128,7 @@
 	</select>
 	<!-- 根据查询Bean获取配送集合，翻页 -->
 	<select id="querySendListPageByQueryBean" resultMap="sendMap"
-		parameterType="com.haos.domain.send.query.SendQuery">
+		parameterType="com.shopping.domain.send.query.SendQuery">
 		select
 		id,send_code,order_code,commodity_name,type_code,type_name,carrier_code,carrier_name,deal_time,deal_information,operator,remark
 		,create_time,update_time from send where 1 = 1
@@ -143,7 +143,7 @@
 
 	<!-- 根据查询Bean获取配送总数 -->
 	<select id="querySendCountByQueryBean" resultType="java.lang.Integer"
-		parameterType="com.haos.domain.send.query.SendQuery">
+		parameterType="com.shopping.domain.send.query.SendQuery">
 		select count(1) from send where 1 = 1
 		<if test="_parameter != null">
 			<include refid="querySendListWhere" />

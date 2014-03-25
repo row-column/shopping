@@ -1,0 +1,107 @@
+package com.shopping.domain.recentlyviewed.query;
+
+import java.util.Date;
+
+import com.shopping.common.util.page.BaseQuery;
+
+/**
+ * Recently Viewed Information Query Class
+ * @author WangYue
+ *
+ */
+public class RecentlyViewedQuery extends BaseQuery {
+	
+	/**
+	 * recently viewed id
+	 */
+	private Long id;
+	
+	/**
+	 * user code
+	 */
+	private String userCode;
+	
+	/**
+	 * commodity id
+	 */
+	private Long commodityId;
+
+	/**
+	 *  commodity code
+	 */
+	private String commodityCode;
+	
+	/**
+	 * is read
+	 */
+	private int isRead;
+	
+	
+	/**
+     * start time
+     */
+    private Date startTime;
+
+    /**
+     * end time
+     */
+    private Date endTime;
+
+	
+	/**
+	 * yes or no Delete
+	 */
+	private int yn;
+	public String getCommodityCode() {
+		return commodityCode;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getUserCode() {
+		return userCode;
+	}
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+	}
+	public Long getCommodityId() {
+		return commodityId;
+	}
+	public void setCommodityId(Long commodityId) {
+		this.commodityId = commodityId;
+	}
+	
+	
+	public int getIsRead() {
+		return isRead;
+	}
+	public void setIsRead(int isRead) {
+		this.isRead = isRead;
+	}
+	public Date getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+	public Date getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+	public int getYn() {
+		return yn;
+	}
+	public void setYn(int yn) {
+		this.yn = yn;
+	}
+	public void setCommodityCode(String commodityCode) {
+		this.commodityCode = commodityCode;
+	}
+	
+	
+}

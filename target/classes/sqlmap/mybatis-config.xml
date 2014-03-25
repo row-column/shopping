@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!--<settings> -->
+	<!--&lt;!&ndash; changes from the defaults &ndash;&gt; -->
+	<!--<setting name="lazyLoadingEnabled" value="false" /> -->
+	<!--</settings> -->
+	<!-- 别名 -->
+	<!--<typeAliases> -->
+	<!--<typeAlias alias="baseUser" type="com.jd.wms.example.domain.base.BaseUser" 
+		/> -->
+	<!--<typeAlias alias="baseUserQuery" type="com.jd.wms.example.domain.base.query.BaseUserQuery" 
+		/> -->
+	<!--</typeAliases> -->
+
+
+</configuration>

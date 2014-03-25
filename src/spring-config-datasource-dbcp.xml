@@ -13,9 +13,9 @@
 	default-autowire="byName">
 
 
-	<bean id="asmDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+	<bean id="shoppingDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/haos" />
+		<property name="url" value="jdbc:mysql://localhost:3306/shopping" />
 		<property name="username" value="root" />
 		<property name="password" value="root" />
 	</bean>

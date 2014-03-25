@@ -1,0 +1,16 @@
+package com.stark.asm.web.interceptor;
+
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+/**
+ * 
+ * @author Administrator
+ *
+ */
+public class AdminLoginContextInterceptor  {
+    private final static Log log = LogFactory.getLog(AdminLoginContextInterceptor.class);
+
+    
+}

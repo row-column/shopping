@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 订单信息 -->
+<mapper namespace="Order">
+
+	<resultMap id="orderMap" type="com.shopping.domain.order.Order">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+		<result column="commodity_id" property="commodityId" jdbcType="BIGINT" />
+		<result column="commodity_code" property="commodityCode"
+			jdbcType="VARCHAR" />
+		<result column="commodity_name" property="commodityName"
+			jdbcType="VARCHAR" />
+		<result column="commodity_count" property="commodityCount"
+			jdbcType="BIGINT" />
+		<result column="amount" property="amount" jdbcType="NUMERIC" />
+		<result column="order_time" property="orderTime" jdbcType="TIMESTAMP" />
+		<result column="user_code" property="userCode" jdbcType="VARCHAR" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="consignee" property="consignee" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="zip_code" property="zipCode" jdbcType="VARCHAR" />
+		<result column="payment_method" property="paymentMethod"
+			jdbcType="TINYINT" />
+		<result column="shipping_method" property="shippingMethod"
+			jdbcType="TINYINT" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<result column="employee_code" property="employeeCode"
+			jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="yn" property="yn" jdbcType="TINYINT" />
+	</resultMap>
+
+	<!-- 创建订单信息 -->
+	<insert id="insert" parameterType="com.shopping.domain.order.Order">
+		insert into
+		t_order(order_code,commodity_id,commodity_code,commodity_name,commodity_count,amount,order_time,user_code,user_name,consignee,address,mobile,email,zip_code,payment_method,shipping_method,status,remark,create_time,update_time,yn)
+		values(#{orderCode,jdbcType=VARCHAR},#{commodityId,jdbcType=BIGINT},#{commodityCode,jdbcType=VARCHAR},#{commodityName,jdbcType=VARCHAR},#{commodityCount,jdbcType=BIGINT},#{amount,jdbcType=NUMERIC},#{orderTime,jdbcType=VARCHAR},#{userCode,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{consignee,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{zipCode,jdbcType=VARCHAR},#{paymentMethod,jdbcType=TINYINT},#{shippingMethod,jdbcType=TINYINT},#{status,jdbcType=TINYINT},#{remark,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=TINYINT})
+	</insert>
+
+	<!-- 修改订单信息，根据订单对象 -->
+	<update id="update" parameterType="com.shopping.domain.order.Order">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update t_order
+				<set>
+					<if test="orderCode !=null and orderCode !=''">
+						order_code=#{orderCode,jdbcType=VARCHAR},
+					</if>
+					<if test="commodityId !=null and commodityId !=''">
+						commodity_id=#{commodityId,jdbcType=BIGINT},
+	    			</if>
+					<if test="commodityCode !=null and commodityCode !=''">
+						commodity_code=#{commodityCode,jdbcType=VARCHAR},
+	   				 </if>
+					<if test="commodityName !=null and commodityName !=''">
+						commodity_name=#{commodityName,jdbcType=VARCHAR},
+	    			</if>
+					<if test="commodityCount !=null and commodityCount !=''">
+						commodity_count=#{commodityCount,jdbcType=BIGINT},
+					</if>
+					<if test="amount !=null and amount !=''">
+						amount=#{amount,jdbcType=NUMERIC},
+	    			</if>
+					<if test="userCode !=null and userCode !=''">
+						user_code=#{userCode,jdbcType=VARCHAR},
+	    			</if>
+					<if test="userName !=null and userName !=''">
+						user_name=#{userName,jdbcType=VARCHAR},
+	    			</if>
+					<if test="consignee !=null and consignee !=''">
+						consignee=#{consignee,jdbcType=VARCHAR},
+	   				</if>
+					<if test="address !=null and address !=''">
+						address=#{address,jdbcType=VARCHAR},
+	  			   </if>
+					<if test="mobile !=null and mobile !=''">
+						mobile = #{mobile,jdbcType=VARCHAR},
+	    		   </if>
+					<if test="email !=null and email !=''">
+						email = #{email,jdbcType=VARCHAR},
+	  			  </if>
+					<if test="zipCode !=null and zipCode !=''">
+						zip_code = #{zipCode,jdbcType=VARCHAR},
+			     </if>
+					<if test="paymentMethod !=null and paymentMethod>=0">
+						payment_method=#{paymentMethod,jdbcType=TINYINT},
+	    		</if>
+					<if test="shippingMethod !=null and shippingMethod>=0">
+						shipping_method=#{shippingMethod,jdbcType=TINYINT},
+					</if>
+					<if test="status !=null and status >0 ">
+						status=#{status,jdbcType=TINYINT},
+			    </if>
+					<if test="employeeCode !=null and employeeCode !=''">
+						employee_code=#{employeeCode,jdbcType=VARCHAR},
+	   			 </if>
+					<if test="remark !=null and remark !=''">
+						remark=#{remark,jdbcType=VARCHAR},
+	    		</if>
+					<if test="updateTime !=null and updateTime !=''">
+						update_time = #{updateTime,jdbcType=TIMESTAMP}
+	           </if>
+
+				</set>
+				where id = #{id}
+			</if>
+		</if>
+	</update>
+
+	<!-- 修改订单状态，根据订单号 -->
+	<update id="updateOrderStatus" parameterType="com.shopping.domain.order.Order">
+		<if test="_parameter != null">
+			<if test="orderCode != null and orderCode !=''">
+				update t_order set
+				<if test="status !=null and status >0 ">
+					status=#{status,jdbcType=TINYINT},
+		    </if>
+				<if test="updateTime !=null and updateTime !=''">
+					update_time = #{updateTime,jdbcType=TIMESTAMP}
+           </if>
+				where order_code = #{orderCode}
+			</if>
+		</if>
+	</update>
+
+	<!-- 根据主键获取订单信息 -->
+	<select id="getOrderById" resultMap="orderMap" parameterType="java.lang.Long">
+		<if test="_parameter != null">
+			select
+			id,order_code,commodity_id,commodity_code,commodity_name,commodity_count,amount,order_time,user_code,user_name,consignee,address,mobile,email,zip_code,payment_method,shipping_method,status,remark,create_time,update_time
+			from t_order
+			where id = #{_parameter}
+        </if>
+	</select>
+
+	<!-- 根据订单代码获取订单信息 -->
+	<select id="getOrderByOrderCode" resultMap="orderMap"
+		parameterType="java.lang.String">
+		<if test="_parameter != null">
+			select
+			id,order_code,commodity_id,commodity_code,commodity_name,commodity_count,amount,order_time,user_code,user_name,consignee,address,mobile,email,zip_code,payment_method,shipping_method,status,remark,create_time,update_time
+			from t_order
+			where order_code = #{_parameter} order by id desc
+        </if>
+	</select>
+
+	<!-- 根据查询Bean获取订单集合，不带翻页 -->
+	<select id="queryOrderListByQueryBean" resultMap="orderMap"
+		parameterType="com.shopping.domain.order.query.OrderQuery">
+		select
+		id,order_code,commodity_id,commodity_code,commodity_name,commodity_count,amount,order_time,user_code,user_name,consignee,address,mobile,email,zip_code,payment_method,shipping_method,status,remark,create_time,update_time
+		from t_order
+		where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryOrderListWhere" />
+		</if>
+		order by id desc
+	</select>
+
+	<!-- 根据查询Bean获取订单集合，翻页 -->
+	<select id="queryOrderListPageByQueryBean" resultMap="orderMap"
+		parameterType="com.shopping.domain.order.query.OrderQuery">
+		select
+		id,order_code,commodity_id,commodity_code,commodity_name,commodity_count,amount,order_time,user_code,user_name,consignee,address,mobile,email,zip_code,payment_method,shipping_method,status,remark,create_time,update_time
+		from t_order where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryOrderListWhere" />
+		</if>
+		order by create_time desc
+		limit #{startRow},#{endRow};
+	</select>
+
+	<!-- 根据查询Bean获取订单总数 -->
+	<select id="queryOrderCountByQueryBean" resultType="java.lang.Integer"
+		parameterType="com.shopping.domain.order.query.OrderQuery">
+		select count(1) from t_order where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryOrderListWhere" />
+		</if>
+	</select>
+
+	<!-- 删除订单信息，根据主键 -->
+	<update id="deleteOrderById" parameterType="java.lang.Long">
+		<if test="_parameter != null and _parameter > 0">
+			update t_order set yn = 1 where id = #{_parameter}
+        </if>
+	</update>
+
+	<!-- 常用的查询Where条件 -->
+	<sql id="queryOrderListWhere">
+		<if test="orderCode != null and orderCode != ''">
+			and order_code = #{orderCode,jdbcType=VARCHAR}
+        </if>
+		<if test="userCode != null and userCode != ''">
+			and user_code = #{userCode,jdbcType=VARCHAR}
+        </if>
+
+		<if test="commodityId != null and commodityId != ''">
+			and commodity_id= #{commodityId,jdbcType=VARCHAR}
+        </if>
+		<if test="commodityCode != null and commodityCode != ''">
+			and commodity_code= #{commodityCode,jdbcType=VARCHAR}
+        </if>
+
+		<if test="status != null and status > 0">
+			and status= #{status,jdbcType=TINYINT}
+        </if>
+
+		<if test="employeeCode != null and employeeCode != ''">
+			and employee_code= #{employeeCode,jdbcType=VARCHAR}
+        </if>
+
+		<if test="startTime != null and startTime != ''">
+			and create_time >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+		<if test="endTime != null and endTime != ''">
+			and #{endTime,jdbcType=TIMESTAMP} >= create_time
+        </if>
+		<if test="yn != null and yn>=0">
+			and #{yn,jdbcType=TINYINT} = yn
+        </if>
+	</sql>
+</mapper>

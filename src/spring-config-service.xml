@@ -14,53 +14,53 @@
 
 
 	<!-- 用户信息service -->
-	<bean id="userService" class="com.haos.service.user.impl.UserServiceImpl" />
+	<bean id="userService" class="com.shopping.service.user.impl.UserServiceImpl" />
 	<!-- 员工信息service -->
-	<bean id="employeeService" class="com.haos.service.employee.impl.EmployeeServiceImpl" />
+	<bean id="employeeService" class="com.shopping.service.employee.impl.EmployeeServiceImpl" />
 	<!-- 员工功能信息service -->
-	<bean id="employeeFunService" class="com.haos.service.employee.impl.EmployeeFunServiceImpl" />
+	<bean id="employeeFunService" class="com.shopping.service.employee.impl.EmployeeFunServiceImpl" />
 	<!-- 功能信息service -->
-	<bean id="funService" class="com.haos.service.fun.impl.FunServiceImpl" />
-	<bean id="levelService" class="com.haos.service.level.impl.LevelServiceImpl" />
+	<bean id="funService" class="com.shopping.service.fun.impl.FunServiceImpl" />
+	<bean id="levelService" class="com.shopping.service.level.impl.LevelServiceImpl" />
 	<!-- 配送信息 Service 接口 -->
-	<bean id="sendService" class="com.haos.service.send.impl.SendServiceImpl" />
+	<bean id="sendService" class="com.shopping.service.send.impl.SendServiceImpl" />
 	<!-- 配送类别信息 Service 接口 -->
-	<bean id="sendTypeService" class="com.haos.service.send.impl.SendTypeServiceImpl" />
+	<bean id="sendTypeService" class="com.shopping.service.send.impl.SendTypeServiceImpl" />
 	<!-- 等级信息 Service 接口 -->
-	<bean id="commentService" class="com.haos.service.comment.impl.CommentServiceImpl" />
+	<bean id="commentService" class="com.shopping.service.comment.impl.CommentServiceImpl" />
 	<!-- 等级信息 Service 接口 -->
-	<bean id="commodityService" class="com.haos.service.commodity.impl.CommodityServiceImpl" />
+	<bean id="commodityService" class="com.shopping.service.commodity.impl.CommodityServiceImpl" />
 	<!-- 配送类别信息 Service 接口 -->
 	<bean id="commodityCategoryService"
-		class="com.haos.service.commodity.impl.CommodityCategoryServiceImpl" />
+		class="com.shopping.service.commodity.impl.CommodityCategoryServiceImpl" />
 	<!-- 消费记录信息 Service 接口 -->
 	<bean id="consumerRecordsService"
-		class="com.haos.service.consumer.impl.ConsumerRecordsServiceImpl" />
+		class="com.shopping.service.consumer.impl.ConsumerRecordsServiceImpl" />
 	<!-- 订单信息 Service 接口 -->
-	<bean id="orderService" class="com.haos.service.order.impl.OrderServiceImpl" />
+	<bean id="orderService" class="com.shopping.service.order.impl.OrderServiceImpl" />
 	<!-- 承运商信息 Service 接口 -->
-	<bean id="carrierService" class="com.haos.service.carrier.impl.CarrierServiceImpl" />
+	<bean id="carrierService" class="com.shopping.service.carrier.impl.CarrierServiceImpl" />
 	<!-- 购物车信息 Service 接口 -->
 	<bean id="shoppingCartService"
-		class="com.haos.service.shoppingcart.impl.ShoppingCartServiceImpl" />
+		class="com.shopping.service.shoppingcart.impl.ShoppingCartServiceImpl" />
 	<!-- 最近浏览信息 Service 接口 -->
 	<bean id="recentlyViewedService"
-		class="com.haos.service.recentlyviewed.impl.RecentlyViewedServiceImpl" />
+		class="com.shopping.service.recentlyviewed.impl.RecentlyViewedServiceImpl" />
 	<!-- 我的收藏夹信息 Service 接口 -->
-	<bean id="favoritesService" class="com.haos.service.favorites.impl.FavoritesServiceImpl" />
+	<bean id="favoritesService" class="com.shopping.service.favorites.impl.FavoritesServiceImpl" />
 	<!-- 员工信息WebService 接口 -->
 	<bean id="employeeInfoWebService"
-		class="com.haos.service.server.employee.impl.EmployeeInfoWebServiceImpl" />
+		class="com.shopping.service.server.employee.impl.EmployeeInfoWebServiceImpl" />
 	<!-- 订单信息信息 WebService 接口 -->
 	<bean id="orderInfoWebService"
-		class="com.haos.service.server.order.impl.OrderInfoWebServiceImpl" />
+		class="com.shopping.service.server.order.impl.OrderInfoWebServiceImpl" />
 	<!-- 配送信息 WebService 接口 -->
 	<bean id="sendInfoWebService"
-		class="com.haos.service.server.send.impl.SendInfoWebServiceImpl" />
+		class="com.shopping.service.server.send.impl.SendInfoWebServiceImpl" />
 
 
 
 	<!-- 定时器接口 -->
-	<bean id="orderDealTaskService" class="com.haos.service.order.impl.OrderDealTaskServiceImpl" />
+	<bean id="orderDealTaskService" class="com.shopping.service.order.impl.OrderDealTaskServiceImpl" />
 
 </beans>

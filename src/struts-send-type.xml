@@ -8,7 +8,7 @@
 	<!-- 配送类别模块 Action -->
 	<package name="sendType" extends="admin-default">
 		<action name="sendType_*" method="{1}"
-			class="com.haos.web.action.send.SendTypeAction">
+			class="com.shopping.web.action.send.SendTypeAction">
 			<!-- 配送类别信息 -->
 			<result name="{1}">/backgroud/sendType/{1}.jsp</result>
 		</action>
@@ -19,7 +19,7 @@
 	<package name="sendType_json" extends="json-protected-default">
 		<!-- 配送类别信息 Json -->
 		<action name="sendTypeJson_*" method="{1}"
-			class="com.haos.web.action.send.json.SendTypeJsonAction">
+			class="com.shopping.web.action.send.json.SendTypeJsonAction">
 			<result name="out" type="json">
 				<param name="ignoreHierarchy">true</param>
 				<param name="excludeNullProperties">true</param>

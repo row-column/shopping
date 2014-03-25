@@ -8,7 +8,7 @@
 	<!-- RecentlyViewed Module Action -->
 	<package name="recentlyViewed" extends="admin-default">
 		<action name="myRecentlyViewed" method="myRecentlyViewed"
-			class="com.haos.web.action.recentlyviewed.RecentlyViewedAction">
+			class="com.shopping.web.action.recentlyviewed.RecentlyViewedAction">
 			<result>/front/recentlyViewed.jsp</result>
 			<result name="error" type="redirect">toLogin.action</result>
 		</action>
@@ -19,7 +19,7 @@
 	<package name="recentlyViewed_json" extends="json-protected-default">
 		<!-- recently viewed information Json -->
 		<action name="recentlyViewedJson_*" method="{1}"
-			class="com.haos.web.action.recentlyviewed.json.RecentlyViewedJsonAction">
+			class="com.shopping.web.action.recentlyviewed.json.RecentlyViewedJsonAction">
 			<result name="out" type="json">
 				<param name="ignoreHierarchy">true</param>
 				<param name="excludeNullProperties">true</param>

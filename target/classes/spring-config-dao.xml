@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
+	default-autowire="byName">
+
+	<!-- 数据库操作Session工厂 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="shoppingDataSource" />
+		<property name="configLocation" value="classpath:sqlmap/mybatis-config.xml" />
+		<!-- mapper和resultmap配置路径 -->
+		<property name="mapperLocations">
+			<list>
+				<!-- -->
+				<value>classpath*:sqlmap/mybatis/mysql/Comment.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Commodity_Category.xml
+				</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Commodity.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Consumer_Records.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Employee.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Employee_Fun.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Fun.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Level.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Order.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Send.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Send_Type.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/User.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Carrier.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Shopping_Cart.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Recently_Viewed.xml</value>
+				<value>classpath*:sqlmap/mybatis/mysql/Favorites.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 用户信息 Dao 接口 -->
+	<bean id="userDao" class="com.shopping.dao.user.impl.UserDaoImpl" />
+	<!-- 员工信息 Dao 接口 -->
+	<bean id="employeeDao" class="com.shopping.dao.employee.impl.EmployeeDaoImpl" />
+	<!-- 员工信息 Dao 接口 -->
+	<bean id="employeeFunDao" class="com.shopping.dao.employee.impl.EmployeeFunDaoImpl" />
+	<!-- 功能信息 Dao 接口 -->
+	<bean id="funDao" class="com.shopping.dao.fun.impl.FunDaoImpl" />
+	<!-- 等级信息 Dao 接口 -->
+	<bean id="levelDao" class="com.shopping.dao.level.impl.LevelDaoImpl" />
+	<!-- 配送信息 Dao 接口 -->
+	<bean id="sendDao" class="com.shopping.dao.send.impl.SendDaoImpl" />
+	<!-- 配送类别信息 Dao 接口 -->
+	<bean id="sendTypeDao" class="com.shopping.dao.send.impl.SendTypeDaoImpl" />
+	<!-- 等级信息 Dao 接口 -->
+	<bean id="commentDao" class="com.shopping.dao.comment.impl.CommentDaoImpl" />
+	<!-- 等级信息 Dao 接口 -->
+	<bean id="commodityDao" class="com.shopping.dao.commodity.impl.CommodityDaoImpl" />
+	<!-- 配送类别信息 Dao 接口 -->
+	<bean id="commodityCategoryDao" class="com.shopping.dao.commodity.impl.CommodityCategoryDaoImpl" />
+	<!-- 消费记录信息 Dao 接口 -->
+	<bean id="consumerRecordsDao" class="com.shopping.dao.consumer.impl.ConsumerRecordsDaoImpl" />
+	<!-- 订单信息 Dao 接口 -->
+	<bean id="orderDao" class="com.shopping.dao.order.impl.OrderDaoImpl" />
+	<!-- 承运商信息 Dao 接口 -->
+	<bean id="carrierDao" class="com.shopping.dao.carrier.impl.CarrierDaoImpl" />
+	<!-- 购物车信息 Dao 接口 -->
+	<bean id="shoppingCartDao" class="com.shopping.dao.shoppingcart.impl.ShoppingCartDaoImpl" />
+	<!-- 最近浏览信息 Dao 接口 -->
+	<bean id="recentlyViewedDao" class="com.shopping.dao.recentlyviewed.impl.RecentlyViewedDaoImpl" />
+	<!-- 我的收藏夹信息 Dao 接口 -->
+	<bean id="favoritesDao" class="com.shopping.dao.favorites.impl.FavoritesDaoImpl" />
+
+
+</beans>

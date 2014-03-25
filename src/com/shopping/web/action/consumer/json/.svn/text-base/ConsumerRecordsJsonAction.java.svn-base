@@ -1,0 +1,199 @@
+package com.stark.asm.web.action.consumer.json;
+
+import com.stark.asm.common.util.action.BaseAction;
+import com.stark.asm.common.util.page.Result;
+import com.stark.asm.domain.consumer.ConsumerRecords;
+import com.stark.asm.service.consumer.ConsumerRecordsService;
+
+
+/**
+ * 用户信息相关的操作 JsonAction
+ * @author WangYue
+ *
+ */
+public class ConsumerRecordsJsonAction extends BaseAction {
+   // private final static Log logger = LogFactory.getLog(ConsumerRecordsJsonAction.class);
+    
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+     * 用户信息 Service 接口
+     */
+    private ConsumerRecordsService consumerRecordsService;
+    
+    /**
+     * json返回的结果
+     */
+    private String result;
+    
+    /**
+     * 提示消息
+     */
+    private String resultMsg;
+    
+    /**
+     * 用户信息对象
+     */
+    private ConsumerRecords consumerRecords;
+
+    /**
+     * 功能编号数组
+     */
+    private Long[]ids;
+    /**
+     * 添加用户信息
+     *
+     * @return
+     */
+    public String addConsumerRecords() {
+        if (null != consumerRecords) {
+
+            Result serviceResult = consumerRecordsService.addConsumerRecords(consumerRecords);
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false*" + (String) serviceResult.get("resultMsg");
+            }
+        } else {
+            result = "false";
+        }
+        return "out";
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @return
+     */
+    public String updateConsumerRecords() {
+        if (null != consumerRecords) {
+
+            Result serviceResult = consumerRecordsService.updateConsumerRecords(consumerRecords);
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false";
+            }
+        } else {
+            result = "false";
+        }
+        return "out";
+    }
+
+    /**
+     * 删除用户信息
+     *
+     * @return
+     */
+    public String deleteConsumerRecords() {
+        if (null != consumerRecords.getId() && consumerRecords.getId().intValue() > 0) {
+        	System.out.println("id"+consumerRecords.getId());
+            //删除用户信息
+            Result serviceResult = consumerRecordsService.deleteConsumerRecordsById(consumerRecords.getId());
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false";
+            }
+        } else {
+            result = "false";
+        }
+        return "out";
+    }
+    
+    
+    /**
+     * 删除多个功能信息
+     *
+     * @return
+     */
+    public String deleteConsumerRecordss() {
+        if(ids!=null&&ids.length>1){
+        	 //删除功能信息
+            Result serviceResult = consumerRecordsService.deleteConsumerRecordsByIds(ids);
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false";
+            }
+        }else {
+            result = "false";
+        }
+        return "out";
+    }
+    
+    
+  /*  *//**
+     * 查询功能号
+     *
+     * @return
+     *//*
+    public String checkConsumerRecordsCode() {
+        if (null != consumerRecords) {
+
+            Result serviceResult = consumerRecordsService.getConsumerRecordsByConsumerRecordsCode(consumerRecords.getConsumerRecordsCode());
+            
+            if (null != serviceResult && serviceResult.getSuccess()) {
+            	ConsumerRecords consumerRecords=(ConsumerRecords)serviceResult.get("consumerRecords");
+            	if(consumerRecords!=null&&consumerRecords.getConsumerRecordsCode()!=null){
+            		result = "该功能号已经存在！！！";
+            	}else{
+            		result = "恭喜你，该功能号可用！！！";
+            	}
+            } else {
+            	result = "恭喜你，该功能号可用！！！";
+            }
+        } 
+        return "out";
+    }*/
+
+    public void setConsumerRecordsService(ConsumerRecordsService consumerRecordsService) {
+        this.consumerRecordsService = consumerRecordsService;
+    }
+
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getResultMsg() {
+        return resultMsg;
+    }
+
+    public void setResultMsg(String resultMsg) {
+        this.resultMsg = resultMsg;
+    }
+
+	public ConsumerRecords getConsumerRecords() {
+		return consumerRecords;
+	}
+
+	public void setConsumerRecords(ConsumerRecords consumerRecords) {
+		this.consumerRecords = consumerRecords;
+	}
+
+	public ConsumerRecordsService getConsumerRecordsService() {
+		return consumerRecordsService;
+	}
+
+	public Long[] getIds() {
+		return ids;
+	}
+
+	public void setIds(Long[] ids) {
+		this.ids = ids;
+	}
+    
+  
+}

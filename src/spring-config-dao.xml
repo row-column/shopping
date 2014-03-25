@@ -14,7 +14,7 @@
 
 	<!-- 数据库操作Session工厂 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="asmDataSource" />
+		<property name="dataSource" ref="shoppingDataSource" />
 		<property name="configLocation" value="classpath:sqlmap/mybatis-config.xml" />
 		<!-- mapper和resultmap配置路径 -->
 		<property name="mapperLocations">
@@ -42,37 +42,37 @@
 	</bean>
 
 	<!-- 用户信息 Dao 接口 -->
-	<bean id="userDao" class="com.haos.dao.user.impl.UserDaoImpl" />
+	<bean id="userDao" class="com.shopping.dao.user.impl.UserDaoImpl" />
 	<!-- 员工信息 Dao 接口 -->
-	<bean id="employeeDao" class="com.haos.dao.employee.impl.EmployeeDaoImpl" />
+	<bean id="employeeDao" class="com.shopping.dao.employee.impl.EmployeeDaoImpl" />
 	<!-- 员工信息 Dao 接口 -->
-	<bean id="employeeFunDao" class="com.haos.dao.employee.impl.EmployeeFunDaoImpl" />
+	<bean id="employeeFunDao" class="com.shopping.dao.employee.impl.EmployeeFunDaoImpl" />
 	<!-- 功能信息 Dao 接口 -->
-	<bean id="funDao" class="com.haos.dao.fun.impl.FunDaoImpl" />
+	<bean id="funDao" class="com.shopping.dao.fun.impl.FunDaoImpl" />
 	<!-- 等级信息 Dao 接口 -->
-	<bean id="levelDao" class="com.haos.dao.level.impl.LevelDaoImpl" />
+	<bean id="levelDao" class="com.shopping.dao.level.impl.LevelDaoImpl" />
 	<!-- 配送信息 Dao 接口 -->
-	<bean id="sendDao" class="com.haos.dao.send.impl.SendDaoImpl" />
+	<bean id="sendDao" class="com.shopping.dao.send.impl.SendDaoImpl" />
 	<!-- 配送类别信息 Dao 接口 -->
-	<bean id="sendTypeDao" class="com.haos.dao.send.impl.SendTypeDaoImpl" />
+	<bean id="sendTypeDao" class="com.shopping.dao.send.impl.SendTypeDaoImpl" />
 	<!-- 等级信息 Dao 接口 -->
-	<bean id="commentDao" class="com.haos.dao.comment.impl.CommentDaoImpl" />
+	<bean id="commentDao" class="com.shopping.dao.comment.impl.CommentDaoImpl" />
 	<!-- 等级信息 Dao 接口 -->
-	<bean id="commodityDao" class="com.haos.dao.commodity.impl.CommodityDaoImpl" />
+	<bean id="commodityDao" class="com.shopping.dao.commodity.impl.CommodityDaoImpl" />
 	<!-- 配送类别信息 Dao 接口 -->
-	<bean id="commodityCategoryDao" class="com.haos.dao.commodity.impl.CommodityCategoryDaoImpl" />
+	<bean id="commodityCategoryDao" class="com.shopping.dao.commodity.impl.CommodityCategoryDaoImpl" />
 	<!-- 消费记录信息 Dao 接口 -->
-	<bean id="consumerRecordsDao" class="com.haos.dao.consumer.impl.ConsumerRecordsDaoImpl" />
+	<bean id="consumerRecordsDao" class="com.shopping.dao.consumer.impl.ConsumerRecordsDaoImpl" />
 	<!-- 订单信息 Dao 接口 -->
-	<bean id="orderDao" class="com.haos.dao.order.impl.OrderDaoImpl" />
+	<bean id="orderDao" class="com.shopping.dao.order.impl.OrderDaoImpl" />
 	<!-- 承运商信息 Dao 接口 -->
-	<bean id="carrierDao" class="com.haos.dao.carrier.impl.CarrierDaoImpl" />
+	<bean id="carrierDao" class="com.shopping.dao.carrier.impl.CarrierDaoImpl" />
 	<!-- 购物车信息 Dao 接口 -->
-	<bean id="shoppingCartDao" class="com.haos.dao.shoppingcart.impl.ShoppingCartDaoImpl" />
+	<bean id="shoppingCartDao" class="com.shopping.dao.shoppingcart.impl.ShoppingCartDaoImpl" />
 	<!-- 最近浏览信息 Dao 接口 -->
-	<bean id="recentlyViewedDao" class="com.haos.dao.recentlyviewed.impl.RecentlyViewedDaoImpl" />
+	<bean id="recentlyViewedDao" class="com.shopping.dao.recentlyviewed.impl.RecentlyViewedDaoImpl" />
 	<!-- 我的收藏夹信息 Dao 接口 -->
-	<bean id="favoritesDao" class="com.haos.dao.favorites.impl.FavoritesDaoImpl" />
+	<bean id="favoritesDao" class="com.shopping.dao.favorites.impl.FavoritesDaoImpl" />
 
 
 </beans>

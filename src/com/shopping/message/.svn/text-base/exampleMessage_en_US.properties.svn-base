@@ -1,0 +1,37 @@
+##***********用户模块 start*************##
+example.user.list.title=user info list
+example.user.list.add=add user info
+example.user.query.userName=userName
+example.user.query.userCode=userCode
+example.user.query.userPwd=userPwd
+example.user.query.userCheckPwd=userCheckPwd
+
+##***********用户模块 end*************##
+
+##*********************公用模块 start***********************##
+common.button.query=query
+common.button.new=new
+common.button.update=update
+common.button.delete=delete
+common.button.confirm=confirm
+common.button.close=close
+common.button.clear=clear
+
+common.createTime=createTime
+common.to=to
+common.updateTime=updateTime
+common.status=status
+common.operate=operate
+common.noMatchingRecords=No Matching Records
+
+##--------翻页 start-------##
+common.total=Total
+common.article=Article
+common.page=Page
+common.current=Current
+common.home=Home
+common.previousPage=PreviousPage
+common.nextPage=NextPage
+common.lastPage=LastPage
+##--------翻页 end-------##
+##*********************公用模块 end***********************##

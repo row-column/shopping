@@ -3,7 +3,7 @@
 <!-- 评价信息 -->
 <mapper namespace="Comment">
 
-	<resultMap id="commentMap" type="com.haos.domain.comment.Comment">
+	<resultMap id="commentMap" type="com.shopping.domain.comment.Comment">
 		<id column="id" property="id" jdbcType="NUMBER" />
 		<result column="title" property="title" jdbcType="VARCHAR2" />
 		<result column="advantage" property="advantage" jdbcType="VARCHAR2" />
@@ -23,14 +23,14 @@
 	</resultMap>
 
 	<!-- 创建评价信息 -->
-	<insert id="insert" parameterType="com.haos.domain.comment.Comment">
+	<insert id="insert" parameterType="com.shopping.domain.comment.Comment">
 		insert into
 		comment(title,advantage,shortcoming,usage_experience,comment_time,commodity_id,commodity_code,commodity_name,user_code,create_time,update_time,yn)
 		values(#{title,jdbcType=VARCHAR2},#{advantage,jdbcType=VARCHAR2},#{shortcoming,jdbcType=VARCHAR2},#{usageExperience,jdbcType=VARCHAR2},#{commentTime,jdbcType=TIMESTAMP},#{commodityId,jdbcType=NUMBER},#{commodityCode,jdbcType=VARCHAR2},#{commodityName,jdbcType=VARCHAR2},#{userCode,jdbcType=VARCHAR2},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
 	</insert>
 
 	<!-- 修改评价信息，根据评价对象 -->
-	<update id="update" parameterType="com.haos.domain.comment.Comment">
+	<update id="update" parameterType="com.shopping.domain.comment.Comment">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update comment 
@@ -84,7 +84,7 @@
 
 	<!-- 根据查询Bean获取评价信息 -->
 	<select id="getCommentByCommodityIdAndUserCode" resultMap="commentMap"
-		parameterType="com.haos.domain.comment.query.CommentQuery">
+		parameterType="com.shopping.domain.comment.query.CommentQuery">
 		select
 		id,title,advantage,shortcoming,usage_experience,comment_time,commodity_id,commodity_code,commodity_name,user_code,create_time,update_time
 		from comment
@@ -92,7 +92,7 @@
 	</select>
 	<!-- 根据查询Bean获取评价集合，不带翻页 -->
 	<select id="queryCommentListByQueryBean" resultMap="commentMap"
-		parameterType="com.haos.domain.comment.query.CommentQuery">
+		parameterType="com.shopping.domain.comment.query.CommentQuery">
 		select
 		id,title,advantage,shortcoming,usage_experience,comment_time,commodity_id,commodity_code,commodity_name,user_code,create_time,update_time
 		from comment where 1 = 1
@@ -102,7 +102,7 @@
 	</select>
 	<!-- 根据查询Bean获取评价集合，翻页 -->
 	<select id="queryCommentListPageByQueryBean" resultMap="commentMap"
-		parameterType="com.haos.domain.comment.query.CommentQuery">
+		parameterType="com.shopping.domain.comment.query.CommentQuery">
 		select
 		id,title,advantage,shortcoming,usage_experience,comment_time,commodity_id,commodity_code,commodity_name,user_code,create_time,update_time
 		from comment where 1 = 1
@@ -115,7 +115,7 @@
 
 	<!-- 根据查询Bean获取评价总数 -->
 	<select id="queryCommentCountByQueryBean" resultType="java.lang.Integer"
-		parameterType="com.haos.domain.comment.query.CommentQuery">
+		parameterType="com.shopping.domain.comment.query.CommentQuery">
 		select count(1) from comment where 1 = 1
 		<if test="_parameter != null">
 			<include refid="queryCommentListWhere" />

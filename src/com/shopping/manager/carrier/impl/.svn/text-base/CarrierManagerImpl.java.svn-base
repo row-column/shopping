@@ -1,0 +1,249 @@
+package com.stark.asm.manager.carrier.impl;
+
+import java.util.Date;
+import java.util.List;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import com.stark.asm.common.util.CommonConstant;
+import com.stark.asm.common.util.manager.BaseManager;
+import com.stark.asm.common.util.page.PaginatedArrayList;
+import com.stark.asm.common.util.page.PaginatedList;
+import com.stark.asm.dao.carrier.CarrierDao;
+import com.stark.asm.domain.carrier.Carrier;
+import com.stark.asm.domain.carrier.query.CarrierQuery;
+import com.stark.asm.manager.carrier.CarrierManager;
+
+public class CarrierManagerImpl extends BaseManager implements CarrierManager {
+
+	/**
+	 * 日志
+	 */
+	private static final Logger log = LogManager
+			.getLogger(CarrierManagerImpl.class);
+
+	private CarrierDao carrierDao;
+
+	@Override
+	public boolean addCarrier(final Carrier carrier) {
+		// 操作结果
+		boolean resultFlag = true;
+		try {
+			// 事务 多个数据处理时，放入事务处理中 （此处作为实例，没有多个数据处理时，无需进行事务处理）
+			TransactionTemplate template = this
+					.getDataSourceTransactionManager();
+			template.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(
+						TransactionStatus transactionStatus) {
+					try {
+						boolean insertFlag = false;
+						if (carrier != null) {
+							carrier.setCreateTime(new Date());
+							carrier.setUpdateTime(new Date());
+							carrier.setYn(CommonConstant.YN_NO_DELETE);
+							insertFlag = carrierDao.addCarrier(carrier);
+
+							// 新增失败
+							if (!insertFlag) {
+								// 添加失败，抛出异常
+								throw new RuntimeException(
+										"CarrierManagerImpl.addCarrier.error.");
+							} else {
+								// 事务中的其他数据处理
+								// 调用内部方法
+							}
+
+						} else {
+							// 对象为null，抛出异常
+							log.debug("CarrierManagerImpl.addCarrier.parameter.empty.");
+							throw new RuntimeException(
+									"CarrierManagerImpl.addCarrier.parameter.empty.");
+						}
+					} catch (Exception e) {
+						// 日志记录
+						log.error(e);
+						// 回滚
+						transactionStatus.setRollbackOnly();
+						throw new RuntimeException(
+								"CarrierManagerImpl.addCarrier.exception:", e);
+					}
+				}
+
+				// 添加 事务中的其他数据处理的内部方法
+
+			});
+
+		} catch (Exception e) {
+			resultFlag = false;
+			log.error(e);
+		}
+		return resultFlag;
+	}
+
+	@Override
+	public boolean updateCarrier(Carrier carrier) {
+		// 操作结果
+		boolean resultFlag = true;
+		try {
+			if (null != carrier) {
+				// 设置更新时间
+				carrier.setUpdateTime(new Date());
+
+				// 更新操作
+				boolean updateRouteFlag = carrierDao.updateCarrier(carrier);
+
+				if (!updateRouteFlag) {
+
+					// 更新失败，抛出异常
+					throw new RuntimeException("CarrierManagerImpl.updateCarrier.fail.");
+				}
+			} else {
+				// 功能对象为null，抛出异常
+				log.debug("CarrierManagerImpl.updateCarrier.parameter.empty.");
+				throw new RuntimeException(
+						"CarrierManagerImpl.updateCarrier.parameter.empty.");
+			}
+		} catch (Exception e) {
+			resultFlag = false;
+			log.error(e);
+			// System.out.println(e);
+		}
+		return resultFlag;
+	}
+
+	@Override
+	public Carrier getCarrierById(Long id) {
+		return carrierDao.getCarrierById(id);
+	}
+
+	@Override
+	public Carrier getCarrierByCarrierCode(String carrierCode) {
+		return carrierDao.getCarrierByCarrierCode(carrierCode);
+	}
+
+	@Override
+	public List<Carrier> queryCarrierListByQueryBean(CarrierQuery carrierQuery) {
+		return carrierDao.queryCarrierListByQueryBean(carrierQuery);
+	}
+
+	@Override
+	public PaginatedList<Carrier> queryCarrierListPageByQueryBean(CarrierQuery carrierQuery,
+			int pageIndex, int pageSize) {
+
+		// 必须有这行代码
+		if (null == carrierQuery) {
+			carrierQuery = new CarrierQuery();
+		}
+		// 查询总数
+		int totalItem = carrierDao.queryCarrierCountByQueryBean(carrierQuery);
+
+		// 创建翻页集合,根据第几页和每页大小
+		PaginatedList<Carrier> carriers = new PaginatedArrayList<Carrier>(pageIndex,
+				pageSize);
+
+		// 设置总数,同时将会计算出开始行和结束行
+		carriers.setTotalItem(totalItem);
+
+		// 设置开始行
+		carrierQuery.setStartRow(carriers.getStartRow());
+
+		// 设置最后行
+		carrierQuery.setEndRow(carriers.getEndRow());
+
+		// 调用Dao翻页方法
+		List<Carrier> carrierList = carrierDao.queryCarrierListPageByQueryBean(carrierQuery);
+
+		// 添加到翻页集合中
+		carriers.addAll(carrierList);
+
+		return carriers;
+	}
+
+	@Override
+	public boolean deleteCarrierById(Long id) {
+
+		// 操作结果
+		boolean resultFlag = true;
+		try {
+			if (null != id && !("").equals(id)) {
+				// 删除
+				boolean deleteFlag = carrierDao.deleteCarrierById(id);
+				if (!deleteFlag) {
+					// 删除失败，抛出异常
+					throw new RuntimeException("CarrierManagerImpl.deleteCarrier.fail.");
+				}
+			} else {
+				// 记录id 为null，抛出异常
+				log.debug("CarrierManagerImpl.deleteCarrier.empty.");
+				throw new RuntimeException("");
+			}
+		} catch (Exception e) {
+			resultFlag = false;
+			log.error(e);
+		}
+		return resultFlag;
+	}
+
+	@Override
+	public boolean deleteCarrierByIds(final Long[] ids) {
+
+		// result flag
+		boolean resultFlag = true;
+		try {
+			// deal with many data of transaction, you should execute this
+			// transaction.
+			TransactionTemplate template = this
+					.getDataSourceTransactionManager();
+			template.execute(new TransactionCallbackWithoutResult() {
+
+				@Override
+				protected void doInTransactionWithoutResult(
+						TransactionStatus transactionStatus) {
+					try {
+						boolean deleteFlag = false; // delete result flag
+						// judge on ids whether null or not
+						if (ids != null && ids.length > 0) {
+							// Traverse array ids
+							for (Long id : ids) {
+								deleteFlag = carrierDao.deleteCarrierById(id);
+							}
+							if (!deleteFlag) {
+								throw new RuntimeException(
+										"CarrierManagerImpl.deleteCarrierByIds(),Fail.");
+							}
+						} else {
+							throw new RuntimeException(
+									"CarrierManagerImpl.deleteCarrierByIds(), ids param null.");
+						}
+
+					} catch (Exception e) {
+						// record log
+						log.error(e);
+						// roll back
+						transactionStatus.setRollbackOnly();
+						throw new RuntimeException(
+								"CarrierManagerImpl.deleteCarrierByIds.exception:", e);
+					}
+				}
+			});
+		} catch (Exception e) {
+			resultFlag = false;
+			log.error(e);
+		}
+		return resultFlag;
+	}
+
+	@Override
+	public int queryCarrierCountByQueryBean(CarrierQuery carrierquery) {
+		return carrierDao.queryCarrierCountByQueryBean(carrierquery);
+	}
+
+	public void setCarrierDao(CarrierDao carrierDao) {
+		this.carrierDao = carrierDao;
+	}
+
+}

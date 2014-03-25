@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 等级信息 -->
+<mapper namespace="Level">
+	<resultMap id="levelMap" type="com.shopping.domain.level.Level">
+		<id column="id" property="id" jdbcType="NUMBER" />
+		<result column="level_code" property="levelCode" jdbcType="VARCHAR2" />
+		<result column="level_name" property="levelName" jdbcType="VARCHAR2" />
+		<result column="start_point" property="startPoint" jdbcType="NUMBER" />
+		<result column="end_point" property="endPoint" jdbcType="NUMBER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR2" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="yn" property="yn" jdbcType="Integer" />
+	</resultMap>
+
+	<!-- 创建等级信息 -->
+	<insert id="insert" parameterType="com.shopping.domain.level.Level">
+		insert into
+		level(level_code,level_name,start_point,end_point,remark,create_time,update_time,yn)
+		values(#{levelCode,jdbcType=VARCHAR2},#{levelName,jdbcType=VARCHAR2},#{startPoint,jdbcType=NUMBER},#{endPoint,jdbcType=NUMBER},#{remark,jdbcType=VARCHAR2},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
+	</insert>
+
+	<!-- 修改等级信息，根据等级对象 -->
+	<update id="update" parameterType="com.shopping.domain.level.Level">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update level
+				<set>
+					<if test="levelCode!=null and levelCode!=''">
+						level_code=#{levelCode,jdbcType=VARCHAR2},
+					</if>
+					<if test="levelName!=null and levelName!=''">
+						level_name = #{levelName,jdbcType=VARCHAR2},
+					</if>
+					<if test="startPoint!=null and startPoint!=''">
+						start_point = #{startPoint,jdbcType=NUMBER},
+					</if>
+					<if test="endPoint!=null and endPoint!=''">
+						end_point = #{endPoint,jdbcType=NUMBER},
+					</if>
+					<if test="remark!=null and remark!=''">
+						remark = #{remark,jdbcType=VARCHAR2},
+					</if>
+					<if test="updateTime!=null and updateTime!=''">
+						update_time=#{updateTime,jdbtType=TIMESTAMP}
+					</if>
+				</set>
+				where id = #{id}
+			</if>
+		</if>
+	</update>
+
+	<!-- 根据主键获取等级信息 -->
+	<select id="getLevelById" resultMap="levelMap" parameterType="java.lang.Long">
+		<if test="_parameter != null">
+			select
+			id,level_code,level_name,start_point,end_point,remark,create_time,update_time
+			from level
+			where id = #{_parameter}
+        </if>
+	</select>
+
+	<!-- 根据等级代码，获取等级信息 -->
+	<select id="getLevelByLevelCode" resultMap="levelMap"
+		parameterType="java.lang.String">
+		<if test="_parameter != null">
+			select
+			id,level_code,level_name,start_point,end_point,remark,create_time,update_time
+			from level
+			where level_code = #{_parameter}
+        </if>
+	</select>
+
+	<!-- 根据查询Bean获取等级集合，不带翻页 -->
+	<select id="queryLevelListByQueryBean" resultMap="levelMap"
+		parameterType="com.shopping.domain.level.query.LevelQuery">
+		select
+		id,level_code,level_name,start_point,end_point,remark,create_time,update_time
+		from level where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryLevelListWhere" />
+		</if>
+	</select>
+	<!-- 根据查询Bean获取等级集合，翻页 -->
+	<select id="queryLevelListPageByQueryBean" resultMap="levelMap"
+		parameterType="com.shopping.domain.level.query.LevelQuery">
+		select
+		id,level_code,level_name,start_point,end_point,remark,create_time,update_time
+		from level where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryLevelListWhere" />
+		</if>
+		order by id desc
+		limit #{startRow},#{endRow};
+	</select>
+
+	<!-- 根据查询Bean获取等级总数 -->
+	<select id="queryLevelCountByQueryBean" resultType="java.lang.Integer"
+		parameterType="com.shopping.domain.level.query.LevelQuery">
+		select count(1) from level where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryLevelListWhere" />
+		</if>
+	</select>
+
+	<!-- 删除等级信息，根据主键 -->
+	<delete id="deleteLevelById" parameterType="java.lang.Long">
+		<if test="_parameter != null and _parameter > 0">
+			delete from level where id = #{_parameter}
+        </if>
+	</delete>
+
+	<!-- 常用的查询Where条件 -->
+	<sql id="queryLevelListWhere">
+		<if test="levelCode != null and levelCode != ''">
+			and level_code = #{levelCode,jdbcType=VARCHAR2}
+        </if>
+		<if test="yn != null and yn>=0">
+			and yn = #{yn,jdbcType=Integer}
+        </if>
+	</sql>
+</mapper>

@@ -8,7 +8,7 @@
 	<!-- 员工功能模块 Action -->
 	<package name="employeeFun" extends="admin-default">
 		<action name="employeeFun_*" method="{1}"
-			class="com.haos.web.action.employee.EmployeeFunAction">
+			class="com.shopping.web.action.employee.EmployeeFunAction">
 			<!-- 员工功能信息 -->
 			<result name="{1}">/backgroud/employeeFun/{1}.jsp</result>
 		</action>
@@ -19,7 +19,7 @@
 	<package name="employeeFun_json" extends="json-protected-default">
 		<!-- 员工功能信息 Json -->
 		<action name="employeeFunJson_*" method="{1}"
-			class="com.haos.web.action.employee.json.EmployeeFunJsonAction">
+			class="com.shopping.web.action.employee.json.EmployeeFunJsonAction">
 			<result name="out" type="json">
 				<param name="ignoreHierarchy">true</param>
 				<param name="excludeNullProperties">true</param>

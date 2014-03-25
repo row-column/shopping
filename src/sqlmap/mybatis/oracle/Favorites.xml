@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <!-- favorites信息 -->
 <mapper namespace="Favorites">
-	<resultMap id="favoritesMap" type="com.haos.domain.favorites.Favorites">
+	<resultMap id="favoritesMap" type="com.shopping.domain.favorites.Favorites">
 		<id column="id" property="id" jdbcType="NUMBER" />
 		<result column="user_code" property="userCode" jdbcType="VARCHAR2" />
 		<result column="commodity_id" property="commodityId" jdbcType="NUMBER" />
@@ -24,7 +24,7 @@
 	</resultMap>
 
 	<!-- create favorites information -->
-	<insert id="insert" parameterType="com.haos.domain.favorites.Favorites">
+	<insert id="insert" parameterType="com.shopping.domain.favorites.Favorites">
 		insert into
 		favorites(user_code,commodity_id,commodity_code,commodity_name,price,commodity_photo,viewed_count,comment_count,is_read,status,create_time,update_time,yn)
 		values(#{userCode,jdbcType=VARCHAR2},#{commodityId,jdbcType=NUMBER},#{commodityCode,jdbcType=VARCHAR2},#{commodityName,jdbcType=VARCHAR2},#{price,jdbcType=VARCHAR2},#{commodityPhoto,jdbcType=VARCHAR2},#{viewedCount,jdbcType=NUMBER},#{commentCount,jdbcType=NUMBER},#{isRead,jdbcType=Integer},#{status,jdbcType=Integer},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
@@ -43,7 +43,7 @@
 
 	<!-- according to Bean ,query favorites collection -->
 	<select id="queryFavoritesListByQueryBean" resultMap="favoritesMap"
-		parameterType="com.haos.domain.favorites.query.FavoritesQuery">
+		parameterType="com.shopping.domain.favorites.query.FavoritesQuery">
 		select
 		id,user_code,commodity_id,commodity_code,commodity_name,price,commodity_photo,viewed_count,comment_count,is_read,status,create_time,update_time
 		from favorites where 1 = 1
@@ -55,7 +55,7 @@
 
 	<!-- -->
 	<select id="queryFavoritesListPageByQueryBean" resultMap="favoritesMap"
-		parameterType="com.haos.domain.favorites.query.FavoritesQuery">
+		parameterType="com.shopping.domain.favorites.query.FavoritesQuery">
 		select
 		id,user_code,commodity_id,commodity_code,commodity_name,price,commodity_photo,viewed_count,comment_count,is_read,status,create_time,update_time
 		from favorites where 1 = 1
@@ -68,7 +68,7 @@
 
 	<!-- -->
 	<select id="queryFavoritesCountByQueryBean" resultType="java.lang.Integer"
-		parameterType="com.haos.domain.favorites.query.FavoritesQuery">
+		parameterType="com.shopping.domain.favorites.query.FavoritesQuery">
 		select count(1) from favorites where 1 = 1
 		<if test="_parameter != null">
 			<include refid="queryFavoritesListWhere" />

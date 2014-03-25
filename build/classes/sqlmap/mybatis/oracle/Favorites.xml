@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- favorites信息 -->
+<mapper namespace="Favorites">
+	<resultMap id="favoritesMap" type="com.shopping.domain.favorites.Favorites">
+		<id column="id" property="id" jdbcType="NUMBER" />
+		<result column="user_code" property="userCode" jdbcType="VARCHAR2" />
+		<result column="commodity_id" property="commodityId" jdbcType="NUMBER" />
+		<result column="commodity_code" property="commodityCode"
+			jdbcType="VARCHAR2" />
+		<result column="commodity_name" property="commodityName"
+			jdbcType="VARCHAR2" />
+		<result column="price" property="price" jdbcType="NUMERIC" />
+		<result column="commodity_photo" property="commodityPhoto"
+			jdbcType="LONGVARCHAR2" />
+		<result column="viewed_count" property="viewedCount" jdbcType="NUMBER" />
+		<result column="comment_count" property="commentCount"
+			jdbcType="NUMBER" />
+		<result column="is_read" property="isRead" jdbcType="Integer" />
+		<result column="status" property="status" jdbcType="Integer" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="yn" property="yn" jdbcType="Integer" />
+	</resultMap>
+
+	<!-- create favorites information -->
+	<insert id="insert" parameterType="com.shopping.domain.favorites.Favorites">
+		insert into
+		favorites(user_code,commodity_id,commodity_code,commodity_name,price,commodity_photo,viewed_count,comment_count,is_read,status,create_time,update_time,yn)
+		values(#{userCode,jdbcType=VARCHAR2},#{commodityId,jdbcType=NUMBER},#{commodityCode,jdbcType=VARCHAR2},#{commodityName,jdbcType=VARCHAR2},#{price,jdbcType=VARCHAR2},#{commodityPhoto,jdbcType=VARCHAR2},#{viewedCount,jdbcType=NUMBER},#{commentCount,jdbcType=NUMBER},#{isRead,jdbcType=Integer},#{status,jdbcType=Integer},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
+	</insert>
+
+	<!-- according to user code ,query favorites collection -->
+	<select id="queryFavoritesByUserCode" resultMap="favoritesMap"
+		parameterType="java.lang.String">
+		<if test="_parameter != null">
+			select
+			id,user_code,commodity_id,commodity_code,commodity_name,price,commodity_photo,viewed_count,comment_count,is_read,status,create_time,update_time
+			from favorites
+			where user_code=#{_parameter}and yn=0
+       </if>
+	</select>
+
+	<!-- according to Bean ,query favorites collection -->
+	<select id="queryFavoritesListByQueryBean" resultMap="favoritesMap"
+		parameterType="com.shopping.domain.favorites.query.FavoritesQuery">
+		select
+		id,user_code,commodity_id,commodity_code,commodity_name,price,commodity_photo,viewed_count,comment_count,is_read,status,create_time,update_time
+		from favorites where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryFavoritesListWhere" />
+		</if>
+		order by id desc
+	</select>
+
+	<!-- -->
+	<select id="queryFavoritesListPageByQueryBean" resultMap="favoritesMap"
+		parameterType="com.shopping.domain.favorites.query.FavoritesQuery">
+		select
+		id,user_code,commodity_id,commodity_code,commodity_name,price,commodity_photo,viewed_count,comment_count,is_read,status,create_time,update_time
+		from favorites where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryFavoritesListWhere" />
+		</if>
+		order by id desc
+		limit #{startRow},#{endRow};
+	</select>
+
+	<!-- -->
+	<select id="queryFavoritesCountByQueryBean" resultType="java.lang.Integer"
+		parameterType="com.shopping.domain.favorites.query.FavoritesQuery">
+		select count(1) from favorites where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryFavoritesListWhere" />
+		</if>
+	</select>
+
+
+	<!-- delete favorites information，accroding to id -->
+	<delete id="deleteFavoritesById" parameterType="java.lang.Long">
+		<if test="_parameter != null and _parameter > 0">
+			update favorites set yn=1 where id = #{_parameter}
+        </if>
+	</delete>
+
+	<!-- common query Where condition -->
+	<sql id="queryFavoritesListWhere">
+		<if test="userCode != null and userCode != ''">
+			and user_code = #{userCode,jdbcType=VARCHAR2}
+        </if>
+		<if test="commodityId != null and commodityId != ''">
+			and commodity_id = #{commodityId,jdbcType=NUMBER}
+        </if>
+		<if test="commodityCode != null and commodityCode != ''">
+			and commodity_code = #{commodityCode,jdbcType=VARCHAR2}
+        </if>
+		<if test="startTime != null and startTime != ''">
+			and create_time >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+		<if test="endTime != null and endTime != ''">
+			and #{endTime,jdbcType=TIMESTAMP} >= create_time
+        </if>
+		<if test="yn != null and yn>=0">
+			and yn = #{yn,jdbcType=Integer}
+        </if>
+	</sql>
+</mapper>

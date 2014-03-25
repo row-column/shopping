@@ -1,0 +1,70 @@
+import java.util.List;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.stark.asm.common.util.CommonConstant;
+import com.stark.asm.dao.employee.EmployeeDao;
+import com.stark.asm.domain.employee.Employee;
+import com.stark.asm.domain.employee.query.EmployeeQuery;
+import com.stark.asm.domain.user.User;
+
+
+public class Test {
+	
+	
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		try{
+			ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-config.xml");
+			//UserDao userDao=(UserDao)applicationContext.getBean("userDao");
+			EmployeeDao empDao=(EmployeeDao)applicationContext.getBean("employeeDao");
+	    	/*User user= new User();
+	    	user.setUserCode("admin");
+	    	user.setUserName("admin");
+	    	user.setPassword("admin123");
+	    	user.setRealName("xiaoyueyue");
+	    	user.setYn(CommonConstant.YN_NO_DELETE);
+	    	userDao.addUser(user);*/
+			if(empDao==null){
+				System.out.print("error");
+			}else{
+				System.out.print("ok");
+			}
+	    	
+			Employee emp = new Employee();
+			emp.setEmployeeCode("t2");
+			emp.setEmployeeName("t2");
+			empDao.addEmployee(emp);
+	    	
+	   EmployeeQuery employeeQuery =new EmployeeQuery();
+	    	//userQuery.setYn(CommonConstant.YN_NO_DELETE);
+	       //employeeQuery.setEmployeeCode("admin");
+	    	employeeQuery.setStartRow(1);
+	    	employeeQuery.setEndRow(5);
+	    	
+	    	List<Employee> userList=empDao.queryEmployeeListPageByQueryBean(employeeQuery);
+	    	int count =(int)empDao.queryEmployeeCountByQueryBean(employeeQuery);
+	    	System.out.println("count"+count);
+	    	if(userList==null){
+	    		System.out.println("error");
+	    	}
+	    	System.out.println("list"+userList.size());
+	    	
+	    	for(Employee e:userList){
+	    		System.out.println("user_id"+e.getId());
+	    		System.out.println("user_code"+e.getEmployeeCode());
+	    		System.out.println("user_name"+e.getEmployeeName());
+	    	}
+
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+
+}

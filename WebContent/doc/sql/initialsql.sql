@@ -1,4 +1,4 @@
-use haos;
+use shopping;
 LOCK TABLES carrier WRITE;
 /*!40000 ALTER TABLE carrier DISABLE KEYS */;
 INSERT INTO carrier VALUES (1,'001','顺风快递',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0);

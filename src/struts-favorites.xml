@@ -8,7 +8,7 @@
 	<!-- Favorites Module Action -->
 	<package name="favorites" extends="admin-default">
 		<action name="myFavorites" method="myFavorites"
-			class="com.haos.web.action.favorites.FavoritesAction">
+			class="com.shopping.web.action.favorites.FavoritesAction">
 			<result>/front/favorites.jsp</result>
 			<result name="error" type="redirect">toLogin.action</result>
 		</action>
@@ -19,7 +19,7 @@
 	<package name="favorites_json" extends="json-protected-default">
 		<!-- recently viewed information Json -->
 		<action name="favoritesJson_*" method="{1}"
-			class="com.haos.web.action.favorites.json.FavoritesJsonAction">
+			class="com.shopping.web.action.favorites.json.FavoritesJsonAction">
 			<result name="out" type="json">
 				<param name="ignoreHierarchy">true</param>
 				<param name="excludeNullProperties">true</param>

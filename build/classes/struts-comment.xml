@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<!-- 评价模块 Action -->
+	<package name="comment" extends="admin-default">
+		<action name="comment_*" method="{1}"
+			class="com.shopping.web.action.comment.CommentAction">
+			<!-- 评价信息 -->
+			<result name="{1}">/backgroud/comment/{1}.jsp</result>
+		</action>
+
+		<action name="commentCommodity" method="commentCommodity"
+			class="com.shopping.web.action.comment.CommentAction">
+			<result>/front/commentCommodity.jsp</result>
+			<result name="error" type="redirect">toLogin.action</result>
+		</action>
+		<action name="myComment" method="myComment"
+			class="com.shopping.web.action.comment.CommentAction">
+			<result>/front/myComment.jsp</result>
+			<result name="error" type="redirect">toLogin.action</result>
+		</action>
+	</package>
+
+
+	<!-- 评价模块 Json -->
+	<package name="comment_json" extends="json-protected-default">
+		<!-- 评价信息 Json -->
+		<action name="commentJson_*" method="{1}"
+			class="com.shopping.web.action.comment.json.CommentJsonAction">
+			<result name="out" type="json">
+				<param name="ignoreHierarchy">true</param>
+				<param name="excludeNullProperties">true</param>
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+</struts>

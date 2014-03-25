@@ -4,7 +4,7 @@
 <!-- 商品类别信息 -->
 <mapper namespace="CommodityCategory">
 
-	<resultMap id="commodityCategoryMap" type="com.haos.domain.commodity.CommodityCategory">
+	<resultMap id="commodityCategoryMap" type="com.shopping.domain.commodity.CommodityCategory">
 		<id column="id" property="id" jdbcType="NUMBER" />
 		<result column="category_code" property="commodityCategoryCode"
 			jdbcType="VARCHAR2" />
@@ -17,14 +17,14 @@
 	</resultMap>
 
 	<!-- 创建商品类别信息 -->
-	<insert id="insert" parameterType="com.haos.domain.commodity.CommodityCategory">
+	<insert id="insert" parameterType="com.shopping.domain.commodity.CommodityCategory">
 		insert into
 		commodity_category(category_code,category_name,remark,create_time,update_time,yn)
 		values(#{commodityCategoryCode,jdbcType=VARCHAR2},#{commodityCategoryName,jdbcType=VARCHAR2},#{remark,jdbcType=VARCHAR2},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
 	</insert>
 
 	<!-- 修改商品类别信息，根据商品类别对象 -->
-	<update id="update" parameterType="com.haos.domain.commodity.CommodityCategory">
+	<update id="update" parameterType="com.shopping.domain.commodity.CommodityCategory">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update commodity_category
@@ -72,7 +72,7 @@
 
 	<!-- 根据查询Bean获取商品类别集合，不带翻页 -->
 	<select id="queryCommodityCategoryListByQueryBean" resultMap="commodityCategoryMap"
-		parameterType="com.haos.domain.commodity.query.CommodityCategoryQuery">
+		parameterType="com.shopping.domain.commodity.query.CommodityCategoryQuery">
 		select id,category_code,category_name,remark,create_time,update_time
 		from commodity_category where 1 = 1
 		<if test="_parameter != null">
@@ -81,7 +81,7 @@
 	</select>
 	<!-- 根据查询Bean获取商品类别集合，翻页 -->
 	<select id="queryCommodityCategoryListPageByQueryBean"
-		resultMap="commodityCategoryMap" parameterType="com.haos.domain.commodity.query.CommodityCategoryQuery">
+		resultMap="commodityCategoryMap" parameterType="com.shopping.domain.commodity.query.CommodityCategoryQuery">
 		select id,category_code,category_name,remark,create_time,update_time
 		from commodity_category where 1 = 1
 		<if test="_parameter != null">
@@ -93,7 +93,7 @@
 
 	<!-- 根据查询Bean获取商品类别总数 -->
 	<select id="queryCommodityCategoryCountByQueryBean" resultType="java.lang.Integer"
-		parameterType="com.haos.domain.commodity.query.CommodityCategoryQuery">
+		parameterType="com.shopping.domain.commodity.query.CommodityCategoryQuery">
 		select count(1) from commodity_category where 1 = 1
 		<if test="_parameter != null">
 			<include refid="queryCommodityCategoryListWhere" />

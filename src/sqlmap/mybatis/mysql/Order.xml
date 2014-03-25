@@ -3,7 +3,7 @@
 <!-- 订单信息 -->
 <mapper namespace="Order">
 
-	<resultMap id="orderMap" type="com.haos.domain.order.Order">
+	<resultMap id="orderMap" type="com.shopping.domain.order.Order">
 		<id column="id" property="id" jdbcType="BIGINT" />
 		<result column="order_code" property="orderCode" jdbcType="VARCHAR" />
 		<result column="commodity_id" property="commodityId" jdbcType="BIGINT" />
@@ -36,14 +36,14 @@
 	</resultMap>
 
 	<!-- 创建订单信息 -->
-	<insert id="insert" parameterType="com.haos.domain.order.Order">
+	<insert id="insert" parameterType="com.shopping.domain.order.Order">
 		insert into
 		t_order(order_code,commodity_id,commodity_code,commodity_name,commodity_count,amount,order_time,user_code,user_name,consignee,address,mobile,email,zip_code,payment_method,shipping_method,status,remark,create_time,update_time,yn)
 		values(#{orderCode,jdbcType=VARCHAR},#{commodityId,jdbcType=BIGINT},#{commodityCode,jdbcType=VARCHAR},#{commodityName,jdbcType=VARCHAR},#{commodityCount,jdbcType=BIGINT},#{amount,jdbcType=NUMERIC},#{orderTime,jdbcType=VARCHAR},#{userCode,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{consignee,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{zipCode,jdbcType=VARCHAR},#{paymentMethod,jdbcType=TINYINT},#{shippingMethod,jdbcType=TINYINT},#{status,jdbcType=TINYINT},#{remark,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=TINYINT})
 	</insert>
 
 	<!-- 修改订单信息，根据订单对象 -->
-	<update id="update" parameterType="com.haos.domain.order.Order">
+	<update id="update" parameterType="com.shopping.domain.order.Order">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update t_order
@@ -113,7 +113,7 @@
 	</update>
 
 	<!-- 修改订单状态，根据订单号 -->
-	<update id="updateOrderStatus" parameterType="com.haos.domain.order.Order">
+	<update id="updateOrderStatus" parameterType="com.shopping.domain.order.Order">
 		<if test="_parameter != null">
 			<if test="orderCode != null and orderCode !=''">
 				update t_order set
@@ -151,7 +151,7 @@
 
 	<!-- 根据查询Bean获取订单集合，不带翻页 -->
 	<select id="queryOrderListByQueryBean" resultMap="orderMap"
-		parameterType="com.haos.domain.order.query.OrderQuery">
+		parameterType="com.shopping.domain.order.query.OrderQuery">
 		select
 		id,order_code,commodity_id,commodity_code,commodity_name,commodity_count,amount,order_time,user_code,user_name,consignee,address,mobile,email,zip_code,payment_method,shipping_method,status,remark,create_time,update_time
 		from t_order
@@ -164,7 +164,7 @@
 
 	<!-- 根据查询Bean获取订单集合，翻页 -->
 	<select id="queryOrderListPageByQueryBean" resultMap="orderMap"
-		parameterType="com.haos.domain.order.query.OrderQuery">
+		parameterType="com.shopping.domain.order.query.OrderQuery">
 		select
 		id,order_code,commodity_id,commodity_code,commodity_name,commodity_count,amount,order_time,user_code,user_name,consignee,address,mobile,email,zip_code,payment_method,shipping_method,status,remark,create_time,update_time
 		from t_order where 1 = 1
@@ -177,7 +177,7 @@
 
 	<!-- 根据查询Bean获取订单总数 -->
 	<select id="queryOrderCountByQueryBean" resultType="java.lang.Integer"
-		parameterType="com.haos.domain.order.query.OrderQuery">
+		parameterType="com.shopping.domain.order.query.OrderQuery">
 		select count(1) from t_order where 1 = 1
 		<if test="_parameter != null">
 			<include refid="queryOrderListWhere" />

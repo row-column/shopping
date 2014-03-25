@@ -8,7 +8,7 @@
 	<!-- Integral Module Action -->
 	<package name="integral" extends="admin-default">
 		<action name="myIntegral" method="myIntegral"
-			class="com.haos.web.action.integral.IntegralAction">
+			class="com.shopping.web.action.integral.IntegralAction">
 			<result>/front/integral.jsp</result>
 			<result name="error" type="redirect">toLogin.action</result>
 		</action>
@@ -18,7 +18,7 @@
 	<!-- Integral Module Json -->
 	<package name="integral_json" extends="json-protected-default">
 		<action name="integralJson_*" method="{1}"
-			class="com.haos.web.action.integral.json.IntegralJsonAction">
+			class="com.shopping.web.action.integral.json.IntegralJsonAction">
 			<result name="out" type="json">
 				<param name="ignoreHierarchy">true</param>
 				<param name="excludeNullProperties">true</param>

@@ -4,7 +4,7 @@
 <!-- 员工功能信息 -->
 <mapper namespace="EmployeeFun">
 
-	<resultMap id="employeeFunMap" type="com.haos.domain.employee.EmployeeFun">
+	<resultMap id="employeeFunMap" type="com.shopping.domain.employee.EmployeeFun">
 		<id column="id" property="id" jdbcType="NUMBER" />
 		<result column="employee_code" property="employeeCode"
 			jdbcType="VARCHAR2" />
@@ -16,14 +16,14 @@
 	</resultMap>
 
 	<!-- 创建员工功能信息 -->
-	<insert id="insert" parameterType="com.haos.domain.employee.EmployeeFun">
+	<insert id="insert" parameterType="com.shopping.domain.employee.EmployeeFun">
 		insert into
 		employee_fun(employee_code,fun_code,is_read,create_time,update_time,yn)
 		values(#{employeeCode,jdbcType=VARCHAR2},#{funCode,jdbcType=VARCHAR2},#{isRead,jdbcType=Integer},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
 	</insert>
 
 	<!-- 修改员工功能信息，根据员工功能对象 -->
-	<update id="update" parameterType="com.haos.domain.employee.EmployeeFun">
+	<update id="update" parameterType="com.shopping.domain.employee.EmployeeFun">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update employee_fun 
@@ -58,7 +58,7 @@
 
 	<!-- 根据查询Bean获取员工功能集合，不带翻页 -->
 	<select id="queryEmployeeFunListByQueryBean" resultMap="employeeFunMap"
-		parameterType="com.haos.domain.employee.query.EmployeeFunQuery">
+		parameterType="com.shopping.domain.employee.query.EmployeeFunQuery">
 		select id,employee_code,fun_code,is_read,create_time,update_time from
 		employee_fun where 1 = 1
 		<if test="_parameter != null">
@@ -67,7 +67,7 @@
 	</select>
 	<!-- 根据查询Bean获取员工功能集合，翻页 -->
 	<select id="queryEmployeeFunListPageByQueryBean" resultMap="employeeFunMap"
-		parameterType="com.haos.domain.employee.query.EmployeeFunQuery">
+		parameterType="com.shopping.domain.employee.query.EmployeeFunQuery">
 		select id,employee_code,fun_code,is_read,create_time,update_time from
 		employee_fun where 1 = 1
 		<if test="_parameter != null">
@@ -79,7 +79,7 @@
 
 	<!-- 根据查询Bean获取员工功能总数 -->
 	<select id="queryEmployeeFunCountByQueryBean" resultType="java.lang.Integer"
-		parameterType="com.haos.domain.employee.query.EmployeeFunQuery">
+		parameterType="com.shopping.domain.employee.query.EmployeeFunQuery">
 		select count(1) from employee_fun where 1 = 1
 		<if test="_parameter != null">
 			<include refid="queryEmployeeFunListWhere" />

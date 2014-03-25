@@ -1,0 +1,206 @@
+package com.stark.asm.web.action.send.json;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.stark.asm.common.util.action.BaseAction;
+import com.stark.asm.common.util.page.Result;
+import com.stark.asm.domain.send.Send;
+import com.stark.asm.service.send.SendService;
+
+
+/**
+ * 配送信息相关的操作 JsonAction
+ * @author WangYue
+ *
+ */
+public class SendJsonAction extends BaseAction {
+   // private final static Log logger = LogFactory.getLog(SendJsonAction.class);
+    
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+     * 配送信息 Service 接口
+     */
+    private SendService sendService;
+    
+    /**
+     * json返回的结果
+     */
+    private String result;
+    
+    /**
+     * 提示消息
+     */
+    private String resultMsg;
+    
+    /**
+     * 配送信息对象
+     */
+    private Send send;
+
+
+    /**
+     * 配送代码数组
+     */
+    private Long[]ids;
+    
+    /**
+     * 添加配送信息
+     *
+     * @return
+     */
+    public String addSend() {
+        Map<String, String> map = new HashMap<String, String>();
+        if (null != send) {
+
+            Result serviceResult = sendService.addSend(send);
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false*" + (String) serviceResult.get("resultMsg");
+            }
+        } else {
+            result = "false";
+        }
+        return "out";
+    }
+
+    /**
+     * 修改配送信息
+     *
+     * @return
+     */
+    public String updateSend() {
+        Map<String, String> map = new HashMap<String, String>();
+        if (null != send) {
+
+            Result serviceResult = sendService.updateSend(send);
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false";
+            }
+        } else {
+            result = "false";
+        }
+        return "out";
+    }
+
+    /**
+     * 删除配送信息
+     *
+     * @return
+     */
+    public String deleteSend() {
+        Map<String, String> map = new HashMap<String, String>();
+        if (null != send.getId() && send.getId().intValue() > 0) {
+            //删除配送信息
+            Result serviceResult = sendService.deleteSendById(send.getId());
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false";
+            }
+        } else {
+            result = "false";
+        }
+        return "out";
+    }
+    
+    /**
+     * 删除多个配送信息
+     *
+     * @return
+     */
+    public String deleteSends() {
+        Map<String, String> map = new HashMap<String, String>();
+        if(ids!=null&&ids.length>1){
+        	 //删除配送信息
+            Result serviceResult = sendService.deleteSendByIds(ids);
+            
+            if (null != serviceResult && serviceResult.getSuccess() && (Boolean) serviceResult.get("resultFlag")) {
+                result = "true";
+            } else {
+                result = "false";
+            }
+        }else {
+            result = "false";
+        }
+        return "out";
+    }
+    
+    
+    /**
+     * 查询配送代码
+     *
+     * @return
+     */
+    public String checkSendCode() {
+        if (null != send) {
+
+            Result serviceResult = sendService.getSendBySendCode(send.getSendCode());
+            
+            if (null != serviceResult && serviceResult.getSuccess()) {
+            	Send send=(Send)serviceResult.get("send");
+            	if(send!=null&&send.getSendCode()!=null){
+            		result = "该配送代码已经存在！！！";
+            	}else{
+            		result = "恭喜你，该配送代码可用！！！";
+            	}
+            } else {
+            	result = "恭喜你，该配送代码可用！！！";
+            }
+        } 
+        return "out";
+    }
+
+
+    public void setSendService(SendService sendService) {
+        this.sendService = sendService;
+    }
+
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getResultMsg() {
+        return resultMsg;
+    }
+
+    public void setResultMsg(String resultMsg) {
+        this.resultMsg = resultMsg;
+    }
+
+	public Send getSend() {
+		return send;
+	}
+
+	public void setSend(Send send) {
+		this.send = send;
+	}
+
+	public SendService getSendService() {
+		return sendService;
+	}
+
+	public Long[] getIds() {
+		return ids;
+	}
+
+	public void setIds(Long[] ids) {
+		this.ids = ids;
+	}
+  
+}

@@ -385,7 +385,7 @@ mainTable.tBodies[n].style.display="block";
 						<td width="51%" class="left_txt"><img
 							src="images/icon-mail2.gif" width="16" height="11">
 							客户服务邮箱：532033774@qq.com<br> <img src="images/icon-phone.gif"
-							width="17" height="14"> 官方网站：http://www.haos.com</td>
+							width="17" height="14"> 官方网站：http://www.shopping.com</td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 					</tr>

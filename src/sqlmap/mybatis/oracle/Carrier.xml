@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <!-- 承运商信息 -->
 <mapper namespace="Carrier">
-	<resultMap id="carrierMap" type="com.haos.domain.carrier.Carrier">
+	<resultMap id="carrierMap" type="com.shopping.domain.carrier.Carrier">
 		<id column="id" property="id" jdbcType="NUMBER" />
 		<result column="carrier_code" property="carrierCode" jdbcType="VARCHAR2" />
 		<result column="carrier_name" property="carrierName" jdbcType="VARCHAR2" />
@@ -17,14 +17,14 @@
 	</resultMap>
 
 	<!-- 创建承运商信息 -->
-	<insert id="insert" parameterType="com.haos.domain.carrier.Carrier">
+	<insert id="insert" parameterType="com.shopping.domain.carrier.Carrier">
 		insert into
 		carrier(carrier_code,carrier_name,mobile,email,contacter,address,remark,create_time,update_time,yn)
 		values(#{carrierCode,jdbcType=VARCHAR2},#{carrierName,jdbcType=VARCHAR2},#{mobile,jdbcType=VARCHAR2},#{email,jdbcType=VARCHAR2},#{contacter,jdbcType=VARCHAR2},#{address,jdbcType=VARCHAR2},#{remark,jdbcType=VARCHAR2},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
 	</insert>
 
 	<!-- 修改承运商信息，根据承运商对象 -->
-	<update id="update" parameterType="com.haos.domain.carrier.Carrier">
+	<update id="update" parameterType="com.shopping.domain.carrier.Carrier">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update carrier 
@@ -83,7 +83,7 @@
 
 	<!-- 根据查询Bean获取承运商集合，不带翻页 -->
 	<select id="queryCarrierListByQueryBean" resultMap="carrierMap"
-		parameterType="com.haos.domain.carrier.query.CarrierQuery">
+		parameterType="com.shopping.domain.carrier.query.CarrierQuery">
 		select
 		id,carrier_code,carrier_name,mobile,email,contacter,address,remark,create_time,update_time
 		from carrier where 1 = 1
@@ -93,7 +93,7 @@
 	</select>
 	<!-- 根据查询Bean获取承运商集合，翻页 -->
 	<select id="queryCarrierListPageByQueryBean" resultMap="carrierMap"
-		parameterType="com.haos.domain.carrier.query.CarrierQuery">
+		parameterType="com.shopping.domain.carrier.query.CarrierQuery">
 		select
 		id,carrier_code,carrier_name,mobile,email,contacter,address,remark,create_time,update_time
 		from carrier where 1 = 1
@@ -106,7 +106,7 @@
 
 	<!-- 根据查询Bean获取承运商总数 -->
 	<select id="queryCarrierCountByQueryBean" resultType="java.lang.Integer"
-		parameterType="com.haos.domain.carrier.query.CarrierQuery">
+		parameterType="com.shopping.domain.carrier.query.CarrierQuery">
 		select count(1) from carrier where 1 = 1
 		<if test="_parameter != null">
 			<include refid="queryCarrierListWhere" />

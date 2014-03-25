@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName">
+
+
+	<!-- 订单处理服务Worker配置开始 -->
+	<bean id="orderDealTaskQuartz"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="orderDealTaskService" />
+		<property name="targetMethod" value="processMonitor" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<bean id="orderDealTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="orderDealTaskQuartz" />
+		<!--每隔1分钟执行1次 -->
+		<property name="cronExpression" value="0/60 * * * * ?" />
+	</bean>
+
+	<bean id="orderDealTaskScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="orderDealTaskTrigger" />
+			</list>
+		</property>
+		<property name="autoStartup">
+			<value>true</value>
+		</property>
+	</bean>
+	<!-- 订单处理服务Worker配置结束 -->
+
+</beans>

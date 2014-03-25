@@ -8,7 +8,7 @@
 	<!-- 等级模块 Action -->
 	<package name="level" extends="admin-default">
 		<action name="level_*" method="{1}"
-			class="com.haos.web.action.level.LevelAction">
+			class="com.shopping.web.action.level.LevelAction">
 			<!-- 等级信息 -->
 			<result name="{1}">/backgroud/level/{1}.jsp</result>
 		</action>
@@ -19,7 +19,7 @@
 	<package name="level_json" extends="json-protected-default">
 		<!-- 等级信息 Json -->
 		<action name="levelJson_*" method="{1}"
-			class="com.haos.web.action.level.json.LevelJsonAction">
+			class="com.shopping.web.action.level.json.LevelJsonAction">
 			<result name="out" type="json">
 				<param name="ignoreHierarchy">true</param>
 				<param name="excludeNullProperties">true</param>

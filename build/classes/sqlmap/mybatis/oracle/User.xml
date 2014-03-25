@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 用户信息 -->
+<mapper namespace="User">
+
+	<resultMap id="userMap" type="com.shopping.domain.user.User">
+		<id column="id" property="id" jdbcType="NUMBER" />
+		<result column="user_code" property="userCode" jdbcType="VARCHAR2" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR2" />
+		<result column="password" property="password" jdbcType="VARCHAR2" />
+		<result column="level_code" property="levelCode" jdbcType="VARCHAR2" />
+		<result column="level_name" property="levelName" jdbcType="VARCHAR2" />
+		<result column="sex" property="sex" jdbcType="Integer" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR2" />
+		<result column="email" property="email" jdbcType="VARCHAR2" />
+		<result column="address" property="address" jdbcType="VARCHAR2" />
+		<result column="id_card" property="idCard" jdbcType="VARCHAR2" />
+		<result column="birthday" property="birthday" jdbcType="DATE" />
+		<result column="hobbies" property="hobbies" jdbcType="VARCHAR2" />
+		<result column="user_photo" property="userPhoto" jdbcType="VARCHAR2" />
+		<result column="comment_count" property="commentCount"
+			jdbcType="NUMBER" />
+		<result column="integral" property="integral" jdbcType="NUMBER" />
+		<result column="req_date" property="reqDate" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="yn" property="yn" jdbcType="Integer" />
+	</resultMap>
+
+	<!-- 创建用户信息 -->
+	<insert id="insert" parameterType="com.shopping.domain.user.User">
+		insert into
+		user(user_code,user_name,password,level_code,sex,mobile,email,address,id_card,birthday,hobbies,user_photo,comment_count,integral,req_date,create_time,update_time,yn)
+		values(#{userCode,jdbcType=VARCHAR2},#{userName,jdbcType=VARCHAR2},#{password,jdbcType=VARCHAR2},#{levelCode,jdbcType=VARCHAR2},#{sex,jdbcType=Integer},#{mobile,jdbcType=VARCHAR2},#{email,jdbcType=VARCHAR2},#{address,jdbcType=VARCHAR2},#{idCard,jdbcType=VARCHAR2},#{birthday,jdbcType=DATE},#{hobbies,jdbcType=VARCHAR2},#{userPhoto,jdbcType=VARCHAR2},#{commentCount,jdbcType=NUMBER},#{integral,jdbcType=NUMBER},#{reqDate,jdbcType=TIMESTAMP},#{crateTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
+	</insert>
+
+	<!-- 修改用户信息，根据用户对象 -->
+	<update id="update" parameterType="com.shopping.domain.user.User">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update user
+				<set>
+					<if test="userCode!=null and userCode!=''">
+						user_code=#{userCode,jdbcType=VARCHAR2},
+					</if>
+					<if test="userName!=null and userName!=''">
+						user_name=#{userName,jdbcType=VARCHAR2},
+					</if>
+					<if test="password!=null and password!=''">
+						password=#{password,jdbcType=VARCHAR2},
+					</if>
+					<if test="levelCode!=null and levelCode!=''">
+						level_code=#{levelCode,jdbcType=VARCHAR2},
+					</if>
+					<if test="levelName!=null and levelName!=''">
+						level_name=#{levelName,jdbcType=VARCHAR2},
+					</if>
+					<if test="sex!=null and sex>=0">
+						sex=#{sex,jdbcType=Integer},
+					</if>
+					<if test="mobile!=null and mobile!=''">
+						mobile = #{mobile,jdbcType=VARCHAR2},
+					</if>
+					<if test="address!=null and address!=''">
+						address=#{address,jdbcType=VARCHAR2},
+					</if>
+					<if test="idCard!=null and idCard!=''">
+						id_card=#{idCard,jdbcType=VARCHAR2},
+					</if>
+					<if test="birthday!=null and birthday!=''">
+						birthday=#{birthday,jdbcType=TIMESTAMP},
+					</if>
+					<if test="hobbies!=null and hobbies!=''">
+						hobbies=#{hobbies,jdbcType=VARCHAR2},
+					</if>
+					<if test="userPhoto!=null and userPhoto!=''">
+						user_photo=#{userPhoto,jdbcType=VARCHAR2},
+					</if>
+					<if test="commentCount!=null and commentCount!=''">
+						comment_count=#{commentCount,jdbcType=NUMBER},
+					</if>
+					<if test="!=null and !=''">
+						integral=#{integral,jdbcType=NUMBER},
+					</if>
+					<if test="updateTime!=null and updateTime!=''">
+						update_time = #{updateTime,jdbcType=TIMESTAMP}
+					</if>
+				</set>
+				where id = #{id}
+			</if>
+		</if>
+	</update>
+
+	<!-- 修改用户信息，根据用户对象 -->
+	<update id="updateUserInfo" parameterType="com.shopping.domain.user.User">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update user set
+				user_name=#{userName,jdbcType=VARCHAR2},
+				sex=#{sex,jdbcType=Integer},
+				mobile = #{mobile,jdbcType=VARCHAR2},
+				address=#{address,jdbcType=VARCHAR2},
+				id_card=#{idCard,jdbcType=VARCHAR2},
+				birthday=#{birthday,jdbcType=TIMESTAMP},
+				hobbies=#{hobbies,jdbcType=VARCHAR2},
+				update_time =
+				#{updateTime,jdbcType=TIMESTAMP}
+				where id = #{id}
+            </if>
+		</if>
+	</update>
+	<!-- 修改用户信息，根据用户对象 -->
+	<update id="updateUserPassword" parameterType="com.shopping.domain.user.User">
+		<if test="_parameter != null">
+			<if test="userCode != null">
+				update user set
+				password=#{password,jdbcType=VARCHAR2},
+				update_time = #{updateTime,jdbcType=TIMESTAMP}
+				where user_code =
+				#{userCode}
+            </if>
+		</if>
+	</update>
+
+	<!-- 修改用户评价数信息，根据用户对象 -->
+	<update id="updateUserCommentCount" parameterType="com.shopping.domain.user.User">
+		<if test="_parameter != null">
+			<if test="userCode != null">
+				update user set
+				comment_count=#{commentCount,jdbcType=NUMBER},
+				update_time =
+				#{updateTime,jdbcType=TIMESTAMP}
+				where id = #{id}
+            </if>
+		</if>
+	</update>
+
+	<!-- 修改用户积分和等级信息，根据用户对象 -->
+	<update id="updateUserIntegralAndLevel" parameterType="com.shopping.domain.user.User">
+		<if test="_parameter != null">
+			<if test="userCode != null">
+				update user set
+				integral=#{integral,jdbcType=NUMBER},
+				level_code=#{levelCode,jdbcType=VARCHAR2},
+				level_name=#{levelName,jdbcType=VARCHAR2},
+				update_time =
+				#{updateTime,jdbcType=TIMESTAMP}
+				where id = #{id}
+            </if>
+		</if>
+	</update>
+
+	<!-- 根据主键获取用户信息 -->
+	<select id="getUserById" resultMap="userMap" parameterType="java.lang.Long">
+		<if test="_parameter != null">
+			select
+			id,user_code,user_name,password,level_code,sex,mobile,email,address,id_card,birthday,hobbies,user_photo,comment_count,integral,req_date,create_time,update_time
+			from user
+			where id = #{_parameter}
+        </if>
+	</select>
+
+	<!-- 根据账号获取用户信息 -->
+	<select id="getUserByUserCode" resultMap="userMap"
+		parameterType="java.lang.String">
+		<if test="_parameter != null">
+			select
+			id,user_code,user_name,password,level_code,sex,mobile,email,address,id_card,birthday,hobbies,user_photo,comment_count,integral,req_date,create_time,update_time
+			from user
+			where user_code = #{_parameter}
+        </if>
+	</select>
+
+	<!-- 根据查询Bean获取用户集合，不带翻页 -->
+	<select id="queryUserListByQueryBean" resultMap="userMap"
+		parameterType="com.shopping.domain.user.query.UserQuery">
+		select
+		id,user_code,user_name,password,level_code,sex,mobile,email,address,id_card,birthday,hobbies,user_photo,comment_count,integral,req_date,create_time,update_time
+		from user where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryUserListWhere" />
+		</if>
+	</select>
+
+	<!-- 根据查询Bean获取用户集合，翻页 -->
+	<select id="queryUserListPageByQueryBean" resultMap="userMap"
+		parameterType="com.shopping.domain.user.query.UserQuery">
+		select
+		id,user_code,user_name,password,level_code,sex,mobile,email,address,id_card,birthday,hobbies,user_photo,comment_count,integral,req_date,create_time,update_time
+		from user where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryUserListWhere" />
+		</if>
+		order by create_time desc
+		limit #{startRow},#{endRow};
+	</select>
+
+	<!-- 根据查询Bean获取用户总数 -->
+	<select id="queryUserCountByQueryBean" resultType="java.lang.Integer"
+		parameterType="com.shopping.domain.user.query.UserQuery">
+		select count(1) from user where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryUserListWhere" />
+		</if>
+	</select>
+
+	<!-- 删除用户信息，根据主键 -->
+	<update id="deleteUserById" parameterType="java.lang.Long">
+		<if test="_parameter != null and _parameter > 0">
+			update user set yn = 1 where id = #{_parameter}
+        </if>
+	</update>
+
+	<!-- 常用的查询Where条件 -->
+	<sql id="queryUserListWhere">
+		<if test="userName != null and userName != ''">
+			and user_name = #{userName,jdbcType=VARCHAR2}
+        </if>
+		<if test="userCode != null and userCode != ''">
+			and user_code = #{userCode,jdbcType=VARCHAR2}
+        </if>
+		<if test="startTime != null and startTime != ''">
+			and create_time >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+		<if test="endTime != null and endTime != ''">
+			and #{endTime,jdbcType=TIMESTAMP} >= create_time
+        </if>
+		<if test="yn != null and yn>=0">
+			and #{yn,jdbcType=Integer} = yn
+        </if>
+	</sql>
+
+
+</mapper>

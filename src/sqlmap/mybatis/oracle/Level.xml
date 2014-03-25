@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <!-- 等级信息 -->
 <mapper namespace="Level">
-	<resultMap id="levelMap" type="com.haos.domain.level.Level">
+	<resultMap id="levelMap" type="com.shopping.domain.level.Level">
 		<id column="id" property="id" jdbcType="NUMBER" />
 		<result column="level_code" property="levelCode" jdbcType="VARCHAR2" />
 		<result column="level_name" property="levelName" jdbcType="VARCHAR2" />
@@ -15,14 +15,14 @@
 	</resultMap>
 
 	<!-- 创建等级信息 -->
-	<insert id="insert" parameterType="com.haos.domain.level.Level">
+	<insert id="insert" parameterType="com.shopping.domain.level.Level">
 		insert into
 		level(level_code,level_name,start_point,end_point,remark,create_time,update_time,yn)
 		values(#{levelCode,jdbcType=VARCHAR2},#{levelName,jdbcType=VARCHAR2},#{startPoint,jdbcType=NUMBER},#{endPoint,jdbcType=NUMBER},#{remark,jdbcType=VARCHAR2},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
 	</insert>
 
 	<!-- 修改等级信息，根据等级对象 -->
-	<update id="update" parameterType="com.haos.domain.level.Level">
+	<update id="update" parameterType="com.shopping.domain.level.Level">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update level
@@ -74,7 +74,7 @@
 
 	<!-- 根据查询Bean获取等级集合，不带翻页 -->
 	<select id="queryLevelListByQueryBean" resultMap="levelMap"
-		parameterType="com.haos.domain.level.query.LevelQuery">
+		parameterType="com.shopping.domain.level.query.LevelQuery">
 		select
 		id,level_code,level_name,start_point,end_point,remark,create_time,update_time
 		from level where 1 = 1
@@ -84,7 +84,7 @@
 	</select>
 	<!-- 根据查询Bean获取等级集合，翻页 -->
 	<select id="queryLevelListPageByQueryBean" resultMap="levelMap"
-		parameterType="com.haos.domain.level.query.LevelQuery">
+		parameterType="com.shopping.domain.level.query.LevelQuery">
 		select
 		id,level_code,level_name,start_point,end_point,remark,create_time,update_time
 		from level where 1 = 1
@@ -97,7 +97,7 @@
 
 	<!-- 根据查询Bean获取等级总数 -->
 	<select id="queryLevelCountByQueryBean" resultType="java.lang.Integer"
-		parameterType="com.haos.domain.level.query.LevelQuery">
+		parameterType="com.shopping.domain.level.query.LevelQuery">
 		select count(1) from level where 1 = 1
 		<if test="_parameter != null">
 			<include refid="queryLevelListWhere" />

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 员工功能信息 -->
+<mapper namespace="EmployeeFun">
+
+	<resultMap id="employeeFunMap" type="com.shopping.domain.employee.EmployeeFun">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="employee_code" property="employeeCode"
+			jdbcType="VARCHAR" />
+		<result column="fun_code" property="funCode" jdbcType="VARCHAR" />
+		<result column="is_read" property="isRead" jdbcType="TINYINT" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="yn" property="yn" jdbcType="TINYINT" />
+	</resultMap>
+
+	<!-- 创建员工功能信息 -->
+	<insert id="insert" parameterType="com.shopping.domain.employee.EmployeeFun">
+		insert into
+		employee_fun(employee_code,fun_code,is_read,create_time,update_time,yn)
+		values(#{employeeCode,jdbcType=VARCHAR},#{funCode,jdbcType=VARCHAR},#{isRead,jdbcType=TINYINT},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=TINYINT})
+	</insert>
+
+	<!-- 修改员工功能信息，根据员工功能对象 -->
+	<update id="update" parameterType="com.shopping.domain.employee.EmployeeFun">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update employee_fun 
+				<set>
+					<if test="employeeCode!=null and employeeCode!=''">
+						employee_code=#{employeeCode,jdbcType=VARCHAR}
+					</if>
+					<if test="funCode!=null and funCode!=''">
+						fun_code = #{funCode,jdbcType=VARCHAR},
+					</if>
+					<if test="isRead!=null and isRead>=0">
+						is_read = #{isRead,jdbcType=TINYINT},
+					</if>
+					<if test="updateTime!=null and updateTime!=''">
+						update_time=#{updateTime,jdbcType=TIMESTAMP}
+					</if>
+				</set>
+				where id = #{id}
+            </if>
+		</if>
+	</update>
+
+	<!-- 根据主键获取员工功能信息 -->
+	<select id="getEmployeeFunById" resultMap="employeeFunMap"
+		parameterType="java.lang.Long">
+		<if test="_parameter != null">
+			select id,employee_code,fun_code,is_read,create_time,update_time from
+			employee_fun
+			where id = #{_parameter}
+        </if>
+	</select>
+
+	<!-- 根据查询Bean获取员工功能集合，不带翻页 -->
+	<select id="queryEmployeeFunListByQueryBean" resultMap="employeeFunMap"
+		parameterType="com.shopping.domain.employee.query.EmployeeFunQuery">
+		select id,employee_code,fun_code,is_read,create_time,update_time from
+		employee_fun where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryEmployeeFunListWhere" />
+		</if>
+	</select>
+	<!-- 根据查询Bean获取员工功能集合，翻页 -->
+	<select id="queryEmployeeFunListPageByQueryBean" resultMap="employeeFunMap"
+		parameterType="com.shopping.domain.employee.query.EmployeeFunQuery">
+		select id,employee_code,fun_code,is_read,create_time,update_time from
+		employee_fun where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryEmployeeFunListWhere" />
+		</if>
+		order by id desc
+		limit #{startRow},#{endRow};
+	</select>
+
+	<!-- 根据查询Bean获取员工功能总数 -->
+	<select id="queryEmployeeFunCountByQueryBean" resultType="java.lang.Integer"
+		parameterType="com.shopping.domain.employee.query.EmployeeFunQuery">
+		select count(1) from employee_fun where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryEmployeeFunListWhere" />
+		</if>
+	</select>
+
+	<!-- 删除员工功能信息，根据主键 -->
+	<delete id="deleteEmployeeFunById" parameterType="java.lang.Long">
+		<if test="_parameter != null and _parameter > 0">
+			delete from employee_fun where id = #{_parameter}
+        </if>
+	</delete>
+
+	<!-- 删除员工功能信息，根据主键 -->
+	<delete id="deleteEmployeeFunByEmployeeCode" parameterType="java.lang.String">
+		<if test="_parameter != null ">
+			delete from employee_fun where employee_code=#{_parameter}
+        </if>
+	</delete>
+
+	<!-- 常用的查询Where条件 -->
+	<sql id="queryEmployeeFunListWhere">
+		<if test="employeeCode != null and employeeCode != ''">
+			and employee_code = #{employeeCode,jdbcType=VARCHAR}
+        </if>
+		<if test="funCode != null and funCode != ''">
+			and fun_code = #{funCode,jdbcType=VARCHAR}
+        </if>
+
+		<if test="isRead != null">
+			and is_read = #{isRead,jdbcType=TINYINT}
+        </if>
+		<if test="yn != null and yn>=0">
+			and yn = #{yn,jdbcType=TINYINT}
+        </if>
+	</sql>
+</mapper>

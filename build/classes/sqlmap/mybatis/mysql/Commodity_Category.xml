@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 商品类别信息 -->
+<mapper namespace="CommodityCategory">
+
+	<resultMap id="commodityCategoryMap" type="com.shopping.domain.commodity.CommodityCategory">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="category_code" property="commodityCategoryCode"
+			jdbcType="VARCHAR" />
+		<result column="category_name" property="commodityCategoryName"
+			jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="yn" property="yn" jdbcType="TINYINT" />
+	</resultMap>
+
+	<!-- 创建商品类别信息 -->
+	<insert id="insert" parameterType="com.shopping.domain.commodity.CommodityCategory">
+		insert into
+		commodity_category(category_code,category_name,remark,create_time,update_time,yn)
+		values(#{commodityCategoryCode,jdbcType=VARCHAR},#{commodityCategoryName,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=TINYINT})
+	</insert>
+
+	<!-- 修改商品类别信息，根据商品类别对象 -->
+	<update id="update" parameterType="com.shopping.domain.commodity.CommodityCategory">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update commodity_category
+				<set>
+					<if test="commodityCategoryCode!=null and commodityCategoryCode!=''">
+						category_code=#{commodityCategoryCode,jdbcType=VARCHAR},
+					</if>
+					<if test="commodityCategoryName!=null and commodityCategoryName!=''">
+						category_name =
+						#{commodityCategoryName,jdbcType=VARCHAR},
+					</if>
+					<if test="remark!=null and remark!=''">
+						remark = #{remark,jdbcType=VARCHAR},
+					</if>
+					<if test="updateTime and updateTime''">
+						update_time=#{updateTime,jdbcType=TIMESTAMP}
+					</if>
+				</set>
+				where id = #{id}
+			</if>
+		</if>
+	</update>
+
+	<!-- 根据主键获取商品类别信息 -->
+	<select id="getCommodityCategoryById" resultMap="commodityCategoryMap"
+		parameterType="java.lang.Long">
+		<if test="_parameter != null">
+			select
+			id,category_code,category_name,remark,create_time,update_time from
+			commodity_category
+			where id = #{_parameter}
+        </if>
+	</select>
+
+	<!-- 根据类别代码获取商品类别信息 -->
+	<select id="getCommodityCategoryByCommodityCategoryCode"
+		resultMap="commodityCategoryMap" parameterType="java.lang.String">
+		<if test="_parameter != null">
+			select
+			id,category_code,category_name,remark,create_time,update_time from
+			commodity_category
+			where category_code= #{_parameter} and yn=0
+        </if>
+	</select>
+
+	<!-- 根据查询Bean获取商品类别集合，不带翻页 -->
+	<select id="queryCommodityCategoryListByQueryBean" resultMap="commodityCategoryMap"
+		parameterType="com.shopping.domain.commodity.query.CommodityCategoryQuery">
+		select id,category_code,category_name,remark,create_time,update_time
+		from commodity_category where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryCommodityCategoryListWhere" />
+		</if>
+	</select>
+	<!-- 根据查询Bean获取商品类别集合，翻页 -->
+	<select id="queryCommodityCategoryListPageByQueryBean"
+		resultMap="commodityCategoryMap" parameterType="com.shopping.domain.commodity.query.CommodityCategoryQuery">
+		select id,category_code,category_name,remark,create_time,update_time
+		from commodity_category where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryCommodityCategoryListWhere" />
+		</if>
+		order by id desc
+		limit #{startRow},#{endRow};
+	</select>
+
+	<!-- 根据查询Bean获取商品类别总数 -->
+	<select id="queryCommodityCategoryCountByQueryBean" resultType="java.lang.Integer"
+		parameterType="com.shopping.domain.commodity.query.CommodityCategoryQuery">
+		select count(1) from commodity_category where 1 = 1
+		<if test="_parameter != null">
+			<include refid="queryCommodityCategoryListWhere" />
+		</if>
+	</select>
+
+	<!-- 删除商品类别信息，根据主键 -->
+	<delete id="deleteCommodityCategoryById" parameterType="java.lang.Long">
+		<if test="_parameter != null and _parameter > 0">
+			update commodity_category set
+			yn=1
+			where id = #{_parameter}
+		</if>
+	</delete>
+
+	<!-- 常用的查询Where条件 -->
+	<sql id="queryCommodityCategoryListWhere">
+		<if test="commodityCategoryCode != null and commodityCategoryCode != ''">
+			and category_code =
+			#{commodityCategoryCode,jdbcType=VARCHAR}
+        </if>
+		<if test="commodityCategoryName != null and commodityCategoryName != ''">
+			and category_name =
+			#{commodityCategoryName,jdbcType=VARCHAR}
+        </if>
+		<if test="startTime != null and startTime != ''">
+			and create_time >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+		<if test="endTime != null and endTime != ''">
+			and #{endTime,jdbcType=TIMESTAMP} >= create_time
+        </if>
+
+		<if test="yn != null and yn>=0">
+			and yn = #{yn,jdbcType=TINYINT}
+        </if>
+	</sql>
+</mapper>

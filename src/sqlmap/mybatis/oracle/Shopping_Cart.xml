@@ -3,7 +3,7 @@
 <!-- shopping cart information -->
 <mapper namespace="ShoppingCart">
 
-	<resultMap id="shoppingcartMap" type="com.haos.domain.shoppingcart.ShoppingCart">
+	<resultMap id="shoppingcartMap" type="com.shopping.domain.shoppingcart.ShoppingCart">
 		<id column="id" property="id" jdbcType="NUMBER" />
 		<result column="user_code" property="userCode" jdbcType="VARCHAR2" />
 		<result column="commodity_id" property="commodityId" jdbcType="NUMBER" />
@@ -27,14 +27,14 @@
 	</resultMap>
 
 	<!-- crate shopping cart information -->
-	<insert id="insert" parameterType="com.haos.domain.shoppingcart.ShoppingCart">
+	<insert id="insert" parameterType="com.shopping.domain.shoppingcart.ShoppingCart">
 		insert into
 		shopping_cart(user_code,commodity_id,commodity_code,commodity_name,price,commodity_num,commodity_photo,viewed_count,comment_count,status,create_time,update_time,yn)
 		values(#{userCode,jdbcType=VARCHAR2},#{commodityId,jdbcType=NUMBER},#{commodityCode,jdbcType=VARCHAR2},#{commodityName,jdbcType=VARCHAR2},#{price,jdbcType=NUMERIC},#{commodityNum,jdbcType=NUMBER},#{commodityPhoto,jdbcType=LONGVARCHAR2},#{viewedCount,jdbcType=NUMBER},#{commentCount,jdbcType=NUMBER},#{status,jdbcType=Integer},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
 	</insert>
 
 	<!-- update shopping cart information，according to shoppingcart object -->
-	<update id="update" parameterType="com.haos.domain.shoppingcart.ShoppingCart">
+	<update id="update" parameterType="com.shopping.domain.shoppingcart.ShoppingCart">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update shopping_cart
@@ -115,7 +115,7 @@
 
 	<!-- according to query Bean, query shopping cart collection -->
 	<select id="queryShoppingCartListByQueryBean" resultMap="shoppingcartMap"
-		parameterType="com.haos.domain.shoppingcart.query.ShoppingCartQuery">
+		parameterType="com.shopping.domain.shoppingcart.query.ShoppingCartQuery">
 		select
 		id,user_code,commodity_id,commodity_code,commodity_name,price,commodity_num,commodity_photo,viewed_count,comment_count,status,create_time,update_time
 		from shopping_cart where 1 = 1
@@ -134,7 +134,7 @@
 
 
 	<!-- update shopping cart information，according to shoppingcart object -->
-	<update id="updateShoppingCartCommodityNum" parameterType="com.haos.domain.shoppingcart.ShoppingCart">
+	<update id="updateShoppingCartCommodityNum" parameterType="com.shopping.domain.shoppingcart.ShoppingCart">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update shopping_cart set

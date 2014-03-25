@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <!-- 消费记录信息 -->
 <mapper namespace="ConsumerRecords">
-	<resultMap id="consumerRecordsMap" type="com.haos.domain.consumer.ConsumerRecords">
+	<resultMap id="consumerRecordsMap" type="com.shopping.domain.consumer.ConsumerRecords">
 		<id column="id" property="id" jdbcType="NUMBER" />
 		<result column="user_code" property="userCode" jdbcType="VARCHAR2" />
 		<result column="order_code" property="orderCode" jdbcType="VARCHAR2" />
@@ -20,14 +20,14 @@
 	</resultMap>
 
 	<!-- 创建消费记录信息 -->
-	<insert id="insert" parameterType="com.haos.domain.consumer.ConsumerRecords">
+	<insert id="insert" parameterType="com.shopping.domain.consumer.ConsumerRecords">
 		insert into consumer_records
 		(user_code,order_code,commodity_id,commodity_code,commodity_name,amount,consumer_time,create_time,update_time,yn)
 		values(#{userCode,jdbcType=VARCHAR2},#{orderCode,jdbcType=VARCHAR2},#{commodityId,jdbcType=NUMBER},#{commodityCode,jdbcType=VARCHAR2},#{commodityName,jdbcType=VARCHAR2},#{amount,jdbcType=NUMERIC},#{consumerTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=Integer})
 	</insert>
 
 	<!-- 修改消费记录信息，根据消费记录对象 -->
-	<update id="update" parameterType="com.haos.domain.consumer.ConsumerRecords">
+	<update id="update" parameterType="com.shopping.domain.consumer.ConsumerRecords">
 		<if test="_parameter != null">
 			<if test="id != null and id > 0">
 				update consumer_records 
@@ -75,7 +75,7 @@
 
 	<!-- 根据查询Bean获取消费记录集合，不带翻页 -->
 	<select id="queryConsumerRecordsListByQueryBean" resultMap="consumerRecordsMap"
-		parameterType="com.haos.domain.consumer.query.ConsumerRecordsQuery">
+		parameterType="com.shopping.domain.consumer.query.ConsumerRecordsQuery">
 		select
 		id,user_code,order_code,commodity_code,commodity_name,amount,consumer_time,create_time,update_time
 		from consumer_records where 1 = 1
@@ -86,7 +86,7 @@
 	</select>
 	<!-- 根据查询Bean获取消费记录集合，翻页 -->
 	<select id="queryConsumerRecordsListPageByQueryBean" resultMap="consumerRecordsMap"
-		parameterType="com.haos.domain.consumer.query.ConsumerRecordsQuery">
+		parameterType="com.shopping.domain.consumer.query.ConsumerRecordsQuery">
 		select
 		id,user_code,order_code,commodity_id,commodity_code,commodity_name,amount,consumer_time,create_time,update_time
 		from consumer_records where 1 = 1
@@ -99,7 +99,7 @@
 
 	<!-- 根据查询Bean获取消费记录总数 -->
 	<select id="queryConsumerRecordsCountByQueryBean" resultType="java.lang.Integer"
-		parameterType="com.haos.domain.consumer.query.ConsumerRecordsQuery">
+		parameterType="com.shopping.domain.consumer.query.ConsumerRecordsQuery">
 		select count(1) from consumer_records where 1 = 1
 		<if test="_parameter != null">
 			<include refid="queryConsumerRecordsListWhere" />

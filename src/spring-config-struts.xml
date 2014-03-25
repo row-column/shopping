@@ -12,7 +12,7 @@
            http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
 	default-autowire="byName">
 
-	<bean class="com.haos.web.interceptor.AdminLoginContextInterceptor">
+	<bean class="com.shopping.web.interceptor.AdminLoginContextInterceptor">
 		<property name="enableUrl" value="/login.action,/toLogin.action" />
 	</bean>
 </beans>

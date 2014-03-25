@@ -1,0 +1,56 @@
+package com.stark.asm.common.util.page;
+
+public class BaseQuery implements Query{
+	
+	/**
+	 * 分页后的记录开始的地方
+	 * 第一条记录是1
+	 */
+	private int startRow;
+	/**
+	 * 分页后的记录结束的地方
+	 */
+	private int endRow;
+	/**
+	 * 每页大小
+	 */
+	private int pageSize;
+	
+	public BaseQuery(){
+		
+	}
+	
+	public BaseQuery(PaginatedList paginatedList){
+		this.startRow=paginatedList.getStartRow();
+		this.endRow=paginatedList.getEndRow();
+		this.pageSize=paginatedList.getPageSize();
+	}
+
+
+	@Override
+	public int getStartRow() {
+		return startRow;
+	}
+	
+	public void setStartRow(int startRow){
+		this.startRow=startRow;
+	}
+
+	@Override
+	public int getEndRow() {
+		return endRow;
+	}
+	
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setEndRow(int endRow) {
+		this.endRow = endRow;
+	}
+
+	public void setPageSize(int pageSize){
+		this.pageSize=pageSize;
+	}
+
+}

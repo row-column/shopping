@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 配送类别信息 -->
+<mapper namespace="SendType">
+
+	<resultMap id="sendTypeMap" type="com.shopping.domain.send.SendType">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="type_code" property="sendTypeCode" jdbcType="VARCHAR" />
+		<result column="type_name" property="sendTypeName" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="yn" property="yn" jdbcType="TINYINT" />
+	</resultMap>
+
+	<!-- 创建配送类别信息 -->
+	<insert id="insert" parameterType="com.shopping.domain.send.SendType">
+		insert into
+		send_type(type_code,type_name,remark,create_time,update_time,yn)
+		values(#{sendTypeCode,jdbcType=VARCHAR},#{sendTypeName,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{yn,jdbcType=TINYINT})
+	</insert>
+
+	<!-- 修改配送类别信息，根据配送类别对象 -->
+	<update id="update" parameterType="com.shopping.domain.send.SendType">
+		<if test="_parameter != null">
+			<if test="id != null and id > 0">
+				update send_type
+				<set>
+					<if test="sendTypeCode!=null and sendTypeCode!=''">
+						type_code=#{sendTypeCode,jdbcType=VARCHAR},
+					</if>
+					<if test="sendTypeName!=null and sendTypeName!=''">
+						type_name = #{sendTypeName,jdbcType=VARCHAR},
+					</if>
+					<if test="remark!=null and remark!=''">
+						remark = #{remark,jdbcType=VARCHAR},
+					</if>
+					<if test="updateTime!=null and updateTime!=''">
+						update_time=#{updateTime,jdbcType=TIMESTAMP}
+					</if>
+				</set>
+				where id = #{id}
+			</if>
+		</if>
+	</update>
+
+	<!-- 根据主键获取配送类别信息 -->
+	<select id="getSendTypeById" resultMap="sendTypeMap"
+		parameterType="java.lang.Long">
+		<if test="_parameter != null">
+			select
+			id,type_code,type_name,remark,create_time,update_time from send_type
+			where id = #{_parameter}
+        </if>
+	</select>
+
+	<!-- 根据主键获取配送类别信息 -->
+	<select id="getSendTypeBySendTypeCode" resultMap="sendTypeMap"
+		parameterType="java.lang.String">
+		<if test="_parameter != null">
+			select
+			id,type_code,type_name,remark,create_time,update_time from send_type
+			where type_code = #{_parameter} and yn=0
+        </if>
+	</select>
+
+
+	<!-- 根据查询Bean获取配送类别集合，不带翻页 -->
+	<select id="querySendTypeListByQueryBean" resultMap="sendTypeMap"
+		parameterType="com.shopping.domain.send.query.SendTypeQuery">
+		select id,type_code,type_name,remark,create_time,update_time from
+		send_type where 1 = 1
+		<if test="_parameter != null">
+			<include refid="querySendTypeListWhere" />
+		</if>
+	</select>
+	<!-- 根据查询Bean获取配送类别集合，翻页 -->
+	<select id="querySendTypeListPageByQueryBean" resultMap="sendTypeMap"
+		parameterType="com.shopping.domain.send.query.SendTypeQuery">
+		select id,type_code,type_name,remark,create_time,update_time from
+		send_type where 1 = 1
+		<if test="_parameter != null">
+			<include refid="querySendTypeListWhere" />
+		</if>
+		order by id desc
+		limit #{startRow},#{endRow};
+	</select>
+
+	<!-- 根据查询Bean获取配送类别总数 -->
+	<select id="querySendTypeCountByQueryBean" resultType="java.lang.Integer"
+		parameterType="com.shopping.domain.send.query.SendTypeQuery">
+		select count(1) from send_type where 1 = 1
+		<if test="_parameter != null">
+			<include refid="querySendTypeListWhere" />
+		</if>
+	</select>
+
+	<!-- 删除配送类别信息，根据主键 -->
+	<delete id="deleteSendTypeById" parameterType="java.lang.Long">
+		<if test="_parameter != null and _parameter > 0">
+			update send_type
+			set yn=1
+			where id = #{_parameter} 
+        </if>
+	</delete>
+
+	<!-- 常用的查询Where条件 -->
+	<sql id="querySendTypeListWhere">
+		<if test="sendTypeCode != null and sendTypeCode != ''">
+			and type_code = #{sendTypeCode,jdbcType=VARCHAR}
+        </if>
+		<if test="sendTypeName != null and sendTypeName != ''">
+			and type_name = #{sendTypeName,jdbcType=VARCHAR}
+        </if>
+		<if test="yn != null and yn>=0">
+			and yn = #{yn,jdbcType=TINYINT}
+        </if>
+	</sql>
+</mapper>
